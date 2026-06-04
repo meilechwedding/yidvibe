@@ -5,16 +5,16 @@
 -- created the row (null for guests); `is_community` marks found/unattributed
 -- posts. Also adds one level of comment replies (`comments.parent_id`).
 --
--- ⚠️ RLS REVIEW REQUIRED BEFORE PROD: the base `projects`/`comments` policies
--- predate the repo's migration files (applied directly to the project), so this
--- migration ADDS permissive policies rather than editing unknown ones. Apply on
--- a Supabase dev branch first and TEST inserts as both anon and authenticated.
--- A `projects` policy must NEVER re-query `projects` under RLS (infinite
--- recursion → outage); these only reference the new row's own columns.
+-- Verified against the live schema (2026-06-04): projects/comments PKs are on
+-- `id`; owner_id/author_id reference profiles(id); existing policies are
+-- additive-friendly (projects_insert_own checks owner_id = auth.uid(); select is
+-- public-true; the admin policy subqueries profiles, NOT projects — no
+-- recursion). These statements only RELAX (drop not null) and ADD (columns,
+-- additive policies), so they don't change existing behaviour or the live site.
 
 alter table public.projects alter column owner_id drop not null;
 alter table public.projects
-  add column if not exists submitted_by uuid references auth.users(id) on delete set null;
+  add column if not exists submitted_by uuid references public.profiles(id) on delete set null;
 alter table public.projects
   add column if not exists is_community boolean not null default false;
 
@@ -30,6 +30,8 @@ create policy "projects insert community (anon)" on public.projects
   with check (is_community = true and owner_id is null and submitted_by is null);
 
 -- Signed-in users may create their own project OR a community submission.
+-- (The existing `projects_insert_own` policy stays; INSERT passes if either
+-- permissive policy matches.)
 drop policy if exists "projects insert (authenticated phase1)" on public.projects;
 create policy "projects insert (authenticated phase1)" on public.projects
   for insert to authenticated

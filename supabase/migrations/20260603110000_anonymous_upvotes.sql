@@ -1,20 +1,16 @@
 -- Anonymous, device-deduped upvotes.
 --
--- Signed-in upvotes stay one-per-user-per-project; signed-out upvotes dedupe
--- one-per-device (a cookie token) per project. The app also soft-rate-limits.
+-- Signed-in upvotes stay one-per-user (the existing UNIQUE (project_id, user_id)
+-- still covers non-null user_id). Signed-out upvotes dedupe one-per-device (a
+-- cookie token) per project via a partial unique index.
 --
--- ⚠️ REVIEW BEFORE PROD: if `upvotes` has a primary key on (user_id, project_id),
--- `drop not null` on user_id will fail — drop/recreate that PK as a unique index
--- first. Apply on a dev branch and test anon + auth voting.
+-- Verified against the live schema (2026-06-04): the upvotes PRIMARY KEY is on
+-- `id` (not user_id), so dropping NOT NULL on user_id is safe — no PK surgery.
 
 alter table public.upvotes alter column user_id drop not null;
 alter table public.upvotes add column if not exists device_id text;
 
--- one vote per signed-in user per project
-create unique index if not exists upvotes_user_uniq
-  on public.upvotes (project_id, user_id) where user_id is not null;
-
--- one vote per device per project (anonymous)
+-- one vote per device per project (anonymous rows only)
 create unique index if not exists upvotes_device_uniq
   on public.upvotes (project_id, device_id) where user_id is null and device_id is not null;
 

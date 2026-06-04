@@ -1,6 +1,8 @@
 -- Admin "Launch Control" feature flags.
 -- Every gateable page/feature has a row; default OFF so Phase 1 ships focused
 -- and the admin turns the bigger site on piece by piece.
+--
+-- APPLIED TO PRODUCTION 2026-06-04 (the one migration the safety gate allowed).
 
 create table if not exists public.feature_flags (
   key text primary key,
@@ -9,10 +11,13 @@ create table if not exists public.feature_flags (
   description text,
   category text not null default 'module',
   updated_at timestamptz not null default now(),
-  updated_by uuid references auth.users(id)
+  updated_by uuid references public.profiles(id) on delete set null
 );
 
 alter table public.feature_flags enable row level security;
+
+grant select on public.feature_flags to anon, authenticated;
+grant insert, update, delete on public.feature_flags to authenticated;
 
 -- Anyone (incl. anon) may READ flags — nav + route guards run server-side for
 -- signed-out visitors too. This table holds no sensitive data.
@@ -34,5 +39,5 @@ insert into public.feature_flags (key, label, description, category, enabled) va
   ('module.events',        'Events',            'Community events calendar.',               'module',  false),
   ('module.messaging',     'Private messaging', 'Inbox + DMs between users.',               'module',  false),
   ('module.people',        'People directory',  'Browsable directory of public profiles.',  'module',  false),
-  ('feature.homepage_stats','Homepage stats',   'Projects/builders counter on the landing.','feature', false)
+  ('feature.homepage_stats','Homepage stats',   'Projects / builders counter on the landing.','feature', false)
 on conflict (key) do nothing;
