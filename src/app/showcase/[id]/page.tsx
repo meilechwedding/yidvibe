@@ -1,9 +1,24 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ExternalLink, Play, Pencil, ArrowRight } from "lucide-react";
+import {
+  ExternalLink,
+  Play,
+  Pencil,
+  ArrowRight,
+  Mail,
+  Phone,
+  MessageCircle,
+  Instagram,
+  Globe,
+  Github,
+  Twitter,
+  Linkedin,
+  type LucideIcon,
+} from "lucide-react";
 import {
   getProjectById,
+  getProfileByHandle,
   getComments,
   getMyUpvotedProjectIds,
   getMySavedProjectIds,
@@ -14,23 +29,31 @@ import { Container } from "@/components/brand/layout";
 import { SectionCrumb } from "@/components/brand/section-crumb";
 import { Sparkle } from "@/components/brand/sparkle";
 import { AvatarCircle } from "@/components/brand/avatar-circle";
-import { Pill } from "@/components/brand/pill";
 import { Panel, PanelLabel } from "@/components/brand/panel";
 import { MediaGallery } from "@/components/brand/media-gallery";
 import { CommentsCard } from "@/components/showcase/comments-card";
-import { PROJECT_COMMERCIAL, accentFor, ACCENT_HERO } from "@/lib/site";
+import { accentFor, ACCENT_HERO, CONTACT_KEYS, contactHref, type ContactKey } from "@/lib/site";
 import { UpvoteButton } from "@/components/brand/upvote-button";
 import { SaveButton } from "@/components/brand/save-button";
 import { ShareButton } from "@/components/brand/share-button";
-import { InterestButton } from "@/components/showcase/interest-button";
 import { ReportMenu } from "@/components/brand/report-menu";
 import { DeleteProjectButton } from "@/components/showcase/delete-project-button";
-import { NoteButton } from "@/components/messaging/note-button";
+import { ClaimButton } from "@/components/showcase/claim-button";
 import { PostedShareCard } from "@/components/brand/posted-share-card";
 import { FeatureToggle } from "@/components/admin/feature-toggle";
 import { deleteProject } from "@/lib/actions/projects";
 import { displayName } from "@/lib/display";
-import { cn } from "@/lib/utils";
+
+const CONTACT_META: Record<ContactKey, { label: string; Icon: LucideIcon }> = {
+  email: { label: "Email", Icon: Mail },
+  phone: { label: "Call", Icon: Phone },
+  whatsapp: { label: "WhatsApp", Icon: MessageCircle },
+  instagram: { label: "Instagram", Icon: Instagram },
+  website: { label: "Website", Icon: Globe },
+  github: { label: "GitHub", Icon: Github },
+  x: { label: "X", Icon: Twitter },
+  linkedin: { label: "LinkedIn", Icon: Linkedin },
+};
 
 export async function generateMetadata({
   params,
@@ -41,36 +64,6 @@ export async function generateMetadata({
   const project = await getProjectById(id);
   if (!project) return { title: "Project not found" };
   return { title: project.name, description: project.description.slice(0, 155) };
-}
-
-function DetailRow({ k, children }: { k: string; children: React.ReactNode }) {
-  return (
-    <div className="flex items-start justify-between gap-3 border-b border-border/60 py-2 text-sm last:border-0">
-      <span className="shrink-0 font-medium text-muted-foreground">{k}</span>
-      <span className="flex flex-wrap justify-end gap-1.5 text-right text-ink">
-        {children}
-      </span>
-    </div>
-  );
-}
-
-function ChipLink({
-  href,
-  tone,
-  children,
-}: {
-  href: string;
-  tone: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium", tone)}
-    >
-      {children}
-    </Link>
-  );
 }
 
 export default async function ProjectDetailPage({
@@ -93,11 +86,16 @@ export default async function ProjectDetailPage({
     getAdminContext(),
   ]);
   const isAuthed = !!me;
-  const isOwner = me?.id === project.owner_id;
-  const adminUnlocked = admin ? await isAdminUnlocked(admin.userId) : false;
   const owner = project.owner;
+  const isOwner = !!me && me.id === project.owner_id;
+  const adminUnlocked = admin ? await isAdminUnlocked(admin.userId) : false;
   const accent = accentFor(project.name);
   const deleteThis = deleteProject.bind(null, id);
+
+  // Pull the builder's chosen public contact links (community posts have none).
+  const ownerProfile = owner ? await getProfileByHandle(owner.handle) : null;
+  const links = (ownerProfile?.links ?? {}) as Record<string, string | undefined>;
+  const contacts = CONTACT_KEYS.filter((k) => links[k] && String(links[k]).trim());
 
   const postedDate = new Date(project.created_at).toLocaleDateString(undefined, {
     month: "short",
@@ -115,12 +113,10 @@ export default async function ProjectDetailPage({
     </span>
   ) : null;
 
-  const hasCommercial = project.for_sale || project.open_to_partners;
-
   return (
     <Container className="max-w-6xl py-8">
       <SectionCrumb section="Showcase" href="/showcase" name={project.name} accent="teal" />
-      {/* Full-width header — both columns start below this */}
+
       <header className="flex flex-wrap items-start gap-3.5 border-b border-border pb-5">
         <span
           className="grid h-12 w-12 shrink-0 place-items-center rounded-xl font-display text-lg font-bold text-white"
@@ -139,9 +135,7 @@ export default async function ProjectDetailPage({
             {badge}
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
-            {project.is_anonymous || !owner ? (
-              "by Anonymous"
-            ) : (
+            {owner ? (
               <>
                 by{" "}
                 <Link
@@ -151,6 +145,8 @@ export default async function ProjectDetailPage({
                   {displayName(owner)}
                 </Link>
               </>
+            ) : (
+              "Community submission"
             )}
             {" · posted "}
             {postedDate}
@@ -164,12 +160,12 @@ export default async function ProjectDetailPage({
         />
       </header>
 
-      {justPosted && isOwner && (
+      {justPosted && (
         <div className="mt-5">
           <PostedShareCard
             path={`/showcase/${id}`}
             title={project.name}
-            caption={`Check out my project "${project.name}" on YidVibe →`}
+            caption={`Check out "${project.name}" on YidVibe →`}
           />
         </div>
       )}
@@ -186,7 +182,7 @@ export default async function ProjectDetailPage({
           />
 
           <Panel>
-            <PanelLabel>About this project</PanelLabel>
+            <PanelLabel>About</PanelLabel>
             <p
               className="mt-3 whitespace-pre-line text-[15px] leading-relaxed text-ink/90"
               dir="auto"
@@ -195,37 +191,12 @@ export default async function ProjectDetailPage({
             </p>
           </Panel>
 
-          {hasCommercial && (
-            <Panel>
-              <PanelLabel>Looking for</PanelLabel>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {PROJECT_COMMERCIAL.filter((c) => project[c.key]).map((c) => (
-                  <Pill key={c.key} accent={c.accent}>
-                    {c.label}
-                  </Pill>
-                ))}
-              </div>
-              <div className="mt-3.5 flex flex-wrap items-center gap-2">
-                {!project.is_anonymous && owner && (
-                  <a
-                    href={`/u/${owner.handle}#contact`}
-                    className="btn btn-primary btn-sm"
-                  >
-                    Contact the builder
-                  </a>
-                )}
-                {isAuthed && !isOwner && <InterestButton projectId={id} />}
-                {!isAuthed && (
-                  <Link
-                    href={`/login?next=/showcase/${id}`}
-                    className="btn btn-ghost btn-sm"
-                  >
-                    Sign in to connect
-                  </Link>
-                )}
-              </div>
-            </Panel>
-          )}
+          <CommentsCard
+            projectId={id}
+            comments={comments}
+            meId={me?.id ?? null}
+            isAuthed={isAuthed}
+          />
         </div>
 
         {/* RIGHT rail */}
@@ -248,13 +219,13 @@ export default async function ProjectDetailPage({
                     rel="noopener noreferrer"
                     className="btn btn-primary btn-sm w-full justify-center"
                   >
-                    <ExternalLink size={15} /> Visit live
+                    <ExternalLink size={15} /> Visit site
                   </a>
                 )}
                 <ShareButton
                   path={`/showcase/${id}`}
                   title={project.name}
-                  label="Share project"
+                  label="Share"
                   className="btn-sm w-full justify-center"
                 />
                 {project.video_url && (
@@ -291,54 +262,56 @@ export default async function ProjectDetailPage({
           </Panel>
 
           <Panel>
-            <PanelLabel>Built by</PanelLabel>
-            {project.is_anonymous || !owner ? (
-              <div className="mt-3 flex items-center gap-3">
-                <AvatarCircle name="?" src={null} size={40} accent="blue" />
-                <div className="min-w-0">
-                  <p className="font-semibold text-ink">Anonymous</p>
-                  {isOwner && (
-                    <p className="text-xs text-muted-foreground">
-                      Only you and admins can see it&apos;s yours.
-                    </p>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div className="mt-3 flex items-center gap-3">
-                <AvatarCircle
-                  name={displayName(owner)}
-                  src={owner.avatar_url}
-                  size={40}
-                  accent="blue"
-                />
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
+            <PanelLabel>Reach out</PanelLabel>
+            {owner ? (
+              <>
+                <div className="mt-3 flex items-center gap-3">
+                  <AvatarCircle
+                    name={displayName(owner)}
+                    src={owner.avatar_url}
+                    size={40}
+                    accent="blue"
+                  />
+                  <div className="min-w-0 flex-1">
                     <p className="truncate font-semibold text-ink">
                       {displayName(owner)}
                     </p>
-                    {owner.available_for_hire && <Pill accent="sage">Available</Pill>}
+                    <p className="truncate text-sm text-muted-foreground">
+                      @{owner.handle}
+                    </p>
                   </div>
-                  <p className="truncate text-sm text-muted-foreground">
-                    @{owner.handle}
-                  </p>
+                  <Link
+                    href={`/u/${owner.handle}`}
+                    className="btn btn-ghost btn-sm shrink-0"
+                  >
+                    View <ArrowRight size={15} />
+                  </Link>
                 </div>
-                <Link
-                  href={`/u/${owner.handle}`}
-                  className="btn btn-ghost btn-sm shrink-0"
-                >
-                  View <ArrowRight size={15} />
-                </Link>
-              </div>
-            )}
-            {isAuthed && !isOwner && !project.is_anonymous && (
-              <div className="mt-3 border-t border-border/60 pt-3">
-                <NoteButton
-                  otherId={project.owner_id}
-                  about={{ type: "project", id }}
-                  label="Reply privately"
-                  className="btn-ghost w-full justify-center"
-                />
+                {contacts.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-2 border-t border-border/60 pt-3">
+                    {contacts.map((k) => {
+                      const { label, Icon } = CONTACT_META[k];
+                      return (
+                        <a
+                          key={k}
+                          href={contactHref(k, String(links[k]))}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 rounded-[10px] border border-border bg-surface px-3 py-1.5 text-xs font-medium text-ink hover:bg-secondary"
+                        >
+                          <Icon size={14} /> {label}
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="mt-3 space-y-2.5">
+                <p className="text-sm text-muted-foreground">
+                  This is a community submission — no builder attached yet.
+                </p>
+                <ClaimButton projectId={id} />
               </div>
             )}
           </Panel>
@@ -360,7 +333,7 @@ export default async function ProjectDetailPage({
                 </DetailRow>
               )}
               {project.tags.length > 0 && (
-                <DetailRow k="Topics">
+                <DetailRow k="Category">
                   {project.tags.map((t) => (
                     <ChipLink
                       key={t}
@@ -378,15 +351,38 @@ export default async function ProjectDetailPage({
               </DetailRow>
             </div>
           </Panel>
-
-          <CommentsCard
-            projectId={id}
-            comments={comments}
-            meId={me?.id ?? null}
-            isAuthed={isAuthed}
-          />
         </div>
       </div>
     </Container>
+  );
+}
+
+function DetailRow({ k, children }: { k: string; children: React.ReactNode }) {
+  return (
+    <div className="flex items-start justify-between gap-3 border-b border-border/60 py-2 text-sm last:border-0">
+      <span className="shrink-0 font-medium text-muted-foreground">{k}</span>
+      <span className="flex flex-wrap justify-end gap-1.5 text-right text-ink">
+        {children}
+      </span>
+    </div>
+  );
+}
+
+function ChipLink({
+  href,
+  tone,
+  children,
+}: {
+  href: string;
+  tone: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${tone}`}
+    >
+      {children}
+    </Link>
   );
 }

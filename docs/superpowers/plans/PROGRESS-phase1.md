@@ -12,7 +12,8 @@ Rules in force: work on the branch only · **no `git push`** (repo push-blocked)
 | 3 · Flag-gate nav + routes | ✅ done | 6 route-group guards + flag-aware nav; typecheck clean, committed |
 | 4 · Posting model | ✅ done | createProject guest/community/ownership logic, submit page un-gated, form reworked (ownership toggle + guest note, commercial/anon removed); typecheck clean, committed |
 | 5 · Showcase board | ✅ done | single-column "mix" row-cards, featured-first ordering, by/community label, new copy; typecheck clean, committed |
-| 6 · Project page | pending | |
+| 6 · Project page | ✅ done | refactored to new model: removed commercial/anonymous/private-reply; "Reach out" = profile contact links; Claim button for community submissions; details/comments kept. ⚠️ immersive cover-hero + mobile sticky action bar deferred as visual polish (current header is the existing clean two-column). typecheck clean, committed |
+| 9 · Claim flow (action) | ⏳ partial | claims.ts (requestClaim + reviewClaim) + ClaimButton built in Phase 6; admin /admin/claims queue page still pending |
 | 7 · Threaded comments | pending | parent_id migration done (in posting_model file) |
 | 8 · Anonymous upvotes | pending | migration written (file) |
 | 9 · Claim flow | pending | claim_requests migration written (file) |
