@@ -21,17 +21,9 @@ const schema = z.object({
     ),
   bio: z.string().trim().max(600).optional(),
   location: z.string().trim().max(80).optional(),
-  hourly_rate: z.number().nonnegative().max(100000).nullable(),
   avatar_url: z.string().trim().url().optional().or(z.literal("")),
   cover_url: z.string().trim().url().optional().or(z.literal("")),
 });
-
-function csv(value: FormDataEntryValue | null): string[] {
-  return String(value ?? "")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
 
 function normUrl(value: FormDataEntryValue | null): string | undefined {
   const s = String(value ?? "").trim();
@@ -49,13 +41,11 @@ export async function updateProfile(
   } = await supabase.auth.getUser();
   if (!user) return { error: "You need to sign in first." };
 
-  const rawRate = String(formData.get("hourly_rate") ?? "").trim();
   const parsed = schema.safeParse({
     name: formData.get("name"),
     handle: String(formData.get("handle") ?? "").toLowerCase(),
     bio: String(formData.get("bio") ?? "") || undefined,
     location: String(formData.get("location") ?? "") || undefined,
-    hourly_rate: rawRate === "" ? null : Number(rawRate),
     avatar_url: String(formData.get("avatar_url") ?? ""),
     cover_url: String(formData.get("cover_url") ?? ""),
   });
@@ -72,7 +62,7 @@ export async function updateProfile(
 
   const v = parsed.data;
   const tools = formData.getAll("tools").map(String).filter(Boolean);
-  const skills = csv(formData.get("skills"));
+
   const links: Record<string, string> = {};
   const website = normUrl(formData.get("link_website"));
   const github = normUrl(formData.get("link_github"));
@@ -94,9 +84,7 @@ export async function updateProfile(
   if (whatsapp) links.whatsapp = whatsapp;
   if (instagram) links.instagram = instagram;
 
-  const dmRaw = String(formData.get("dm_privacy") ?? "everyone");
-  const dm_privacy: "everyone" | "followers" | "none" =
-    dmRaw === "followers" ? "followers" : dmRaw === "none" ? "none" : "everyone";
+  const isPublic = formData.get("is_public") != null;
 
   const { error } = await supabase
     .from("profiles")
@@ -105,15 +93,11 @@ export async function updateProfile(
       handle: v.handle,
       bio: v.bio ?? null,
       location: v.location ?? null,
-      hourly_rate: v.hourly_rate,
       avatar_url: v.avatar_url ? v.avatar_url : null,
       cover_url: v.cover_url ? v.cover_url : null,
-      available_for_hire: formData.get("available_for_hire") != null,
-      is_builder: formData.get("is_builder") != null,
       show_real_name: formData.get("show_real_name") != null,
-      dm_privacy,
+      is_public: isPublic,
       tools,
-      skills,
       links,
     })
     .eq("id", user.id);
@@ -128,5 +112,6 @@ export async function updateProfile(
   }
 
   revalidatePath(`/u/${v.handle}`);
-  redirect(`/u/${v.handle}`);
+  revalidatePath("/dashboard");
+  redirect(isPublic ? `/u/${v.handle}` : "/dashboard");
 }

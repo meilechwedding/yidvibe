@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { getCurrentProfile } from "@/lib/current-user";
-import { getUnreadReplyCount } from "@/lib/conversations";
 import { Container } from "@/components/brand/layout";
 import { DashboardTabs } from "@/components/dashboard/dashboard-tabs";
 import { DashboardMobileBar } from "@/components/dashboard/dashboard-mobile-bar";
@@ -13,7 +12,6 @@ export default async function DashboardLayout({
   const profile = await getCurrentProfile();
   if (!profile) redirect("/login?next=/dashboard");
 
-  const unread = await getUnreadReplyCount();
   const firstName = profile.name.split(" ")[0];
 
   return (
@@ -31,7 +29,7 @@ export default async function DashboardLayout({
                 Hi, {firstName}
               </h1>
             </div>
-            <DashboardTabs unread={unread} />
+            <DashboardTabs />
           </div>
           {/* Mobile: greeting on hub root / back link on sub-pages */}
           <div className="flex items-center py-3.5 lg:hidden">

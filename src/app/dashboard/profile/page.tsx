@@ -15,7 +15,7 @@ export default async function DashboardProfile() {
           Profile
         </h2>
         <p className="mt-0.5 text-sm text-muted-foreground">
-          How you appear to clients and the community.
+          How you appear to the community.
         </p>
       </div>
       <div className="mt-6">

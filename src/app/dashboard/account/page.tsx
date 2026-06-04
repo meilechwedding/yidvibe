@@ -22,12 +22,6 @@ import { signOut } from "@/lib/actions/auth";
 
 export const metadata: Metadata = { title: "Account · Dashboard" };
 
-const DM_LABEL: Record<string, string> = {
-  everyone: "Anyone can message you",
-  followers: "Only people you follow",
-  none: "Messages are off",
-};
-
 function ManageLink({
   href,
   icon: Icon,
@@ -79,7 +73,6 @@ export default async function DashboardAccount() {
     month: "long",
     year: "numeric",
   });
-  const dmLabel = DM_LABEL[profile.dm_privacy] ?? DM_LABEL.everyone;
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
@@ -134,30 +127,16 @@ export default async function DashboardAccount() {
         )}
 
         <div className="mt-5 grid grid-cols-3 gap-4 border-t border-border pt-5">
-          <Stat value={profile.follower_count} label="Followers" />
+          <Stat
+            value={profile.is_public ? "Public" : "Private"}
+            label="Profile"
+          />
           <Stat value={joined} label="Joined" />
           <Stat
             value={profile.is_verified ? "Verified" : "Member"}
             label="Status"
           />
         </div>
-      </Panel>
-
-      {/* Privacy at-a-glance — links to where you change it. */}
-      <Panel className="flex items-center gap-3.5">
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-sage-tint text-sage-deep">
-          <ShieldCheck size={18} />
-        </span>
-        <div className="min-w-0 flex-1">
-          <PanelLabel>Who can message you</PanelLabel>
-          <p className="mt-0.5 text-sm font-semibold text-ink">{dmLabel}</p>
-        </div>
-        <Link
-          href="/dashboard/profile"
-          className="shrink-0 text-sm font-semibold text-teal-800 hover:underline"
-        >
-          Change
-        </Link>
       </Panel>
 
       {/* Manage */}
@@ -167,8 +146,8 @@ export default async function DashboardAccount() {
           <ManageLink
             href="/dashboard/profile"
             icon={Pencil}
-            label="Profile & skills"
-            description="Edit your bio, links, tools and skills"
+            label="Profile"
+            description="Edit your name, bio, contact links, and tools"
           />
           <ManageLink
             href="/settings/notifications"

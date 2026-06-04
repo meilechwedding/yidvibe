@@ -91,10 +91,6 @@ export const NOTIFICATION_TYPES: {
 }[] = [
   { key: "comment", label: "Comments", description: "Someone comments on your project." },
   { key: "upvote", label: "Upvotes", description: "Someone upvotes your project." },
-  { key: "interest", label: "Commercial interest", description: "Someone is interested in buying or partnering." },
-  { key: "gig_application", label: "Gig applications", description: "Someone applies to a gig you posted." },
-  { key: "message", label: "Messages", description: "A new message in one of your gig threads." },
-  { key: "competition_winner", label: "Competition wins", description: "You're picked as a competition winner." },
 ];
 
 /** Project-level commercial intents → badge label + accent. All optional. */

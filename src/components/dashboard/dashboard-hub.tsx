@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
   FolderOpen,
   Bookmark,
-  Inbox,
   UserCog,
   Settings,
   ShieldCheck,
@@ -15,13 +14,11 @@ function HubRow({
   href,
   icon: Icon,
   label,
-  badge,
   gold,
 }: {
   href: string;
   icon: LucideIcon;
   label: string;
-  badge?: number;
   gold?: boolean;
 }) {
   return (
@@ -38,28 +35,23 @@ function HubRow({
         <Icon size={17} />
       </span>
       <span className="flex-1 text-[15px] font-semibold text-ink">{label}</span>
-      {badge ? (
-        <span className="inline-flex min-w-[20px] items-center justify-center rounded-full bg-gold-500 px-1.5 text-[11px] font-bold leading-5 text-gold-900">
-          {badge > 99 ? "99+" : badge}
-        </span>
-      ) : null}
       <ChevronRight size={17} className="shrink-0 text-muted-foreground/50" />
     </Link>
   );
 }
 
-/** Mobile-only (`lg:hidden`) dashboard hub — Direction C drill-down list. */
+/** Mobile-only (`lg:hidden`) dashboard hub — drill-down list. */
 export function DashboardHub({
   posts,
   upvotes,
-  followers,
-  unread,
+  saved,
+  isPublic,
   isAdmin,
 }: {
   posts: number;
   upvotes: number;
-  followers: number;
-  unread: number;
+  saved: number;
+  isPublic: boolean;
   isAdmin: boolean;
 }) {
   return (
@@ -68,7 +60,7 @@ export function DashboardHub({
         {[
           { value: posts, label: "Posts" },
           { value: upvotes, label: "Upvotes" },
-          { value: followers, label: "Followers" },
+          { value: saved, label: "Saved" },
         ].map((s) => (
           <div
             key={s.label}
@@ -82,15 +74,26 @@ export function DashboardHub({
         ))}
       </div>
 
+      {!isPublic && (
+        <Link
+          href="/dashboard/profile"
+          className="mt-4 flex items-center gap-3 rounded-2xl border border-teal-100 bg-teal-50 px-4 py-3"
+        >
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-semibold text-ink">
+              Your profile is private
+            </span>
+            <span className="block text-xs text-muted-foreground">
+              Make it public so people can find your work.
+            </span>
+          </span>
+          <ChevronRight size={17} className="shrink-0 text-teal-700" />
+        </Link>
+      )}
+
       <div className="mt-5 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface shadow-[var(--shadow-xs)]">
         <HubRow href="/dashboard/posts" icon={FolderOpen} label="My posts" />
         <HubRow href="/dashboard/saved" icon={Bookmark} label="Saved" />
-        <HubRow
-          href="/dashboard/inbox"
-          icon={Inbox}
-          label="Inbox"
-          badge={unread}
-        />
         <HubRow href="/dashboard/profile" icon={UserCog} label="Profile" />
         <HubRow href="/dashboard/account" icon={Settings} label="Account" />
         {isAdmin && (

@@ -1,26 +1,13 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import {
-  Rocket,
-  Briefcase,
-  Trophy,
-  Calendar,
-  ArrowUpRight,
-  FolderOpen,
-  Inbox as InboxIcon,
-  Compass,
-} from "lucide-react";
+import { Rocket, ArrowUpRight, FolderOpen } from "lucide-react";
 import { getCurrentProfile } from "@/lib/current-user";
 import { getDashboardStats } from "@/lib/dashboard";
-import { getProjectsByOwner, getMyDirectoryListing } from "@/lib/queries";
-import { getMyConversations, getUnreadReplyCount } from "@/lib/conversations";
-import { AvatarCircle } from "@/components/brand/avatar-circle";
+import { getProjectsByOwner } from "@/lib/queries";
 import { Panel, PanelLabel } from "@/components/brand/panel";
-import { ActionCard } from "@/components/brand/action-card";
 import { GlanceRow } from "@/components/dashboard/glance-row";
 import { getAdminContext } from "@/lib/admin";
 import { DashboardHub } from "@/components/dashboard/dashboard-hub";
-import { formatRelativeTime } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -28,113 +15,82 @@ export default async function DashboardOverview() {
   const profile = await getCurrentProfile();
   if (!profile) return null; // layout already redirects
 
-  const [stats, projects, convos, unreadReplies, myDirectoryListing] =
-    await Promise.all([
-      getDashboardStats(profile.id),
-      getProjectsByOwner(profile.id),
-      getMyConversations(),
-      getUnreadReplyCount(),
-      getMyDirectoryListing(),
-    ]);
-  const recent = projects.slice(0, 5);
-  const recentConvos = convos.slice(0, 4);
-  const admin = await getAdminContext();
+  const [stats, projects, admin] = await Promise.all([
+    getDashboardStats(profile.id),
+    getProjectsByOwner(profile.id),
+    getAdminContext(),
+  ]);
+  const recent = projects.slice(0, 6);
 
   return (
     <>
-      {/* Mobile: Direction-C hub (drill-down). Desktop: full overview below. */}
+      {/* Mobile: drill-down hub. Desktop: full overview below. */}
       <DashboardHub
         posts={stats.projects}
         upvotes={stats.upvotes}
-        followers={profile.follower_count}
-        unread={unreadReplies}
+        saved={stats.saved}
+        isPublic={profile.is_public}
         isAdmin={!!admin}
       />
 
       <div className="hidden space-y-8 lg:block">
-      {/* At-a-glance — bold, clickable */}
-      <section>
-        <PanelLabel className="mb-3">At a glance</PanelLabel>
-        <GlanceRow
-          stats={[
-            { value: stats.upvotes, label: "Upvotes", href: "/dashboard/posts" },
-            { value: stats.projects, label: "Projects", href: "/dashboard/posts" },
-            { value: profile.follower_count, label: "Followers", href: `/u/${profile.handle}` },
-            { value: stats.gigs, label: "Gigs", href: "/gigs" },
-            { value: stats.competitions, label: "Comps", href: "/competitions" },
-            { value: stats.events, label: "Events", href: "/events" },
-            { value: stats.saved, label: "Saved", href: "/dashboard/saved" },
-            { value: unreadReplies, label: "Unread", href: "/dashboard/inbox" },
-          ]}
-        />
-      </section>
+        {/* At a glance */}
+        <section>
+          <PanelLabel className="mb-3">At a glance</PanelLabel>
+          <GlanceRow
+            stats={[
+              { value: stats.projects, label: "Projects", href: "/dashboard/posts" },
+              { value: stats.upvotes, label: "Upvotes", href: "/dashboard/posts" },
+              { value: stats.saved, label: "Saved", href: "/dashboard/saved" },
+            ]}
+          />
+        </section>
 
-      {/* Directory nudge — only when the user isn't listed yet */}
-      {!myDirectoryListing && (
-        <Panel className="flex flex-wrap items-center gap-3">
-          <span
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl"
-            style={{ background: "var(--blue-bg)", color: "var(--blue-deep)" }}
-          >
-            <Compass size={18} />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="font-medium text-ink">Get listed in the Directory</p>
-            <p className="text-sm text-muted-foreground">
-              Let people find and hire you.
-            </p>
-          </div>
-          <Link href="/directory/list-me" className="btn btn-primary btn-sm shrink-0">
-            Add me
-          </Link>
-        </Panel>
-      )}
+        {/* Profile visibility nudge — only when still private */}
+        {!profile.is_public && (
+          <Panel className="flex flex-wrap items-center gap-3">
+            <span
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-xl"
+              style={{ background: "var(--teal-50)", color: "var(--teal-700)" }}
+            >
+              <Rocket size={18} />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="font-medium text-ink">Your profile is private</p>
+              <p className="text-sm text-muted-foreground">
+                Make it public so people can see your work and reach you.
+              </p>
+            </div>
+            <Link href="/dashboard/profile" className="btn btn-primary btn-sm shrink-0">
+              Edit profile
+            </Link>
+          </Panel>
+        )}
 
-      {/* Primary actions */}
-      <section>
-        <div className="mb-3 flex items-baseline justify-between">
-          <PanelLabel>Post something</PanelLabel>
-          <span className="text-xs text-muted-foreground">
-            Share it with the community
-          </span>
-        </div>
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          <ActionCard
-            href="/showcase/submit"
-            accent="teal"
-            icon={<Rocket size={20} />}
-            label="Project"
-            description="Show what you built"
-          />
-          <ActionCard
-            href="/gigs/post"
-            accent="gold"
-            icon={<Briefcase size={20} />}
-            label="Gig"
-            description="Hire or get hired"
-          />
-          <ActionCard
-            href="/competitions/post"
-            accent="clay"
-            icon={<Trophy size={20} />}
-            label="Competition"
-            description="Run a challenge"
-          />
-          <ActionCard
-            href="/events/post"
-            accent="sage"
-            icon={<Calendar size={20} />}
-            label="Event"
-            description="Gather the community"
-          />
-        </div>
-      </section>
+        {/* Primary action — post a project */}
+        <section>
+          <Panel className="flex flex-wrap items-center gap-4">
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-teal-50 text-teal-700">
+              <Rocket size={22} />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="font-display text-lg font-bold text-ink">
+                Post a project
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Show the community what you built — or a great AI tool you found.
+              </p>
+            </div>
+            <Link href="/showcase/submit" className="btn btn-primary shrink-0">
+              Post your project
+            </Link>
+          </Panel>
+        </section>
 
-      {/* Recent activity */}
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        {/* Recent projects */}
         <Panel className="flex flex-col">
           <div className="flex items-center justify-between">
-            <PanelLabel>Recent projects</PanelLabel>
+            <PanelLabel>Your projects</PanelLabel>
             {recent.length > 0 && (
               <Link
                 href="/dashboard/posts"
@@ -153,10 +109,7 @@ export default async function DashboardOverview() {
               <p className="mt-0.5 text-xs text-muted-foreground">
                 Your projects will show up here.
               </p>
-              <Link
-                href="/showcase/submit"
-                className="btn btn-primary btn-sm mt-4"
-              >
+              <Link href="/showcase/submit" className="btn btn-primary btn-sm mt-4">
                 Post your first project
               </Link>
             </div>
@@ -180,53 +133,6 @@ export default async function DashboardOverview() {
             </ul>
           )}
         </Panel>
-
-        <Panel className="flex flex-col">
-          <div className="flex items-center justify-between">
-            <PanelLabel>Messages</PanelLabel>
-            <Link
-              href="/dashboard/inbox"
-              className="inline-flex items-center gap-1 text-xs font-semibold text-teal-800 hover:underline"
-            >
-              Open inbox <ArrowUpRight size={13} />
-            </Link>
-          </div>
-          {recentConvos.length === 0 ? (
-            <div className="mt-4 flex flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-border bg-canvas/50 px-4 py-8 text-center">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-teal-50 text-teal-700">
-                <InboxIcon size={18} />
-              </span>
-              <p className="mt-3 text-sm font-medium text-ink">No messages yet</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                Private notes from other builders land here.
-              </p>
-            </div>
-          ) : (
-            <ul className="mt-3 -mx-1 space-y-0.5">
-              {recentConvos.map((c) => (
-                <li key={c.id}>
-                  <Link
-                    href={`/dashboard/inbox/${c.id}`}
-                    className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-teal-50/60"
-                  >
-                    <AvatarCircle
-                      name={c.other.name}
-                      src={c.other.avatar_url}
-                      size={36}
-                    />
-                    <span className="min-w-0 flex-1 truncate text-sm font-medium text-ink">
-                      {c.other.name}
-                    </span>
-                    <span className="shrink-0 text-xs text-muted-foreground">
-                      {formatRelativeTime(c.last_message_at)}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Panel>
-      </div>
       </div>
     </>
   );

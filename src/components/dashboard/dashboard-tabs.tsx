@@ -6,7 +6,6 @@ import {
   LayoutGrid,
   FolderOpen,
   Bookmark,
-  Inbox,
   UserCog,
   Settings,
   type LucideIcon,
@@ -24,17 +23,16 @@ const TABS: Tab[] = [
   { href: "/dashboard", label: "Overview", icon: LayoutGrid, exact: true },
   { href: "/dashboard/posts", label: "My posts", icon: FolderOpen },
   { href: "/dashboard/saved", label: "Saved", icon: Bookmark },
-  { href: "/dashboard/inbox", label: "Inbox", icon: Inbox },
   { href: "/dashboard/profile", label: "Profile", icon: UserCog },
   { href: "/dashboard/account", label: "Account", icon: Settings },
 ];
 
 /**
  * Horizontal section navigation for the dashboard hub. Icon + label tabs with a
- * clear active state and an optional unread badge on the Inbox. Scrolls
- * horizontally on small screens so the rail never wraps untidily.
+ * clear active state. Scrolls horizontally on small screens so the rail never
+ * wraps untidily.
  */
-export function DashboardTabs({ unread = 0 }: { unread?: number }) {
+export function DashboardTabs() {
   const pathname = usePathname();
   return (
     <nav
@@ -47,7 +45,6 @@ export function DashboardTabs({ unread = 0 }: { unread?: number }) {
             ? pathname === t.href
             : pathname.startsWith(t.href);
           const Icon = t.icon;
-          const showBadge = t.href === "/dashboard/inbox" && unread > 0;
           return (
             <Link
               key={t.href}
@@ -67,16 +64,6 @@ export function DashboardTabs({ unread = 0 }: { unread?: number }) {
                 )}
               />
               <span>{t.label}</span>
-              {showBadge && (
-                <span
-                  className={cn(
-                    "ml-0.5 inline-flex min-w-[18px] items-center justify-center rounded-full px-1 text-[11px] font-bold leading-[18px]",
-                    active ? "bg-white/20 text-white" : "bg-gold-500 text-gold-900",
-                  )}
-                >
-                  {unread > 99 ? "99+" : unread}
-                </span>
-              )}
             </Link>
           );
         })}

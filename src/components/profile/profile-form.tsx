@@ -133,34 +133,21 @@ export function ProfileForm({ profile }: { profile: Profile }) {
           />
         </Field>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Hourly rate ($)">
-            <input
-              name="hourly_rate"
-              type="number"
-              min={0}
-              step={1}
-              defaultValue={profile.hourly_rate ?? ""}
-              className={inputClass}
-              placeholder="75"
-            />
-          </Field>
-          <Field label="Location">
-            <input
-              name="location"
-              defaultValue={profile.location ?? ""}
-              maxLength={80}
-              className={inputClass}
-              placeholder="Brooklyn, NY"
-            />
-          </Field>
-        </div>
+        <Field label="Location">
+          <input
+            name="location"
+            defaultValue={profile.location ?? ""}
+            maxLength={80}
+            className={inputClass}
+            placeholder="Brooklyn, NY"
+          />
+        </Field>
       </FormSection>
 
       <FormSection
         step={3}
-        title="Tools & skills"
-        description="What you build with and what you're good at — shown on your profile."
+        title="Builds with"
+        description="The AI tools you build with — shown on your profile."
       >
         <Field label="Tools you use">
           <div className="flex flex-wrap gap-2">
@@ -204,56 +191,30 @@ export function ProfileForm({ profile }: { profile: Profile }) {
             <input key={t} type="hidden" name="tools" value={t} />
           ))}
         </Field>
-
-        <Field label="Skills" hint="comma separated">
-          <input
-            name="skills"
-            defaultValue={(profile.skills ?? []).join(", ")}
-            className={inputClass}
-            placeholder="React, AI prompting, UI design, backend"
-          />
-        </Field>
       </FormSection>
 
       <FormSection
         step={4}
-        title="Availability & visibility"
-        description="Whether you're listed and discoverable, and who can reach you privately."
+        title="Visibility"
+        description="Whether you have a public profile, and how your name shows."
       >
         <label className="flex cursor-pointer items-center justify-between rounded-card border border-border bg-secondary/40 px-4 py-3">
           <span>
             <span className="block text-sm font-medium text-ink">
-              I&apos;m a builder / freelancer
+              Show my profile publicly
             </span>
             <span className="block text-xs text-muted-foreground">
-              List me on the Builders page so people can find me.
+              On = people can open your profile from your projects and reach you.
+              Off = you stay private and your name isn&apos;t a link.
             </span>
           </span>
           <input
             type="checkbox"
-            name="is_builder"
-            defaultChecked={profile.is_builder}
+            name="is_public"
+            defaultChecked={profile.is_public}
             className="peer sr-only"
           />
           <span className="relative h-6 w-11 shrink-0 rounded-full bg-border transition-colors peer-checked:bg-teal-600 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-transform peer-checked:after:translate-x-5" />
-        </label>
-
-        <label className="flex cursor-pointer items-center justify-between rounded-card border border-border bg-secondary/40 px-4 py-3">
-          <span>
-            <span className="block text-sm font-medium text-ink">
-              Available for hire
-            </span>
-            <span className="block text-xs text-muted-foreground">
-              Show a green &ldquo;Available&rdquo; badge on your profile
-            </span>
-          </span>
-          <input
-            type="checkbox"
-            name="available_for_hire"
-            defaultChecked={profile.available_for_hire}
-            className="peer sr-only"
-          />
-          <span className="relative h-6 w-11 shrink-0 rounded-full bg-border transition-colors peer-checked:bg-sage-mid after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-transform peer-checked:after:translate-x-5" />
         </label>
 
         <label className="flex cursor-pointer items-center justify-between rounded-card border border-border bg-secondary/40 px-4 py-3">
@@ -273,18 +234,6 @@ export function ProfileForm({ profile }: { profile: Profile }) {
           />
           <span className="relative h-6 w-11 shrink-0 rounded-full bg-border transition-colors peer-checked:bg-teal-600 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-transform peer-checked:after:translate-x-5" />
         </label>
-
-        <Field label="Private notes" hint="who can send you a private note">
-          <select
-            name="dm_privacy"
-            defaultValue={profile.dm_privacy}
-            className="h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm text-ink outline-none transition-colors focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
-          >
-            <option value="everyone">Anyone can send me a note</option>
-            <option value="followers">Only people who follow me</option>
-            <option value="none">No one — turn private notes off</option>
-          </select>
-        </Field>
       </FormSection>
 
       <FormSection
