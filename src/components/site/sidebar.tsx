@@ -12,7 +12,6 @@ import {
   HelpCircle,
   Plus,
 } from "lucide-react";
-import { NAV_LINKS } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
 import { UserMenu } from "./user-menu";
@@ -40,11 +39,13 @@ export function Sidebar({
   bellItems,
   unread,
   isAdmin = false,
+  navLinks,
 }: {
   profile: SidebarProfile | null;
   bellItems: BellItem[];
   unread: number;
   isAdmin?: boolean;
+  navLinks: { href: string; label: string }[];
 }) {
   const pathname = usePathname();
   const isActive = (href: string) =>
@@ -57,7 +58,7 @@ export function Sidebar({
       </div>
 
       <nav className="mt-6 flex flex-1 flex-col gap-0.5 overflow-y-auto">
-        {NAV_LINKS.map((l) => {
+        {navLinks.map((l) => {
           const Icon = ICONS[l.href] ?? Compass;
           const active = isActive(l.href);
           return (

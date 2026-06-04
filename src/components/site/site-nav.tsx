@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { getCurrentProfile } from "@/lib/current-user";
 import { getAdminContext } from "@/lib/admin";
+import { NAV_LINKS_ALL } from "@/lib/site";
+import { isFeatureEnabled } from "@/lib/flags";
 import {
   getNotificationSummary,
   describeNotification,
@@ -19,6 +21,14 @@ export async function SiteNav() {
   const profile = await getCurrentProfile();
 
   const admin = profile ? await getAdminContext() : null;
+
+  // Flag-aware nav: always-on links plus whichever modules the admin has launched.
+  const navLinks: { href: string; label: string }[] = [];
+  for (const l of NAV_LINKS_ALL) {
+    if (!l.flag || (await isFeatureEnabled(l.flag))) {
+      navLinks.push({ href: l.href, label: l.label });
+    }
+  }
 
   let bellItems: BellItem[] = [];
   let unread = 0;
@@ -50,6 +60,7 @@ export async function SiteNav() {
         bellItems={bellItems}
         unread={unread}
         isAdmin={!!admin}
+        navLinks={navLinks}
       />
       <NavShell className="lg:hidden">
         <Container className="flex h-16 items-center gap-4">
@@ -80,7 +91,7 @@ export async function SiteNav() {
         </Container>
       </NavShell>
 
-      <MobileBottomNav />
+      <MobileBottomNav navLinks={navLinks} />
     </>
   );
 }

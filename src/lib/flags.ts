@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -64,4 +65,9 @@ export async function isFeatureEnabled(key: string): Promise<boolean> {
 export async function getAllFlags(): Promise<Array<FlagDef & { enabled: boolean }>> {
   const map = await getFlagMap();
   return FLAG_DEFS.map((d) => ({ ...d, enabled: map[d.key] ?? false }));
+}
+
+/** Route guard: 404 a page/section whose module flag is off. Use in a layout. */
+export async function requireFlag(key: string): Promise<void> {
+  if (!(await isFeatureEnabled(key))) notFound();
 }

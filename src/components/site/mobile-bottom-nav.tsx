@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   Compass,
-  Inbox,
+  Bookmark,
   User,
   X,
   LayoutGrid,
@@ -16,7 +16,6 @@ import {
   Calendar,
   HelpCircle,
 } from "lucide-react";
-import { NAV_LINKS } from "@/lib/site";
 import { PostMenu } from "./post-menu";
 import { cn } from "@/lib/utils";
 
@@ -34,7 +33,11 @@ const MORE_ICONS: Record<string, typeof LayoutGrid> = {
  * App-style bottom tab bar for phones + tablets (`lg:hidden`):
  * Home · Explore (boards sheet) · ＋ post · Inbox · You (dashboard).
  */
-export function MobileBottomNav() {
+export function MobileBottomNav({
+  navLinks,
+}: {
+  navLinks: { href: string; label: string }[];
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const isActive = (href: string) =>
@@ -61,10 +64,10 @@ export function MobileBottomNav() {
         <PostMenu variant="fab" />
 
         <Tab
-          href="/dashboard/inbox"
-          label="Inbox"
-          Icon={Inbox}
-          active={isActive("/dashboard/inbox")}
+          href="/dashboard/saved"
+          label="Saved"
+          Icon={Bookmark}
+          active={isActive("/dashboard/saved")}
         />
         <Tab
           href="/dashboard"
@@ -95,7 +98,7 @@ export function MobileBottomNav() {
               </button>
             </div>
             <div className="grid grid-cols-2 gap-2">
-              {NAV_LINKS.map((l) => {
+              {navLinks.map((l) => {
                 const Icon = MORE_ICONS[l.href] ?? Compass;
                 return (
                   <Link
