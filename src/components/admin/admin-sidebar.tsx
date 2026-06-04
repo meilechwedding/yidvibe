@@ -13,6 +13,7 @@ import {
   Trophy,
   Calendar,
   Compass,
+  Rocket,
   Lock,
   type LucideIcon,
 } from "lucide-react";
@@ -22,6 +23,7 @@ type NavItem = { href: string; label: string; icon: LucideIcon };
 
 const PRIMARY: NavItem[] = [
   { href: "/admin", label: "Overview", icon: LayoutGrid },
+  { href: "/admin/launch", label: "Launch Control", icon: Rocket },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/content", label: "Content", icon: LayoutPanelLeft },
   { href: "/admin/tags", label: "Tags", icon: Tag },
