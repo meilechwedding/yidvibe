@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getDeviceId } from "@/lib/device-id";
 import type { Tables } from "@/lib/supabase/types";
 
 export type Profile = Tables<"profiles">;
@@ -341,17 +342,39 @@ export async function getComments(projectId: string): Promise<CommentNode[]> {
   return roots;
 }
 
-/** Project ids the current user has upvoted (empty set when signed out). */
+/** Project ids the current visitor has upvoted — by account when signed in, or
+ *  by device token when signed out. `device_id` isn't in the generated types
+ *  yet, so the anon read is cast. */
 export async function getMyUpvotedProjectIds(): Promise<Set<string>> {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return new Set();
-  const { data } = await supabase
+  if (user) {
+    const { data } = await supabase
+      .from("upvotes")
+      .select("project_id")
+      .eq("user_id", user.id);
+    return new Set((data ?? []).map((r) => r.project_id));
+  }
+  const deviceId = await getDeviceId();
+  if (!deviceId) return new Set();
+  const { data } = await (supabase as unknown as {
+    from: (t: string) => {
+      select: (c: string) => {
+        is: (col: string, val: null) => {
+          eq: (
+            col: string,
+            val: string,
+          ) => Promise<{ data: { project_id: string }[] | null }>;
+        };
+      };
+    };
+  })
     .from("upvotes")
     .select("project_id")
-    .eq("user_id", user.id);
+    .is("user_id", null)
+    .eq("device_id", deviceId);
   return new Set((data ?? []).map((r) => r.project_id));
 }
 
