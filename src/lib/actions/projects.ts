@@ -4,15 +4,13 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { hasAnyContact } from "@/lib/site";
-import { goPublic } from "@/lib/visibility";
 import { normalizeTag } from "@/lib/queries";
 
 type SupabaseServer = Awaited<ReturnType<typeof createClient>>;
 
 /** Feed each project tag into the admin-managed `tags` table. Best-effort:
  *  never let a tag-upsert failure break the project save. `tags` isn't in the
- *  generated Supabase types yet (migration not applied), so cast to `any`. */
+ *  generated Supabase types yet, so cast to `any`. */
 async function feedBrowseTags(
   supabase: SupabaseServer,
   tags: string[],
@@ -35,33 +33,6 @@ async function feedBrowseTags(
   ).catch(() => {});
 }
 
-/** Commercial flags from the form — forced off when posting anonymously. */
-function commercialFrom(formData: FormData, anon: boolean) {
-  return {
-    seeking_funding: !anon && formData.get("seeking_funding") != null,
-    for_sale: !anon && formData.get("for_sale") != null,
-    open_to_partners: !anon && formData.get("open_to_partners") != null,
-  };
-}
-
-/** Commercial projects must give interested people a way to reach the builder. */
-async function contactErrorIfCommercial(
-  supabase: SupabaseServer,
-  userId: string,
-  c: ReturnType<typeof commercialFrom>,
-): Promise<string | null> {
-  if (!(c.seeking_funding || c.for_sale || c.open_to_partners)) return null;
-  const { data } = await supabase
-    .from("profiles")
-    .select("links")
-    .eq("id", userId)
-    .maybeSingle();
-  if (!hasAnyContact(data?.links as Record<string, string | undefined> | null)) {
-    return "Add a public contact method to your profile first (Settings → Contact) so people can reach you about a sale or partnership.";
-  }
-  return null;
-}
-
 export type ProjectFormState = {
   error?: string;
   fieldErrors?: Record<string, string>;
@@ -69,19 +40,10 @@ export type ProjectFormState = {
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
-  description: z
-    .string()
-    .trim()
-    .min(1, "Description is required")
-    .max(2000),
+  description: z.string().trim().min(1, "Description is required").max(2000),
   url: z.string().trim().url("Enter a valid URL").optional().or(z.literal("")),
   image_url: z.string().trim().url().optional().or(z.literal("")),
-  video_url: z
-    .string()
-    .trim()
-    .url("Enter a valid URL")
-    .optional()
-    .or(z.literal("")),
+  video_url: z.string().trim().url("Enter a valid URL").optional().or(z.literal("")),
 });
 
 function multi(formData: FormData, key: string): string[] {
@@ -107,6 +69,15 @@ function fieldErrors(parsed: z.SafeParseError<unknown>): ProjectFormState {
   return { error: "Please fix the highlighted fields.", fieldErrors: fe };
 }
 
+/**
+ * Create a project. Phase 1 posting model:
+ *  - Guest (no account)  → community submission (no builder, no contact).
+ *  - Signed-in "I built this" (default) → attached to the poster.
+ *  - Signed-in "I found it" → community submission, but tracked under their
+ *    account (submitted_by) so it shows in their dashboard.
+ * No login required. Goes live instantly (moderation = report + admin hide).
+ * `submitted_by` / `is_community` aren't in the generated types yet → cast.
+ */
 export async function createProject(
   _prev: ProjectFormState,
   formData: FormData,
@@ -115,7 +86,6 @@ export async function createProject(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "Please sign in to submit a project." };
 
   const parsed = parse(formData);
   if (!parsed.success) return fieldErrors(parsed);
@@ -124,31 +94,34 @@ export async function createProject(
     return { error: "Add a cover image or a live link so people can see it." };
   }
 
-  const anon = formData.get("is_anonymous") != null;
-  const commercial = commercialFrom(formData, anon);
-  const contactError = await contactErrorIfCommercial(
-    supabase,
-    user.id,
-    commercial,
-  );
-  if (contactError) return { error: contactError };
-
+  const foundIt = !user || String(formData.get("ownership") ?? "mine") === "found";
   const tags = multi(formData, "tags");
-  const { data, error } = await supabase
+
+  const row = {
+    owner_id: user && !foundIt ? user.id : null,
+    submitted_by: user ? user.id : null,
+    is_community: foundIt,
+    name: v.name,
+    description: v.description,
+    url: v.url || null,
+    image_url: v.image_url || null,
+    video_url: v.video_url || null,
+    images: multi(formData, "images").slice(0, 5),
+    tools: multi(formData, "tools"),
+    tags,
+  };
+
+  const { data, error } = await (supabase as unknown as {
+    from: (t: string) => {
+      insert: (r: Record<string, unknown>) => {
+        select: (c: string) => {
+          single: () => Promise<{ data: { id: string } | null; error: unknown }>;
+        };
+      };
+    };
+  })
     .from("projects")
-    .insert({
-      owner_id: user.id,
-      name: v.name,
-      description: v.description,
-      url: v.url || null,
-      image_url: v.image_url || null,
-      video_url: v.video_url || null,
-      images: multi(formData, "images").slice(0, 5),
-      tools: multi(formData, "tools"),
-      tags,
-      is_anonymous: anon,
-      ...commercial,
-    })
+    .insert(row)
     .select("id")
     .single();
 
@@ -158,13 +131,13 @@ export async function createProject(
 
   await feedBrowseTags(supabase, tags);
 
-  // Posting under your name makes your profile public (anonymous posts don't).
-  if (!anon) await goPublic(supabase, user.id);
-
   revalidatePath("/showcase");
+  revalidatePath("/");
   redirect(`/showcase/${data.id}?posted=1`);
 }
 
+/** Edit a project you own. Community submissions (no owner) aren't editable
+ *  here — the maker claims them first (admin-approved). */
 export async function updateProject(
   projectId: string,
   _prev: ProjectFormState,
@@ -183,15 +156,6 @@ export async function updateProject(
     return { error: "Add a cover image or a live link so people can see it." };
   }
 
-  const anon = formData.get("is_anonymous") != null;
-  const commercial = commercialFrom(formData, anon);
-  const contactError = await contactErrorIfCommercial(
-    supabase,
-    user.id,
-    commercial,
-  );
-  if (contactError) return { error: contactError };
-
   const tags = multi(formData, "tags");
   const { error } = await supabase
     .from("projects")
@@ -204,8 +168,6 @@ export async function updateProject(
       images: multi(formData, "images").slice(0, 5),
       tools: multi(formData, "tools"),
       tags,
-      is_anonymous: anon,
-      ...commercial,
     })
     .eq("id", projectId)
     .eq("owner_id", user.id);
@@ -214,13 +176,12 @@ export async function updateProject(
 
   await feedBrowseTags(supabase, tags);
 
-  if (!anon) await goPublic(supabase, user.id);
-
   revalidatePath(`/showcase/${projectId}`);
   revalidatePath("/showcase");
   redirect(`/showcase/${projectId}`);
 }
 
+/** Delete a project you own or submitted. */
 export async function deleteProject(projectId: string) {
   const supabase = await createClient();
   const {
@@ -228,11 +189,17 @@ export async function deleteProject(projectId: string) {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  await supabase
+  await (supabase as unknown as {
+    from: (t: string) => {
+      delete: () => {
+        eq: (c: string, v: string) => { or: (f: string) => Promise<unknown> };
+      };
+    };
+  })
     .from("projects")
     .delete()
     .eq("id", projectId)
-    .eq("owner_id", user.id);
+    .or(`owner_id.eq.${user.id},submitted_by.eq.${user.id}`);
 
   revalidatePath("/showcase");
   redirect("/showcase");

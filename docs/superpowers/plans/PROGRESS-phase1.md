@@ -10,7 +10,7 @@ Rules in force: work on the branch only · **no `git push`** (repo push-blocked)
 | 1 · Site config (nav/tags/tools) | ✅ done | typecheck clean, committed |
 | 2 · Launch Control flags | ✅ done | migration + helper + admin UI; typecheck clean, committed |
 | 3 · Flag-gate nav + routes | ✅ done | 6 route-group guards + flag-aware nav; typecheck clean, committed |
-| 4 · Posting model | ⏳ migration written | owner_id nullable + submitted_by + is_community + comments.parent_id SQL done (file); actions/form code next |
+| 4 · Posting model | ✅ done | createProject guest/community/ownership logic, submit page un-gated, form reworked (ownership toggle + guest note, commercial/anon removed); typecheck clean, committed |
 | 5 · Showcase board | pending | |
 | 6 · Project page | pending | |
 | 7 · Threaded comments | pending | parent_id migration done (in posting_model file) |

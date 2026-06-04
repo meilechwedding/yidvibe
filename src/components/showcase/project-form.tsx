@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { Plus, Wand2, Loader2 } from "lucide-react";
+import { Plus, Wand2, Loader2, UserCheck, Globe, Info } from "lucide-react";
 import { toast } from "sonner";
 import { ImageInput } from "@/components/brand/image-input";
 import { GalleryInput } from "@/components/brand/gallery-input";
@@ -139,7 +139,8 @@ function ChipField({
 export function ProjectForm({
   action,
   project,
-  submitLabel = "Submit project",
+  submitLabel = "Post project",
+  isLoggedIn = false,
 }: {
   action: (
     state: ProjectFormState,
@@ -147,6 +148,7 @@ export function ProjectForm({
   ) => Promise<ProjectFormState>;
   project?: Project;
   submitLabel?: string;
+  isLoggedIn?: boolean;
 }) {
   const [state, formAction, pending] = useActionState<
     ProjectFormState,
@@ -163,6 +165,10 @@ export function ProjectForm({
 
   const [tools, setTools] = useState<string[]>(project?.tools ?? []);
   const [tags, setTags] = useState<string[]>(project?.tags ?? []);
+
+  // "Whose project is this?" — only on a new post by a signed-in user.
+  const showOwnership = isLoggedIn && !project;
+  const [ownership, setOwnership] = useState<"mine" | "found">("mine");
 
   const [dirty, setDirty] = useState(false);
   useUnsavedChanges(dirty);
@@ -207,6 +213,19 @@ export function ProjectForm({
       {state.error && (
         <div className="rounded-lg bg-clay-tint px-3 py-2 text-sm text-clay-deep">
           {state.error}
+        </div>
+      )}
+
+      {!isLoggedIn && (
+        <div className="flex items-start gap-2.5 rounded-card border border-gold-deep/20 bg-gold-tint px-4 py-3 text-sm text-gold-deep">
+          <Info size={17} className="mt-0.5 shrink-0" />
+          <span>
+            Posting as a <strong>community submission</strong>.{" "}
+            <a href="/login?next=/showcase/submit" className="font-semibold underline">
+              Sign in
+            </a>{" "}
+            if you built this and want it on your profile.
+          </span>
         </div>
       )}
 
@@ -351,70 +370,69 @@ export function ProjectForm({
           />
         </Field>
 
-        <Field label="Tags" hint="what it's about">
+        <Field label="Category" hint="what it's about">
           <ChipField
             name="tags"
             suggestions={KNOWN_TAGS}
             values={tags}
             setValues={setTags}
             activeClass="border-teal-400 bg-teal-50 text-teal-800"
-            placeholder="Add another tag"
+            placeholder="Add another category"
           />
         </Field>
       </FormSection>
 
-      <FormSection
-        step={4}
-        title="Looking for…"
-        description="Optional — shows badges. Needs a public contact method on your profile."
-      >
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {(
-            [
-              ["for_sale", "A buyer (for sale)", project?.for_sale],
-              ["open_to_partners", "Partners / co-founders", project?.open_to_partners],
-            ] as const
-          ).map(([key, label, on]) => (
-            <label
-              key={key}
-              className="flex cursor-pointer items-center gap-2 rounded-[10px] border border-border bg-surface px-3 py-2 text-sm text-ink"
+      {showOwnership && (
+        <FormSection
+          step={4}
+          title="Whose project is this?"
+          description="Tells people whether to credit you — switch off if you're just sharing something you found."
+        >
+          <input type="hidden" name="ownership" value={ownership} />
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <button
+              type="button"
+              onClick={() => setOwnership("mine")}
+              className={cn(
+                "flex items-start gap-3 rounded-[12px] border px-4 py-3 text-left transition-colors",
+                ownership === "mine"
+                  ? "border-teal-600 bg-teal-50"
+                  : "border-border bg-surface hover:border-border-hover",
+              )}
             >
-              <input
-                type="checkbox"
-                name={key}
-                defaultChecked={on ?? false}
-                className="h-4 w-4 rounded border-border accent-teal-600"
-              />
-              {label}
-            </label>
-          ))}
-        </div>
-      </FormSection>
-
-      <FormSection
-        step={5}
-        title="Visibility"
-        description="Choose whether your name shows on this project."
-      >
-        <label className="flex cursor-pointer items-center justify-between rounded-card border border-border bg-secondary/40 px-4 py-3">
-          <span>
-            <span className="block text-sm font-medium text-ink">
-              Post anonymously
-            </span>
-            <span className="block text-xs text-muted-foreground">
-              Hide your name publicly — shown as &ldquo;Anonymous.&rdquo; Only you
-              and admins know it&apos;s yours.
-            </span>
-          </span>
-          <input
-            type="checkbox"
-            name="is_anonymous"
-            defaultChecked={project?.is_anonymous ?? false}
-            className="peer sr-only"
-          />
-          <span className="relative h-6 w-11 shrink-0 rounded-full bg-border transition-colors peer-checked:bg-teal-600 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-transform peer-checked:after:translate-x-5" />
-        </label>
-      </FormSection>
+              <UserCheck size={18} className="mt-0.5 shrink-0 text-teal-700" />
+              <span>
+                <span className="block text-sm font-semibold text-ink">
+                  I built this
+                </span>
+                <span className="block text-xs text-muted-foreground">
+                  Shows &ldquo;by you&rdquo; and adds it to your profile.
+                </span>
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setOwnership("found")}
+              className={cn(
+                "flex items-start gap-3 rounded-[12px] border px-4 py-3 text-left transition-colors",
+                ownership === "found"
+                  ? "border-teal-600 bg-teal-50"
+                  : "border-border bg-surface hover:border-border-hover",
+              )}
+            >
+              <Globe size={18} className="mt-0.5 shrink-0 text-teal-700" />
+              <span>
+                <span className="block text-sm font-semibold text-ink">
+                  I found it on the web
+                </span>
+                <span className="block text-xs text-muted-foreground">
+                  Posts as a community submission — no builder shown.
+                </span>
+              </span>
+            </button>
+          </div>
+        </FormSection>
+      )}
 
       <div className="flex items-center gap-3 pt-1">
         <CancelButton
@@ -429,6 +447,9 @@ export function ProjectForm({
           {pending ? "Saving…" : submitLabel}
         </button>
       </div>
+      <p className="text-center text-xs text-muted-foreground">
+        Goes live right away. Please only post things the community will enjoy.
+      </p>
     </form>
   );
 }
