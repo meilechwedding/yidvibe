@@ -1,70 +1,75 @@
 export const SITE_NAME = "YidVibe";
-export const SITE_TAGLINE = "the home for our community's builders";
+export const SITE_TAGLINE = "the home for frum builders";
+export const SITE_DESCRIPTION =
+  "Where frum builders show what they're making with AI.";
 
 /** Warm accent shelf — one accent per section (see BRAND.md). */
 export type Accent = "teal" | "blue" | "orange" | "clay" | "sage" | "gold";
 
-/** Primary nav (redesign order). UI chrome stays English/LTR. */
+/**
+ * Full nav set across the whole platform. Phase 1 hides most of these behind
+ * admin Launch Control flags; this list is the source for deriving which
+ * flag-gated extras to surface (see `src/lib/flags.ts`).
+ */
+export const NAV_LINKS_ALL: { href: string; label: string; flag?: string }[] = [
+  { href: "/showcase", label: "Showcase" },
+  { href: "/builders", label: "Builders", flag: "module.people" },
+  { href: "/directory", label: "Directory", flag: "module.directory" },
+  { href: "/gigs", label: "Gigs", flag: "module.gigs" },
+  { href: "/competitions", label: "Competitions", flag: "module.competitions" },
+  { href: "/events", label: "Events", flag: "module.events" },
+  { href: "/docs", label: "How it works" },
+];
+
+/**
+ * Phase 1 focused nav (always on). Flag-gated extras from NAV_LINKS_ALL are
+ * appended at render time by the server nav shell.
+ */
 export const NAV_LINKS: { href: string; label: string }[] = [
   { href: "/showcase", label: "Showcase" },
-  { href: "/builders", label: "Builders" },
-  { href: "/directory", label: "Directory" },
-  { href: "/gigs", label: "Gigs" },
-  { href: "/competitions", label: "Competitions" },
-  { href: "/events", label: "Events" },
+  { href: "/docs", label: "How it works" },
 ];
 
 export const FOOTER_LINKS: { href: string; label: string }[] = [
   { href: "/showcase", label: "Showcase" },
-  { href: "/builders", label: "Builders" },
-  { href: "/directory", label: "Directory" },
-  { href: "/gigs", label: "Gigs" },
-  { href: "/competitions", label: "Competitions" },
-  { href: "/events", label: "Events" },
+  { href: "/showcase/submit", label: "Submit a project" },
   { href: "/docs", label: "How it works" },
 ];
 
-/** Curated AI tools offered as quick-pick chips on the profile form. */
+/** Final Phase 1 tool set (suggestions + custom allowed). Order is intentional. */
 export const KNOWN_TOOLS = [
-  "Claude",
-  "Cursor",
   "Lovable",
-  "Replit",
-  "v0",
+  "base44",
   "Bolt",
-  "Base44",
-  "ChatGPT",
+  "v0",
+  "Replit",
+  "Cursor",
+  "Claude Code",
+  "Codex",
   "Windsurf",
-  "GitHub Copilot",
-  "Gemini",
+  "Other",
 ];
 
 /**
- * Curated "what it's about" topic tags — suggestions only; users can add their own.
- * These render in the teal TagPill family, distinct from the blue tool pills.
+ * Final Phase 1 category set ("what it's about"). Suggestions + custom allowed.
+ * Render in the teal pill family, distinct from the blue tool pills.
  */
 export const KNOWN_TAGS = [
+  "Torah",
   "Community",
+  "Business",
+  "Productivity",
   "Education",
   "Finance",
-  "Productivity",
-  "Developer Tools",
-  "AI",
-  "Automation",
-  "SaaS",
-  "Marketplace",
-  "Directory",
-  "Finder",
-  "Safety",
-  "Civic Tech",
-  "Map",
   "Health",
-  "Events",
   "Design",
-  "Social",
-  "Content",
-  "Games",
+  "Developer Tools",
+  "Automation",
+  "AI",
 ];
+
+/** Phase 1 calls these "categories" — alias for clarity at call sites. */
+export const KNOWN_CATEGORIES = KNOWN_TAGS;
 
 /** Categories offered in the Directory (filter chips + the apply form). */
 export const DIRECTORY_CATEGORIES = [
