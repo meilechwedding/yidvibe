@@ -18,7 +18,7 @@ Rules in force: work on the branch only · **no `git push`** (repo push-blocked)
 | 8 · Anonymous upvotes | ✅ done | device-id cookie helper; toggleUpvote anon branch; getMyUpvotedProjectIds device-aware; upvote button sign-in gate removed; typecheck clean, committed |
 | 9 · Claim flow | pending | claim_requests migration written (file) |
 | 10 · Profile page | ✅ done | opt-in (404 if private); banner+avatar+@handle+bio+contact buttons+"Builds with" tools+their projects as row cards; removed follows/messaging/directory/hiring pills; typecheck clean, committed |
-| 11 · Landing | pending | |
+| 11 · Landing | ✅ done | C-refined: new hero copy + search + tool strip; Featured spotlight (row card); Just shipped; Post-your-project band; Who-it's-for 3-up; Ready-to-vibe; removed Top Creators; stats only behind feature.homepage_stats; typecheck clean, committed |
 | 12 · How it works + copy | pending | |
 | 13 · Cleanup | pending | |
 | 14 · Verification + handoff | pending | |
