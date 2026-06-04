@@ -21,7 +21,9 @@ Rules in force: work on the branch only · **no `git push`** (repo push-blocked)
 | 11 · Landing | ✅ done | C-refined: new hero copy + search + tool strip; Featured spotlight (row card); Just shipped; Post-your-project band; Who-it's-for 3-up; Ready-to-vibe; removed Top Creators; stats only behind feature.homepage_stats; typecheck clean, committed |
 | 12 · How it works + copy | ✅ done | docs page rewritten as short Phase 1 explainer (post/upvote/comment/claim/profile/contact/report); layout meta uses SITE_DESCRIPTION; typecheck clean, committed |
 | 13 · Cleanup | ✅ done | project-card.tsx stripped of commercial badges + anonymous handling + available pill (now by/community); landing stats already gated; typecheck clean, committed |
-| 14 · Verification + handoff | pending | |
+| 14 · Verification + handoff | ✅ done | `npm run build` PASSES (full app compiles, all routes); HANDOFF-phase1.md written; loop complete |
+
+**ALL PHASES COMPLETE.** `npm run typecheck` ✅ and `npm run build` ✅. Branch `feat/phase1-rebuild`, ~14 commits, not pushed. Next steps for the human: see HANDOFF-phase1.md (apply migrations on a dev branch → prod, Google OAuth, push, flip Launch Control flags).
 
 ### Migration files written (NOT applied — staged for dev-branch test → prod review)
 - `20260603100000_phase1_posting_model.sql` — owner_id nullable, submitted_by, is_community, comments.parent_id, anon/auth insert RLS
