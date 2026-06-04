@@ -5,7 +5,7 @@ import { SiteNav } from "@/components/site/site-nav";
 import { SiteFooter } from "@/components/site/site-footer";
 import { ContextBar } from "@/components/site/context-bar";
 import { FeedbackWidget } from "@/components/site/feedback-widget";
-import { SITE_NAME, SITE_TAGLINE } from "@/lib/site";
+import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
 import "./globals.css";
 
 // Brand type: Comfortaa (rounded display) + Nunito Sans (body). JetBrains for tool chips.
@@ -27,7 +27,7 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: { default: SITE_NAME, template: `%s · ${SITE_NAME}` },
-  description: SITE_TAGLINE,
+  description: SITE_DESCRIPTION,
 };
 
 export const viewport: Viewport = {
