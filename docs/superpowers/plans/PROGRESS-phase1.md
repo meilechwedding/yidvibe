@@ -20,7 +20,7 @@ Rules in force: work on the branch only · **no `git push`** (repo push-blocked)
 | 10 · Profile page | ✅ done | opt-in (404 if private); banner+avatar+@handle+bio+contact buttons+"Builds with" tools+their projects as row cards; removed follows/messaging/directory/hiring pills; typecheck clean, committed |
 | 11 · Landing | ✅ done | C-refined: new hero copy + search + tool strip; Featured spotlight (row card); Just shipped; Post-your-project band; Who-it's-for 3-up; Ready-to-vibe; removed Top Creators; stats only behind feature.homepage_stats; typecheck clean, committed |
 | 12 · How it works + copy | ✅ done | docs page rewritten as short Phase 1 explainer (post/upvote/comment/claim/profile/contact/report); layout meta uses SITE_DESCRIPTION; typecheck clean, committed |
-| 13 · Cleanup | pending | |
+| 13 · Cleanup | ✅ done | project-card.tsx stripped of commercial badges + anonymous handling + available pill (now by/community); landing stats already gated; typecheck clean, committed |
 | 14 · Verification + handoff | pending | |
 
 ### Migration files written (NOT applied — staged for dev-branch test → prod review)
