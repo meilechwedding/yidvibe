@@ -14,6 +14,7 @@ import {
   Calendar,
   Compass,
   Rocket,
+  Hand,
   Lock,
   type LucideIcon,
 } from "lucide-react";
@@ -31,6 +32,7 @@ const PRIMARY: NavItem[] = [
 
 const MODERATION: NavItem[] = [
   { href: "/admin/reports", label: "Reports", icon: Flag },
+  { href: "/admin/claims", label: "Claims", icon: Hand },
   { href: "/admin/feedback", label: "Feedback", icon: MessageSquare },
   { href: "/admin/competitions", label: "Competition review", icon: Trophy },
   { href: "/admin/events", label: "Event requests", icon: Calendar },

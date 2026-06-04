@@ -281,6 +281,72 @@ export function builderProjectCount(b: BuilderListItem): number {
   return b.project_count?.[0]?.count ?? 0;
 }
 
+export type AdminClaim = {
+  id: string;
+  project_id: string;
+  claimant_id: string;
+  created_at: string;
+  note: string | null;
+  project: { name: string } | null;
+  claimant: { handle: string; name: string } | null;
+};
+
+/** Admin-only: pending "claim this project" requests, enriched with the project
+ *  name + claimant. `claim_requests` isn't in the generated types yet, so it's
+ *  read with a cast; projects/profiles are looked up separately and merged. */
+export async function adminListClaims(): Promise<AdminClaim[]> {
+  const supabase = await createClient();
+  const { data: claims } = await (supabase as unknown as {
+    from: (t: string) => {
+      select: (c: string) => {
+        eq: (
+          col: string,
+          val: string,
+        ) => {
+          order: (
+            col: string,
+            o: { ascending: boolean },
+          ) => Promise<{
+            data:
+              | {
+                  id: string;
+                  project_id: string;
+                  claimant_id: string;
+                  created_at: string;
+                  note: string | null;
+                }[]
+              | null;
+          }>;
+        };
+      };
+    };
+  })
+    .from("claim_requests")
+    .select("id, project_id, claimant_id, created_at, note")
+    .eq("status", "pending")
+    .order("created_at", { ascending: true });
+
+  const rows = claims ?? [];
+  if (rows.length === 0) return [];
+
+  const projectIds = [...new Set(rows.map((r) => r.project_id))];
+  const claimantIds = [...new Set(rows.map((r) => r.claimant_id))];
+  const [projects, profiles] = await Promise.all([
+    supabase.from("projects").select("id, name").in("id", projectIds),
+    supabase.from("profiles").select("id, handle, name").in("id", claimantIds),
+  ]);
+  const pmap = new Map((projects.data ?? []).map((p) => [p.id, p.name]));
+  const umap = new Map(
+    (profiles.data ?? []).map((u) => [u.id, { handle: u.handle, name: u.name }]),
+  );
+
+  return rows.map((r) => ({
+    ...r,
+    project: pmap.has(r.project_id) ? { name: pmap.get(r.project_id)! } : null,
+    claimant: umap.get(r.claimant_id) ?? null,
+  }));
+}
+
 /** Headline counts for the landing page. */
 export async function getLandingStats(): Promise<{
   builders: number;
