@@ -14,7 +14,7 @@ Rules in force: work on the branch only · **no `git push`** (repo push-blocked)
 | 5 · Showcase board | ✅ done | single-column "mix" row-cards, featured-first ordering, by/community label, new copy; typecheck clean, committed |
 | 6 · Project page | ✅ done | refactored to new model: removed commercial/anonymous/private-reply; "Reach out" = profile contact links; Claim button for community submissions; details/comments kept. ⚠️ immersive cover-hero + mobile sticky action bar deferred as visual polish (current header is the existing clean two-column). typecheck clean, committed |
 | 9 · Claim flow (action) | ⏳ partial | claims.ts (requestClaim + reviewClaim) + ClaimButton built in Phase 6; admin /admin/claims queue page still pending |
-| 7 · Threaded comments | pending | parent_id migration done (in posting_model file) |
+| 7 · Threaded comments | ✅ done | getComments builds 1-level tree; new CommentThread client w/ Reply affordance; removed anon-comment + goPublic; typecheck clean, committed |
 | 8 · Anonymous upvotes | pending | migration written (file) |
 | 9 · Claim flow | pending | claim_requests migration written (file) |
 | 10 · Profile page | pending | |

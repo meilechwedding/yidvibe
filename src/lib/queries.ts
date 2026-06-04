@@ -309,10 +309,12 @@ export type CommentAuthor = Pick<
 export type CommentWithAuthor = Tables<"comments"> & {
   author: CommentAuthor | null;
 };
+/** A top-level comment with its (one level of) replies. */
+export type CommentNode = CommentWithAuthor & { replies: CommentNode[] };
 
-export async function getComments(
-  projectId: string,
-): Promise<CommentWithAuthor[]> {
+/** Comments for a project, assembled into a one-level reply tree (oldest first).
+ *  `parent_id` isn't in the generated types yet, so it's read with a cast. */
+export async function getComments(projectId: string): Promise<CommentNode[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("comments")
@@ -322,7 +324,21 @@ export async function getComments(
     .eq("project_id", projectId)
     .eq("hidden", false)
     .order("created_at", { ascending: true });
-  return (data as CommentWithAuthor[] | null) ?? [];
+
+  const rows = (data as CommentWithAuthor[] | null) ?? [];
+  const map = new Map<string, CommentNode>();
+  rows.forEach((r) =>
+    map.set(r.id, Object.assign(r, { replies: [] as CommentNode[] }) as CommentNode),
+  );
+  const roots: CommentNode[] = [];
+  for (const r of rows) {
+    const node = map.get(r.id)!;
+    const parentId = (r as { parent_id?: string | null }).parent_id ?? null;
+    const parent = parentId ? map.get(parentId) : undefined;
+    if (parent) parent.replies.push(node);
+    else roots.push(node);
+  }
+  return roots;
 }
 
 /** Project ids the current user has upvoted (empty set when signed out). */
