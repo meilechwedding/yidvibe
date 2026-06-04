@@ -10,14 +10,15 @@ import {
 import { getAuthUser } from "@/lib/current-user";
 import { Container } from "@/components/brand/layout";
 import { PageHeader } from "@/components/brand/page-header";
-import { ProjectCard } from "@/components/brand/project-card";
+import { ProjectRowCard } from "@/components/showcase/project-row-card";
 import { EmptyState } from "@/components/brand/empty-state";
 import { FilterBar } from "@/components/brand/filter-bar";
 import { Pagination } from "@/components/brand/pagination";
 
 export const metadata = {
   title: "Showcase",
-  description: "Discover what the community is building.",
+  description:
+    "Every app, tool, and MVP frum builders are shipping with AI. Browse it, upvote it, reach the maker.",
 };
 
 const PER_PAGE = 24;
@@ -56,9 +57,6 @@ export default async function ShowcasePage({
   ]);
   const isAuthed = !!user;
   const totalPages = Math.ceil(total / PER_PAGE);
-  // The most-upvoted project is the first item of the default "top" listing.
-  const topId =
-    sort === "top" && !filtering && page === 1 ? projects[0]?.id : undefined;
 
   return (
     <Container className="py-10 md:py-14">
@@ -66,10 +64,10 @@ export default async function ShowcasePage({
         accent="teal"
         eyebrow="Explore"
         title="Showcase"
-        subtitle="Discover what the community is building."
+        subtitle="Every app, tool, and MVP frum builders are shipping with AI. Browse it, upvote it, reach the maker."
         action={
           <Link href="/showcase/submit" className="btn btn-primary shrink-0">
-            <Plus size={17} /> Submit a project
+            <Plus size={17} /> Post your project
           </Link>
         }
       />
@@ -77,17 +75,17 @@ export default async function ShowcasePage({
       <FilterBar
         basePath="/showcase"
         searchValue={q}
-        placeholder="Search projects, tools, tags…"
+        placeholder="Search projects or tools…"
         selects={[
           { name: "tool", allLabel: "All tools", value: tool, options: facets.tools },
-          { name: "tag", allLabel: "All tags", value: tag, options: facets.tags },
+          { name: "tag", allLabel: "All categories", value: tag, options: facets.tags },
         ]}
         sort={{
           name: "sort",
           value: sort,
           options: [
+            { value: "new", label: "Latest" },
             { value: "top", label: "Top" },
-            { value: "new", label: "New" },
           ],
         }}
       />
@@ -100,25 +98,21 @@ export default async function ShowcasePage({
           description={
             filtering
               ? "Try a broader search or clear your filters."
-              : "Be the first to show what you built."
+              : "Be the first to post."
           }
           actionHref={filtering ? "/showcase" : "/showcase/submit"}
-          actionLabel={filtering ? "Clear filters" : "Submit a project"}
+          actionLabel={filtering ? "Clear filters" : "Post your project"}
         />
       ) : (
         <>
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.map((p, i) => (
-              <ProjectCard
+          <div className="mt-8 flex flex-col gap-3">
+            {projects.map((p) => (
+              <ProjectRowCard
                 key={p.id}
                 project={p}
                 isAuthed={isAuthed}
                 upvoted={upvoted.has(p.id)}
                 saved={saved.has(p.id)}
-                topRank={p.id === topId}
-                highlight={
-                  sort === "top" && !filtering && page === 1 && i === 0
-                }
               />
             ))}
           </div>

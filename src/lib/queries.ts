@@ -118,6 +118,8 @@ export async function listProjects(
   if (opts.tag) query = query.contains("tags", [opts.tag]);
   if (opts.tool) query = query.contains("tools", [opts.tool]);
 
+  // Featured (admin editorial picks) always surface first, then the chosen sort.
+  query = query.order("featured", { ascending: false });
   if (opts.sort === "new") {
     query = query.order("created_at", { ascending: false });
   } else {

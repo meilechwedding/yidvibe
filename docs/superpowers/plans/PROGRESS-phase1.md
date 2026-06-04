@@ -11,7 +11,7 @@ Rules in force: work on the branch only · **no `git push`** (repo push-blocked)
 | 2 · Launch Control flags | ✅ done | migration + helper + admin UI; typecheck clean, committed |
 | 3 · Flag-gate nav + routes | ✅ done | 6 route-group guards + flag-aware nav; typecheck clean, committed |
 | 4 · Posting model | ✅ done | createProject guest/community/ownership logic, submit page un-gated, form reworked (ownership toggle + guest note, commercial/anon removed); typecheck clean, committed |
-| 5 · Showcase board | pending | |
+| 5 · Showcase board | ✅ done | single-column "mix" row-cards, featured-first ordering, by/community label, new copy; typecheck clean, committed |
 | 6 · Project page | pending | |
 | 7 · Threaded comments | pending | parent_id migration done (in posting_model file) |
 | 8 · Anonymous upvotes | pending | migration written (file) |
