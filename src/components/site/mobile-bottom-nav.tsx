@@ -35,8 +35,10 @@ const MORE_ICONS: Record<string, typeof LayoutGrid> = {
  */
 export function MobileBottomNav({
   navLinks,
+  enabledFlags = {},
 }: {
   navLinks: { href: string; label: string }[];
+  enabledFlags?: Record<string, boolean>;
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -61,7 +63,7 @@ export function MobileBottomNav({
           <span className="text-[11px] font-medium">Explore</span>
         </button>
 
-        <PostMenu variant="fab" />
+        <PostMenu variant="fab" enabledFlags={enabledFlags} />
 
         <Tab
           href="/dashboard/saved"

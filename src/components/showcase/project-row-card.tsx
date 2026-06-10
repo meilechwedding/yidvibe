@@ -50,8 +50,8 @@ export function ProjectRowCard({
     >
       <Link
         href={href}
-        className="relative hidden shrink-0 overflow-hidden rounded-xl sm:block"
-        style={{ width: 132, height: 92, background: cover }}
+        className="relative block h-[72px] w-24 shrink-0 overflow-hidden rounded-xl sm:h-[92px] sm:w-[132px]"
+        style={{ background: cover }}
         aria-hidden
       >
         {project.image_url ? (

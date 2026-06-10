@@ -143,6 +143,19 @@ export function contactHref(key: ContactKey, value: string): string {
   }
 }
 
+/**
+ * Live screenshot of a site, for covers/previews when a project has a URL but no
+ * uploaded image. Keyless (WordPress mShots) — the first hit may serve a
+ * placeholder while it renders, then caches the real shot. Swap this one line to
+ * change providers (e.g. thum.io, microlink, urlbox).
+ */
+export function siteScreenshotUrl(
+  url: string,
+  { w = 1200, h = 900 }: { w?: number; h?: number } = {},
+): string {
+  return `https://s.wordpress.com/mshots/v1/${encodeURIComponent(url)}?w=${w}&h=${h}`;
+}
+
 /** Deep accent gradient (header icons, covers). Mirrors DetailHero's HERO map. */
 export const ACCENT_HERO: Record<Accent, string> = {
   teal: "linear-gradient(135deg, var(--teal-400) 0%, var(--teal-800) 100%)",

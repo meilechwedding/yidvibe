@@ -30,6 +30,15 @@ export async function SiteNav() {
     }
   }
 
+  // Flag state for the "Post" entry points (post menu + user menu). These links
+  // target flag-gated sections, so hide them until the module is launched —
+  // otherwise they'd land on a 404. Reads are request-cached, so this is cheap.
+  const postFlags: Record<string, boolean> = {
+    "module.gigs": await isFeatureEnabled("module.gigs"),
+    "module.competitions": await isFeatureEnabled("module.competitions"),
+  };
+  const showGig = postFlags["module.gigs"];
+
   let bellItems: BellItem[] = [];
   let unread = 0;
   if (profile) {
@@ -61,6 +70,7 @@ export async function SiteNav() {
         unread={unread}
         isAdmin={!!admin}
         navLinks={navLinks}
+        showGig={showGig}
       />
       <NavShell className="lg:hidden">
         <Container className="flex h-16 items-center gap-4">
@@ -71,7 +81,7 @@ export async function SiteNav() {
           <div className="ml-auto flex items-center gap-1.5 sm:gap-2 lg:gap-3">
             {profile && <NotificationBell items={bellItems} unread={unread} />}
             <div className="hidden lg:block">
-              <PostMenu />
+              <PostMenu enabledFlags={postFlags} />
             </div>
             {profile ? (
               <UserMenu
@@ -81,6 +91,7 @@ export async function SiteNav() {
                   avatar_url: profile.avatar_url,
                 }}
                 isAdmin={!!admin}
+                showGig={showGig}
               />
             ) : (
               <Link href="/login" className="btn btn-ghost btn-sm">
@@ -91,7 +102,7 @@ export async function SiteNav() {
         </Container>
       </NavShell>
 
-      <MobileBottomNav navLinks={navLinks} />
+      <MobileBottomNav navLinks={navLinks} enabledFlags={postFlags} />
     </>
   );
 }

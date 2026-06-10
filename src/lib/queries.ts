@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { getDeviceId } from "@/lib/device-id";
+import { decodeHtmlEntities } from "@/lib/html";
 import type { Tables } from "@/lib/supabase/types";
 
 export type Profile = Tables<"profiles">;
@@ -17,6 +18,19 @@ export type BuilderListItem = Profile & {
 
 const PROJECT_WITH_OWNER =
   "*, owner:profiles!projects_owner_id_fkey(handle,name,avatar_url,available_for_hire,show_real_name)";
+
+/**
+ * Normalize a project row for display: decode any HTML entities left in the
+ * stored name/description (e.g. legacy autofill that saved `&#x27;` literally).
+ * Idempotent on clean text, so safe to run on every read.
+ */
+function decodeProject<T extends { name: string; description: string }>(p: T): T {
+  return {
+    ...p,
+    name: decodeHtmlEntities(p.name),
+    description: decodeHtmlEntities(p.description),
+  };
+}
 
 /** PostgREST `.or()` uses commas/parens as syntax; strip them from user input. */
 function sanitize(term: string): string {
@@ -79,7 +93,7 @@ export async function getProjectsByOwner(ownerId: string): Promise<Project[]> {
     .eq("hidden", false)
     .order("upvote_count", { ascending: false })
     .order("created_at", { ascending: false });
-  return data ?? [];
+  return (data ?? []).map(decodeProject);
 }
 
 export async function getProjectById(
@@ -92,7 +106,8 @@ export async function getProjectById(
     .eq("id", id)
     .eq("hidden", false)
     .maybeSingle();
-  return (data as ProjectWithOwner | null) ?? null;
+  const project = (data as ProjectWithOwner | null) ?? null;
+  return project ? decodeProject(project) : null;
 }
 
 export async function listProjects(
@@ -136,7 +151,7 @@ export async function listProjects(
   }
 
   const { data } = await query;
-  return (data as ProjectWithOwner[] | null) ?? [];
+  return ((data as ProjectWithOwner[] | null) ?? []).map(decodeProject);
 }
 
 /** Total projects matching the given filters (for pagination). */
@@ -478,7 +493,7 @@ export async function listSavedProjects(): Promise<ProjectWithOwner[]> {
     .select(PROJECT_WITH_OWNER)
     .in("id", ids)
     .eq("hidden", false);
-  const rows = (data as ProjectWithOwner[] | null) ?? [];
+  const rows = ((data as ProjectWithOwner[] | null) ?? []).map(decodeProject);
   const order = new Map(ids.map((id, i) => [id, i]));
   return rows.sort((a, b) => (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0));
 }

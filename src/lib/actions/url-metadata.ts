@@ -1,9 +1,16 @@
 "use server";
 
+import { decodeHtmlEntities } from "@/lib/html";
+import { siteScreenshotUrl } from "@/lib/site";
+
 /**
  * Fetch a project's live URL server-side and pull Open Graph / meta tags so the
  * submit form can auto-fill name, description, and cover image from a pasted link.
  * Runs on the server to dodge CORS; basic SSRF guards block private hosts.
+ *
+ * When the page exposes no share image, we fall back to a live screenshot of the
+ * site so the cover still shows "how the site looks" — many builder/SPA sites
+ * ship without an og:image.
  */
 
 export type UrlMeta = {
@@ -82,11 +89,13 @@ export async function fetchUrlMetadata(raw: string): Promise<UrlMeta> {
     let image = metaTag("og:image") ?? metaTag("twitter:image") ?? undefined;
     if (image) {
       try {
-        image = new URL(image, target).toString();
+        image = decodeHtmlEntities(new URL(image, target).toString());
       } catch {
         image = undefined;
       }
     }
+    // No share image on the page → capture how the live site actually looks.
+    if (!image) image = siteScreenshotUrl(target.toString());
 
     return { url: target.toString(), title, description, image };
   } catch {
@@ -109,15 +118,7 @@ function titleTag(html: string): string | undefined {
 
 function clean(s: string | undefined, max: number): string | undefined {
   if (!s) return undefined;
-  const t = s
-    .replace(/&amp;/g, "&")
-    .replace(/&quot;/g, '"')
-    .replace(/&#0?39;/g, "'")
-    .replace(/&apos;/g, "'")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/\s+/g, " ")
-    .trim();
+  const t = decodeHtmlEntities(s).replace(/\s+/g, " ").trim();
   if (!t) return undefined;
   return t.length > max ? t.slice(0, max) : t;
 }

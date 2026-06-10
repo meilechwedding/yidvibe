@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { type Accent } from "@/lib/site";
+import { siteScreenshotUrl, type Accent } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /** Deep accent gradients for the no-image fallback (matches DetailHero). */
@@ -35,6 +35,23 @@ export function MediaGallery({
 }) {
   const all = [coverImage, ...images].filter(Boolean) as string[];
   const [active, setActive] = useState(0);
+
+  // No uploaded screenshots, but the project has a live URL → show a live
+  // screenshot of the site so the viewer still sees "how it looks".
+  if (all.length === 0 && liveUrl) {
+    return (
+      <div className="rounded-2xl border border-border bg-secondary/60 p-2 shadow-[0_10px_30px_-14px_rgba(16,32,43,0.28)]">
+        <div className="overflow-hidden rounded-[10px] border border-teal-600/60 bg-white">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={siteScreenshotUrl(liveUrl)}
+            alt={`${name} — live site preview`}
+            className="max-h-[460px] w-full bg-white object-contain"
+          />
+        </div>
+      </div>
+    );
+  }
 
   if (all.length === 0) {
     return (

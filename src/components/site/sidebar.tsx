@@ -40,12 +40,14 @@ export function Sidebar({
   unread,
   isAdmin = false,
   navLinks,
+  showGig = false,
 }: {
   profile: SidebarProfile | null;
   bellItems: BellItem[];
   unread: number;
   isAdmin?: boolean;
   navLinks: { href: string; label: string }[];
+  showGig?: boolean;
 }) {
   const pathname = usePathname();
   const isActive = (href: string) =>
@@ -88,7 +90,7 @@ export function Sidebar({
         </Link>
         {profile ? (
           <div className="flex items-center gap-2">
-            <UserMenu profile={profile} isAdmin={isAdmin} />
+            <UserMenu profile={profile} isAdmin={isAdmin} showGig={showGig} />
             <Link href="/dashboard" className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-ink">
                 {profile.name}

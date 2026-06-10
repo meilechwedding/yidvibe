@@ -19,6 +19,7 @@ const OPTIONS = [
     label: "Gig",
     desc: "A job you need done",
     tint: "tint-orange",
+    flag: "module.gigs",
   },
   {
     href: "/competitions/post",
@@ -26,15 +27,28 @@ const OPTIONS = [
     label: "Competition",
     desc: "Run a challenge with a prize",
     tint: "tint-gold",
+    flag: "module.competitions",
   },
 ];
 
 /**
  * "Post" trigger + a chooser sheet (Project / Gig / Competition). `button` for
  * the desktop nav; `fab` is the raised + in the mobile bottom bar.
+ *
+ * Flag-gated options (Gig, Competition) only appear when their module is
+ * launched — otherwise the link would land on a 404 (the section's layout
+ * guards it with `requireFlag`). `enabledFlags` is computed server-side in
+ * the nav shell and passed down.
  */
-export function PostMenu({ variant = "button" }: { variant?: "button" | "fab" }) {
+export function PostMenu({
+  variant = "button",
+  enabledFlags = {},
+}: {
+  variant?: "button" | "fab";
+  enabledFlags?: Record<string, boolean>;
+}) {
   const [open, setOpen] = useState(false);
+  const options = OPTIONS.filter((o) => !o.flag || enabledFlags[o.flag]);
 
   return (
     <>
@@ -85,7 +99,7 @@ export function PostMenu({ variant = "button" }: { variant?: "button" | "fab" })
               </button>
             </div>
             <div className="flex flex-col gap-2">
-              {OPTIONS.map((o) => (
+              {options.map((o) => (
                 <Link
                   key={o.href}
                   href={o.href}
