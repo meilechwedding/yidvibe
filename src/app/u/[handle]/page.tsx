@@ -94,8 +94,21 @@ export default async function ProfilePage({
   const isOwner = me?.id === profile.id;
   const isAuthed = !!me;
 
-  // Opt-in: a private account has no public profile page until they go public.
-  if (!profile.is_public && !isOwner) notFound();
+  if (!profile.is_public && !isOwner) {
+    return (
+      <Container className="py-8 md:py-10">
+        <div className="flex min-h-[40vh] flex-col items-center justify-center text-center">
+          <h1 className="font-display text-2xl font-bold text-ink">Profile not public yet</h1>
+          <p className="mt-3 text-[15px] text-muted-foreground">
+            This builder hasn&apos;t made their profile public yet.
+          </p>
+          <Link href="/builders" className="btn btn-ghost mt-6">
+            Browse builders
+          </Link>
+        </div>
+      </Container>
+    );
+  }
 
   const [projects, upvoted, saved] = await Promise.all([
     getProjectsByOwner(profile.id),
