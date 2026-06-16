@@ -62,6 +62,7 @@ export async function updateProfile(
 
   const v = parsed.data;
   const tools = formData.getAll("tools").map(String).filter(Boolean);
+  const skills = formData.getAll("skills").map(String).filter(Boolean);
 
   const links: Record<string, string> = {};
   const website = normUrl(formData.get("link_website"));
@@ -96,8 +97,10 @@ export async function updateProfile(
       avatar_url: v.avatar_url ? v.avatar_url : null,
       cover_url: v.cover_url ? v.cover_url : null,
       show_real_name: formData.get("show_real_name") != null,
+      available_for_hire: formData.get("available_for_hire") != null,
       is_public: isPublic,
       tools,
+      skills,
       links,
     })
     .eq("id", user.id);

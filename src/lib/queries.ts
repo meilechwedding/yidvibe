@@ -189,8 +189,7 @@ export async function listBuilders(
   let query = supabase
     .from("profiles")
     .select("*, project_count:projects!projects_owner_id_fkey(count)")
-    // Only self-declared builders who have gone public appear in the directory.
-    .eq("is_builder", true)
+    // Anyone with a public profile is listed in the directory.
     .eq("is_public", true);
 
   if (opts.q) {
@@ -237,7 +236,6 @@ export async function listTopBuilders(
   const { data } = await supabase
     .from("profiles")
     .select("*, project_count:projects!projects_owner_id_fkey(count)")
-    .eq("is_builder", true)
     .eq("is_public", true)
     .order("is_featured", { ascending: false })
     .order("follower_count", { ascending: false })
@@ -278,7 +276,6 @@ export async function countBuilders(
   let query = supabase
     .from("profiles")
     .select("id", { count: "exact", head: true })
-    .eq("is_builder", true)
     .eq("is_public", true);
   if (opts.q) {
     const s = sanitize(opts.q);
@@ -370,7 +367,10 @@ export async function getLandingStats(): Promise<{
 }> {
   const supabase = await createClient();
   const [builders, projects, gigs] = await Promise.all([
-    supabase.from("profiles").select("id", { count: "exact", head: true }),
+    supabase
+      .from("profiles")
+      .select("id", { count: "exact", head: true })
+      .eq("is_public", true),
     supabase.from("projects").select("id", { count: "exact", head: true }),
     supabase
       .from("gigs")

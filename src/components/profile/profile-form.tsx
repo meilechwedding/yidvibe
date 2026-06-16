@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { updateProfile, type ProfileFormState } from "@/lib/actions/profile";
 import { CancelButton } from "@/components/brand/cancel-button";
 import { FormSection } from "@/components/brand/form-section";
@@ -67,6 +67,17 @@ export function ProfileForm({ profile }: { profile: Profile }) {
     setCustomTool("");
   };
   const chipTools = [...new Set([...KNOWN_TOOLS, ...tools])];
+
+  const [skills, setSkills] = useState<string[]>(profile.skills ?? []);
+  const [customSkill, setCustomSkill] = useState("");
+
+  const removeSkill = (s: string) =>
+    setSkills((cur) => cur.filter((x) => x !== s));
+  const addSkill = () => {
+    const s = customSkill.trim();
+    if (s && !skills.includes(s)) setSkills((cur) => [...cur, s]);
+    setCustomSkill("");
+  };
 
   return (
     <form
@@ -146,8 +157,8 @@ export function ProfileForm({ profile }: { profile: Profile }) {
 
       <FormSection
         step={3}
-        title="Builds with"
-        description="The AI tools you build with — shown on your profile."
+        title="Tools & skills"
+        description="The AI tools you build with and the skills you bring — shown on your profile and used to filter the Builders directory."
       >
         <Field label="Tools you use">
           <div className="flex flex-wrap gap-2">
@@ -191,12 +202,54 @@ export function ProfileForm({ profile }: { profile: Profile }) {
             <input key={t} type="hidden" name="tools" value={t} />
           ))}
         </Field>
+
+        <Field
+          label="Skills"
+          hint="what you can do — used by the Builders filter"
+        >
+          {skills.length > 0 && (
+            <div className="mb-2 flex flex-wrap gap-2">
+              {skills.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => removeSkill(s)}
+                  className="inline-flex items-center gap-1 rounded-full border border-sage-mid bg-sage-tint px-3 py-1 text-sm text-sage-deep transition-colors hover:border-clay-mid hover:text-clay-deep"
+                  title="Remove"
+                >
+                  {s}
+                  <X size={13} />
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="flex gap-2">
+            <input
+              value={customSkill}
+              onChange={(e) => setCustomSkill(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addSkill();
+                }
+              }}
+              placeholder="e.g. React, AI prompting, UI design"
+              className={cn(inputClass, "h-9 max-w-xs")}
+            />
+            <button type="button" onClick={addSkill} className="btn btn-ghost btn-sm">
+              <Plus size={15} /> Add
+            </button>
+          </div>
+          {skills.map((s) => (
+            <input key={s} type="hidden" name="skills" value={s} />
+          ))}
+        </Field>
       </FormSection>
 
       <FormSection
         step={4}
         title="Visibility"
-        description="Whether you have a public profile, and how your name shows."
+        description="Whether you have a public profile, how your name shows, and whether you're open to work."
       >
         <label className="flex cursor-pointer items-center justify-between rounded-card border border-border bg-secondary/40 px-4 py-3">
           <span>
@@ -215,6 +268,25 @@ export function ProfileForm({ profile }: { profile: Profile }) {
             className="peer sr-only"
           />
           <span className="relative h-6 w-11 shrink-0 rounded-full bg-border transition-colors peer-checked:bg-teal-600 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-transform peer-checked:after:translate-x-5" />
+        </label>
+
+        <label className="flex cursor-pointer items-center justify-between rounded-card border border-border bg-secondary/40 px-4 py-3">
+          <span>
+            <span className="block text-sm font-medium text-ink">
+              Available for hire
+            </span>
+            <span className="block text-xs text-muted-foreground">
+              On = a green &ldquo;Available&rdquo; badge shows on your card, and you
+              appear under the Builders &ldquo;Available for hire&rdquo; filter.
+            </span>
+          </span>
+          <input
+            type="checkbox"
+            name="available_for_hire"
+            defaultChecked={profile.available_for_hire}
+            className="peer sr-only"
+          />
+          <span className="relative h-6 w-11 shrink-0 rounded-full bg-border transition-colors peer-checked:bg-sage-mid after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-transform peer-checked:after:translate-x-5" />
         </label>
 
         <label className="flex cursor-pointer items-center justify-between rounded-card border border-border bg-secondary/40 px-4 py-3">
