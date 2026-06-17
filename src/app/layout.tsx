@@ -54,13 +54,13 @@ export default function RootLayout({
         <SiteFooter />
         <Toaster richColors position="top-center" />
         <FeedbackWidget />
-        {/* Google Analytics (GA4) — direct gtag for property G-CQZZR3R1TQ */}
+        {/* Google Analytics (GA4) — direct gtag for the yidvibe.com data stream (G-XE27WHG02L) */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-CQZZR3R1TQ"
+          src="https://www.googletagmanager.com/gtag/js?id=G-XE27WHG02L"
           strategy="afterInteractive"
         />
         <Script id="ga-config" strategy="afterInteractive">
-          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-CQZZR3R1TQ');`}
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XE27WHG02L');`}
         </Script>
       </body>
     </html>
