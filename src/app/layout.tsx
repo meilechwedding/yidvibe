@@ -54,13 +54,15 @@ export default function RootLayout({
         <SiteFooter />
         <Toaster richColors position="top-center" />
         <FeedbackWidget />
-        {/* Google Analytics (GA4) — direct gtag for the yidvibe.com data stream (G-XE27WHG02L) */}
+        {/* Google Analytics (GA4) — direct gtag. G-CQZZR3R1TQ is the only
+            provisioned/loadable stream (the G-XE27WHG02L stream 404s on
+            gtag.js — "data collection isn't active" in GA). */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-XE27WHG02L"
+          src="https://www.googletagmanager.com/gtag/js?id=G-CQZZR3R1TQ"
           strategy="afterInteractive"
         />
         <Script id="ga-config" strategy="afterInteractive">
-          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XE27WHG02L');`}
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-CQZZR3R1TQ');`}
         </Script>
       </body>
     </html>
