@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { normalizeTag } from "@/lib/queries";
+import { goPublic } from "@/lib/visibility";
 
 type SupabaseServer = Awaited<ReturnType<typeof createClient>>;
 
@@ -127,6 +128,15 @@ export async function createProject(
 
   if (error || !data) {
     return { error: "Couldn't submit your project. Please try again." };
+  }
+
+  // Posting a project you built is a non-anonymous public action: flip the
+  // poster's profile public (idempotent) so they're discoverable on /builders
+  // and their name links from the project. "Found it" community submissions
+  // don't represent the poster's own work, so they stay as-is.
+  if (user && !foundIt) {
+    await goPublic(supabase, user.id);
+    revalidatePath("/builders");
   }
 
   await feedBrowseTags(supabase, tags);

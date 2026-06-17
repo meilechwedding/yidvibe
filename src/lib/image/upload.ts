@@ -36,7 +36,14 @@ export async function uploadImage(
     .from(bucket)
     .upload(path, compressed, { upsert: true, contentType: compressed.type });
   if (error) {
-    return { error: "Upload failed. Try a different image or paste a URL." };
+    // Surface the real reason — a generic "Upload failed" hides fixable causes
+    // (missing storage bucket, missing INSERT policy / RLS, size limit).
+    const reason = error.message?.trim();
+    return {
+      error: reason
+        ? `Upload failed: ${reason}. Try a different image or paste a URL.`
+        : "Upload failed. Try a different image or paste a URL.",
+    };
   }
 
   const { data } = supabase.storage.from(bucket).getPublicUrl(path);
