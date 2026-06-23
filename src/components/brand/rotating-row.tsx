@@ -1,30 +1,73 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Pause, Play } from "lucide-react";
+
+/** Visible cards per slide, by breakpoint: phone 1 · tablet 2 · desktop 3. */
+function usePerPage() {
+  const [perPage, setPerPage] = useState(3);
+  useEffect(() => {
+    const compute = () => {
+      const w = window.innerWidth;
+      setPerPage(w < 640 ? 1 : w < 1024 ? 2 : 3);
+    };
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, []);
+  return perPage;
+}
 
 /**
- * Auto-advancing row of cards. Pauses on hover, on focus-within, and via an
- * explicit play/pause control (so touch users — who can't hover — can stop it).
- * Static under reduced-motion.
+ * Auto-advancing carousel that shows a few cards at a time and pages through the
+ * rest. One dot per *page* (not per card). Auto-rotates every 4.5s; pauses while
+ * hovered/focused, and pauses for 12s after the viewer taps a dot. Static under
+ * reduced-motion (dots still work).
  */
 export function RotatingRow({ children }: { children: React.ReactNode[] }) {
   const items = Array.isArray(children) ? children : [children];
-  const [idx, setIdx] = useState(0);
-  const [hoverPaused, setHoverPaused] = useState(false);
-  const [userPaused, setUserPaused] = useState(false);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const perPage = usePerPage();
 
-  const paused = hoverPaused || userPaused;
+  // Group the cards into pages of `perPage`.
+  const pages: React.ReactNode[][] = [];
+  for (let i = 0; i < items.length; i += perPage) {
+    pages.push(items.slice(i, i + perPage));
+  }
+  const pageCount = pages.length;
+
+  const [page, setPage] = useState(0);
+  const [hoverPaused, setHoverPaused] = useState(false);
+  const [holdPaused, setHoldPaused] = useState(false);
+  const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Keep the active page valid when the layout (perPage) changes.
+  useEffect(() => {
+    setPage((p) => Math.min(p, Math.max(0, pageCount - 1)));
+  }, [pageCount]);
 
   useEffect(() => {
-    if (paused || items.length <= 1) return;
+    if (hoverPaused || holdPaused || pageCount <= 1) return;
     const reduce =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
-    const t = setInterval(() => setIdx((i) => (i + 1) % items.length), 4500);
+    const t = setInterval(() => setPage((p) => (p + 1) % pageCount), 4500);
     return () => clearInterval(t);
-  }, [paused, items.length]);
+  }, [hoverPaused, holdPaused, pageCount]);
+
+  // Clear the hold timer on unmount.
+  useEffect(
+    () => () => {
+      if (holdTimer.current) clearTimeout(holdTimer.current);
+    },
+    [],
+  );
+
+  // Tap a dot → jump there and hold (stop auto-rotating) for 12 seconds.
+  const goTo = (i: number) => {
+    setPage(i);
+    setHoldPaused(true);
+    if (holdTimer.current) clearTimeout(holdTimer.current);
+    holdTimer.current = setTimeout(() => setHoldPaused(false), 12000);
+  };
 
   return (
     <div
@@ -35,44 +78,40 @@ export function RotatingRow({ children }: { children: React.ReactNode[] }) {
     >
       <div className="overflow-hidden">
         <div
-          ref={trackRef}
           className="flex transition-transform duration-700 ease-out"
-          style={{ transform: `translateX(-${idx * 100}%)` }}
+          style={{ transform: `translateX(-${page * 100}%)` }}
         >
-          {items.map((c, i) => (
-            <div key={i} className="w-full shrink-0 px-1 sm:w-1/2 lg:w-1/3">
-              {c}
+          {pages.map((group, pi) => (
+            <div key={pi} className="w-full shrink-0 px-0.5">
+              <div
+                className="grid gap-5"
+                style={{
+                  gridTemplateColumns: `repeat(${perPage}, minmax(0, 1fr))`,
+                }}
+              >
+                {group}
+              </div>
             </div>
           ))}
         </div>
       </div>
-      {items.length > 1 && (
-        <div className="mt-4 flex items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={() => setUserPaused((p) => !p)}
-            aria-label={userPaused ? "Play" : "Pause"}
-            aria-pressed={userPaused}
-            className="grid h-7 w-7 place-items-center rounded-full border border-border bg-surface text-muted-foreground transition-colors hover:border-border-hover hover:text-ink"
-          >
-            {userPaused ? <Play size={13} /> : <Pause size={13} />}
-          </button>
-          <div className="flex items-center gap-1.5">
-            {items.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`Go to ${i + 1}`}
-                aria-current={i === idx}
-                onClick={() => setIdx(i)}
-                className={
-                  i === idx
-                    ? "h-1.5 w-4 rounded-full bg-teal-600"
-                    : "h-1.5 w-1.5 rounded-full bg-border"
-                }
-              />
-            ))}
-          </div>
+
+      {pageCount > 1 && (
+        <div className="mt-6 flex justify-center gap-2">
+          {pages.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={i === page}
+              onClick={() => goTo(i)}
+              className={
+                i === page
+                  ? "h-2.5 w-6 rounded-full bg-teal-600 transition-all"
+                  : "h-2.5 w-2.5 rounded-full bg-border transition-all hover:bg-border-hover"
+              }
+            />
+          ))}
         </div>
       )}
     </div>

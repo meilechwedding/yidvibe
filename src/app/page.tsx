@@ -257,10 +257,12 @@ export default async function Home() {
                 Browse all builders <ArrowRight size={16} />
               </Link>
             </Reveal>
-            <Reveal className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {builders.map((b) => (
-                <BuilderCard key={b.id} builder={b} />
-              ))}
+            <Reveal className="mt-10">
+              <RotatingRow>
+                {builders.map((b) => (
+                  <BuilderCard key={b.id} builder={b} />
+                ))}
+              </RotatingRow>
             </Reveal>
           </Container>
         </Section>
