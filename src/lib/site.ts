@@ -1,7 +1,10 @@
 export const SITE_NAME = "YidVibe";
-export const SITE_TAGLINE = "the home for frum builders";
+export const SITE_TAGLINE = "The home for frum builders";
 export const SITE_DESCRIPTION =
   "Where frum builders show what they're making with AI.";
+
+/** Canonical public origin — used for metadata, Open Graph, sitemap, robots. */
+export const SITE_URL = "https://yidvibe.com";
 
 /** Warm accent shelf — one accent per section (see BRAND.md). */
 export type Accent = "teal" | "blue" | "orange" | "clay" | "sage" | "gold";
@@ -32,7 +35,7 @@ export const NAV_LINKS: { href: string; label: string }[] = [
 
 export const FOOTER_LINKS: { href: string; label: string }[] = [
   { href: "/showcase", label: "Showcase" },
-  { href: "/showcase/submit", label: "Submit a project" },
+  { href: "/showcase/submit", label: "Post your project" },
   { href: "/docs", label: "How it works" },
 ];
 

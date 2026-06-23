@@ -53,12 +53,15 @@ export function ProjectRowCard({
         className="relative block h-[72px] w-24 shrink-0 overflow-hidden rounded-xl sm:h-[92px] sm:w-[132px]"
         style={{ background: cover }}
         aria-hidden
+        tabIndex={-1}
       >
         {project.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={project.image_url}
             alt={project.name}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover"
           />
         ) : (

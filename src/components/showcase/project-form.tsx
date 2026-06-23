@@ -139,7 +139,7 @@ function ChipField({
 export function ProjectForm({
   action,
   project,
-  submitLabel = "Post project",
+  submitLabel = "Post your project",
   isLoggedIn = false,
 }: {
   action: (

@@ -86,7 +86,7 @@ export function Sidebar({
           href="/showcase/submit"
           className="btn btn-gold btn-sm w-full justify-center"
         >
-          <Plus size={16} /> Submit a project
+          <Plus size={16} /> Post your project
         </Link>
         {profile ? (
           <div className="flex items-center gap-2">

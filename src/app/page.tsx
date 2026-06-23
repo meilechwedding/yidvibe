@@ -6,7 +6,6 @@ import {
   Briefcase,
   Compass,
   ChevronUp,
-  Plus,
 } from "lucide-react";
 import { Container, Section, Eyebrow } from "@/components/brand/layout";
 import { Reveal } from "@/components/brand/reveal";
@@ -14,9 +13,9 @@ import { Sparkle } from "@/components/brand/sparkle";
 import { BrowseBy } from "@/components/brand/browse-by";
 import { RotatingRow } from "@/components/brand/rotating-row";
 import { ProjectRowCard } from "@/components/showcase/project-row-card";
-import { listProjects, getBrowseTags, getLandingStats } from "@/lib/queries";
+import { BuilderCard } from "@/components/brand/builder-card";
+import { listProjects, listTopBuilders, getBrowseTags } from "@/lib/queries";
 import { getAuthUser } from "@/lib/current-user";
-import { isFeatureEnabled } from "@/lib/flags";
 import { KNOWN_TOOLS } from "@/lib/site";
 
 const AUDIENCES = [
@@ -24,7 +23,7 @@ const AUDIENCES = [
     tag: "I build",
     title: "Show what you made",
     body: "Post an app, tool, or MVP. Add a link or screenshot, tag how you built it, and let the community find it.",
-    cta: "Post a project",
+    cta: "Post your project",
     href: "/showcase/submit",
     tint: "tint-teal",
     Icon: Hammer,
@@ -33,8 +32,8 @@ const AUDIENCES = [
     tag: "I'm hiring",
     title: "Find a builder through their work",
     body: "Browse the projects and reach the maker through YidVibe — to hire, buy, or partner. No tech background needed.",
-    cta: "Explore the showcase",
-    href: "/showcase",
+    cta: "Browse builders",
+    href: "/builders",
     tint: "tint-gold",
     Icon: Briefcase,
   },
@@ -49,26 +48,16 @@ const AUDIENCES = [
   },
 ];
 
+// Display-only casing fix (stored tool value stays "base44").
+const toolLabel = (t: string) => (t === "base44" ? "Base44" : t);
 const TOOL_STRIP = KNOWN_TOOLS.filter((t) => t !== "Other");
 
-function Stat({ value, label }: { value: number; label: string }) {
-  return (
-    <div className="text-center">
-      <div className="font-display text-4xl font-bold leading-none tracking-tight text-ink md:text-5xl">
-        {value}
-      </div>
-      <div className="mt-2 text-[13px] text-muted-foreground">{label}</div>
-    </div>
-  );
-}
-
 export default async function Home() {
-  const showStats = await isFeatureEnabled("feature.homepage_stats");
-  const [topList, recent, tags, stats, user] = await Promise.all([
+  const [topList, recent, builders, tags, user] = await Promise.all([
     listProjects({ sort: "top", limit: 1 }),
-    listProjects({ sort: "new", limit: 6 }),
+    listProjects({ sort: "new", limit: 8 }),
+    listTopBuilders(8),
     getBrowseTags(),
-    showStats ? getLandingStats() : Promise.resolve(null),
     getAuthUser(),
   ]);
   const isAuthed = !!user;
@@ -113,7 +102,7 @@ export default async function Home() {
           <p className="mt-6 max-w-[52ch] text-[clamp(1.05rem,2.2vw,1.25rem)] leading-relaxed text-muted-foreground">
             Torah apps, community tools, business, productivity — built by frum
             builders, from first-time vibe coders to seasoned pros. Post yours,
-            browse the rest, get discovered. Free.
+            browse the rest, get discovered.
           </p>
 
           <form
@@ -147,24 +136,16 @@ export default async function Home() {
             Built with{" "}
             {TOOL_STRIP.map((t, i) => (
               <span key={t}>
-                <span className="font-semibold text-ink">{t}</span>
+                <span className="font-semibold text-ink">{toolLabel(t)}</span>
                 {i < TOOL_STRIP.length - 1 ? " · " : ""}
               </span>
             ))}
           </p>
-
-          {showStats && stats && (
-            <div className="mt-10 flex items-center gap-8 sm:gap-14">
-              <Stat value={stats.projects} label="Projects" />
-              <div className="h-9 w-px bg-border" />
-              <Stat value={stats.builders} label="Builders" />
-            </div>
-          )}
         </Container>
       </section>
 
       {/* ───── Browse by category ───── */}
-      <Container className="pt-6">
+      <Container className="pt-2">
         <BrowseBy tags={tags} />
       </Container>
 
@@ -210,7 +191,13 @@ export default async function Home() {
                     >
                       {p.image_url ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={p.image_url} alt={p.name} className="h-32 w-full object-cover" />
+                        <img
+                          src={p.image_url}
+                          alt={p.name}
+                          loading="lazy"
+                          decoding="async"
+                          className="h-32 w-full object-cover"
+                        />
                       ) : (
                         <div
                           className="flex h-32 w-full items-center justify-center font-display text-4xl font-bold text-teal-700"
@@ -242,7 +229,7 @@ export default async function Home() {
             <Reveal className="mt-10">
               <div className="flex flex-col items-center rounded-3xl border border-dashed border-border bg-surface px-6 py-16 text-center">
                 <Sparkle size={26} color="var(--teal-400)" />
-                <h3 className="mt-4 font-display text-xl font-bold text-ink">Nothing here yet</h3>
+                <h3 className="mt-4 font-display text-xl font-bold text-ink">No projects yet</h3>
                 <p className="mt-1.5 max-w-sm text-[15px] text-muted-foreground">
                   Be the first to post — your project lands here and on the Showcase.
                 </p>
@@ -255,29 +242,29 @@ export default async function Home() {
         </Container>
       </Section>
 
-      {/* ───── Post your project band ───── */}
-      <Section>
-        <Container>
-          <Reveal>
-            <div className="flex flex-col items-center justify-between gap-4 rounded-3xl bg-teal-700 px-6 py-8 text-center sm:flex-row sm:text-left md:px-10">
+      {/* ───── Meet the builders ───── */}
+      {builders.length > 0 && (
+        <Section>
+          <Container>
+            <Reveal className="flex items-end justify-between gap-6">
               <div>
-                <h3 className="font-display text-xl font-bold text-white sm:text-2xl">
-                  Built something with AI?
-                </h3>
-                <p className="mt-1 text-[15px] text-white/80">
-                  Post it in a minute — no account needed.
-                </p>
+                <Eyebrow>The people behind it</Eyebrow>
+                <h2 className="mt-3.5 font-display text-[clamp(1.9rem,4vw,2.75rem)] font-bold tracking-tight text-ink">
+                  Meet the builders
+                </h2>
               </div>
-              <Link
-                href="/showcase/submit"
-                className="btn btn-lg shrink-0 bg-white text-teal-800 hover:bg-white/90"
-              >
-                <Plus size={18} /> Post your project
+              <Link href="/builders" className="link-arrow shrink-0">
+                Browse all builders <ArrowRight size={16} />
               </Link>
-            </div>
-          </Reveal>
-        </Container>
-      </Section>
+            </Reveal>
+            <Reveal className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {builders.map((b) => (
+                <BuilderCard key={b.id} builder={b} />
+              ))}
+            </Reveal>
+          </Container>
+        </Section>
+      )}
 
       {/* ───── Who it's for ───── */}
       <Section>

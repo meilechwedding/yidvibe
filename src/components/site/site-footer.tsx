@@ -16,7 +16,7 @@ export function SiteFooter() {
           <span className="font-display text-lg font-semibold text-white">
             {SITE_NAME}
           </span>
-          <span className="hidden text-teal-100/70 sm:inline">
+          <span className="hidden text-teal-100/85 sm:inline">
             — {SITE_TAGLINE}
           </span>
         </div>
@@ -25,7 +25,7 @@ export function SiteFooter() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-sm text-teal-100/75 transition-colors hover:text-white"
+              className="text-sm text-teal-100/90 transition-colors hover:text-white"
             >
               {l.label}
             </Link>

@@ -8,13 +8,15 @@ import {
   Compass,
   Bookmark,
   User,
-  X,
+  LogIn,
   LayoutGrid,
+  X,
   Users,
   Briefcase,
   Trophy,
   Calendar,
   HelpCircle,
+  MessageSquarePlus,
 } from "lucide-react";
 import { PostMenu } from "./post-menu";
 import { cn } from "@/lib/utils";
@@ -31,14 +33,18 @@ const MORE_ICONS: Record<string, typeof LayoutGrid> = {
 
 /**
  * App-style bottom tab bar for phones + tablets (`lg:hidden`):
- * Home · Explore (boards sheet) · ＋ post · Inbox · You (dashboard).
+ * Home · Explore (boards sheet) · ＋ post · {Saved · You | Showcase · Sign in}.
+ * The last two tabs adapt to auth state so signed-out visitors never get a
+ * surprise login bounce.
  */
 export function MobileBottomNav({
   navLinks,
   enabledFlags = {},
+  isAuthed = false,
 }: {
   navLinks: { href: string; label: string }[];
   enabledFlags?: Record<string, boolean>;
+  isAuthed?: boolean;
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -65,18 +71,37 @@ export function MobileBottomNav({
 
         <PostMenu variant="fab" enabledFlags={enabledFlags} />
 
-        <Tab
-          href="/dashboard/saved"
-          label="Saved"
-          Icon={Bookmark}
-          active={isActive("/dashboard/saved")}
-        />
-        <Tab
-          href="/dashboard"
-          label="You"
-          Icon={User}
-          active={pathname === "/dashboard"}
-        />
+        {isAuthed ? (
+          <>
+            <Tab
+              href="/dashboard/saved"
+              label="Saved"
+              Icon={Bookmark}
+              active={isActive("/dashboard/saved")}
+            />
+            <Tab
+              href="/dashboard"
+              label="You"
+              Icon={User}
+              active={pathname === "/dashboard"}
+            />
+          </>
+        ) : (
+          <>
+            <Tab
+              href="/showcase"
+              label="Showcase"
+              Icon={LayoutGrid}
+              active={isActive("/showcase")}
+            />
+            <Tab
+              href="/login"
+              label="Sign in"
+              Icon={LogIn}
+              active={pathname === "/login"}
+            />
+          </>
+        )}
       </nav>
 
       {open && (
@@ -120,6 +145,16 @@ export function MobileBottomNav({
                 );
               })}
             </div>
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                window.dispatchEvent(new Event("yv:open-feedback"));
+              }}
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl border border-border px-4 py-3 text-[15px] text-ink hover:bg-secondary"
+            >
+              <MessageSquarePlus size={18} className="opacity-80" /> Send feedback
+            </button>
           </div>
         </div>
       )}

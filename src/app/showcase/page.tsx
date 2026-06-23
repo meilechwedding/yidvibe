@@ -84,8 +84,8 @@ export default async function ShowcasePage({
           name: "sort",
           value: sort,
           options: [
-            { value: "new", label: "Latest" },
             { value: "top", label: "Top" },
+            { value: "new", label: "Latest" },
           ],
         }}
       />
@@ -94,7 +94,7 @@ export default async function ShowcasePage({
         <EmptyState
           className="mt-8"
           icon={<Rocket size={22} />}
-          title={filtering ? "No projects found" : "Nothing here yet"}
+          title={filtering ? "No projects found" : "No projects yet"}
           description={
             filtering
               ? "Try a broader search or clear your filters."

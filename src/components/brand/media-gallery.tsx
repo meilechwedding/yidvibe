@@ -18,7 +18,7 @@ const HERO: Record<Accent, string> = {
  * Screenshot-led media for a project. Shows uploaded screenshots big inside a
  * soft browser frame on a neutral mat (object-contain, never cropped), with a
  * thumbnail strip for multiples. Falls back to an accent gradient + initial when
- * there's no image.
+ * there's no image — or when a remote image / live screenshot fails to load.
  */
 export function MediaGallery({
   name,
@@ -35,17 +35,36 @@ export function MediaGallery({
 }) {
   const all = [coverImage, ...images].filter(Boolean) as string[];
   const [active, setActive] = useState(0);
+  const [failed, setFailed] = useState<Set<string>>(new Set());
+  const markFailed = (src: string) =>
+    setFailed((prev) => new Set(prev).add(src));
+
+  const GradientFallback = (
+    <div
+      className="relative flex aspect-[16/10] items-center justify-center overflow-hidden rounded-2xl border border-border"
+      style={{ backgroundImage: HERO[accent] }}
+    >
+      <span className="select-none font-display text-[7rem] font-bold leading-none text-white/15">
+        {name.slice(0, 1).toUpperCase()}
+      </span>
+    </div>
+  );
 
   // No uploaded screenshots, but the project has a live URL → show a live
   // screenshot of the site so the viewer still sees "how it looks".
   if (all.length === 0 && liveUrl) {
+    const shot = siteScreenshotUrl(liveUrl);
+    if (failed.has(shot)) return GradientFallback;
     return (
       <div className="rounded-2xl border border-border bg-secondary/60 p-2 shadow-[0_10px_30px_-14px_rgba(16,32,43,0.28)]">
         <div className="overflow-hidden rounded-[10px] border border-teal-600/60 bg-white">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={siteScreenshotUrl(liveUrl)}
+            src={shot}
             alt={`${name} — live site preview`}
+            loading="lazy"
+            decoding="async"
+            onError={() => markFailed(shot)}
             className="max-h-[460px] w-full bg-white object-contain"
           />
         </div>
@@ -53,20 +72,10 @@ export function MediaGallery({
     );
   }
 
-  if (all.length === 0) {
-    return (
-      <div
-        className="relative flex aspect-[16/10] items-center justify-center overflow-hidden rounded-2xl border border-border"
-        style={{ backgroundImage: HERO[accent] }}
-      >
-        <span className="select-none font-display text-[7rem] font-bold leading-none text-white/15">
-          {name.slice(0, 1).toUpperCase()}
-        </span>
-      </div>
-    );
-  }
+  if (all.length === 0) return GradientFallback;
 
   const current = all[Math.min(active, all.length - 1)];
+  if (failed.has(current)) return GradientFallback;
 
   return (
     <div className="rounded-2xl border border-border bg-secondary/60 p-2 shadow-[0_10px_30px_-14px_rgba(16,32,43,0.28)]">
@@ -75,6 +84,9 @@ export function MediaGallery({
         <img
           src={current}
           alt={name}
+          loading="lazy"
+          decoding="async"
+          onError={() => markFailed(current)}
           className="max-h-[460px] w-full bg-white object-contain"
         />
       </div>
@@ -92,7 +104,13 @@ export function MediaGallery({
               )}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt="" className="h-full w-full bg-white object-cover" />
+              <img
+                src={src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full bg-white object-cover"
+              />
             </button>
           ))}
         </div>

@@ -46,6 +46,16 @@ export function FeedbackWidget() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // Open on demand from elsewhere (e.g. the mobile Explore sheet, which has no
+  // room for the side tab). Decoupled via a window event.
+  useEffect(() => {
+    function onOpen() {
+      setOpen(true);
+    }
+    window.addEventListener("yv:open-feedback", onOpen);
+    return () => window.removeEventListener("yv:open-feedback", onOpen);
+  }, []);
+
   // Hide on admin screens — they have their own queue.
   if (pathname.startsWith("/admin")) return null;
 

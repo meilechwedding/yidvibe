@@ -346,9 +346,11 @@ export default async function ProjectDetailPage({
                 </DetailRow>
               )}
               <DetailRow k="Posted">{postedDate}</DetailRow>
-              <DetailRow k="Status">
-                {project.featured ? "Featured" : project.url ? "Live" : "Listed"}
-              </DetailRow>
+              {(project.featured || project.url) && (
+                <DetailRow k="Status">
+                  {project.featured ? "Featured" : "Live"}
+                </DetailRow>
+              )}
             </div>
           </Panel>
         </div>

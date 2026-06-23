@@ -286,14 +286,14 @@ export default async function ProfilePage({
         {withOwner.length === 0 ? (
           <EmptyState
             className="mt-4"
-            title={isOwner ? "No projects yet" : "Nothing here yet"}
+            title="No projects yet"
             description={
               isOwner
                 ? "Post something you built — it shows up here automatically."
                 : "This person hasn't posted a project yet."
             }
             actionHref={isOwner ? "/showcase/submit" : undefined}
-            actionLabel={isOwner ? "Post a project" : undefined}
+            actionLabel={isOwner ? "Post your project" : undefined}
           />
         ) : (
           <div className="mt-5 flex flex-col gap-3">

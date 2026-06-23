@@ -52,7 +52,7 @@ export default function DocsPage() {
     <Container className="max-w-2xl py-12 md:py-16">
       <Eyebrow>How it works</Eyebrow>
       <h1 className="mt-3 font-display text-[clamp(2.2rem,5vw,3rem)] font-bold leading-tight tracking-tight text-ink">
-        The home for frum builders
+        How YidVibe works
       </h1>
       <p className="mt-4 text-lg text-muted-foreground">
         YidVibe is a curated board of AI projects and tools built by frum

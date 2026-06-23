@@ -38,7 +38,7 @@ export default async function DashboardPosts() {
           title="No projects yet"
           description="Show the community what you've built — your projects will appear here and on your public profile."
           actionHref="/showcase/submit"
-          actionLabel="Submit a project"
+          actionLabel="Post your project"
         />
       ) : (
         <Panel className="p-0 sm:p-0">

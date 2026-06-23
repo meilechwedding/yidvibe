@@ -1,15 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Comfortaa, Nunito_Sans, JetBrains_Mono } from "next/font/google";
+import { Comfortaa, Nunito_Sans } from "next/font/google";
 import Script from "next/script";
 import { Toaster } from "sonner";
 import { SiteNav } from "@/components/site/site-nav";
 import { SiteFooter } from "@/components/site/site-footer";
 import { ContextBar } from "@/components/site/context-bar";
 import { FeedbackWidget } from "@/components/site/feedback-widget";
-import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
+import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SITE_TAGLINE } from "@/lib/site";
 import "./globals.css";
 
-// Brand type: Comfortaa (rounded display) + Nunito Sans (body). JetBrains for tool chips.
+// Brand type: Comfortaa (rounded display) + Nunito Sans (body).
+// Monospace (tool chips) uses a system stack — no extra webfont download.
 const nunito = Nunito_Sans({
   subsets: ["latin"],
   variable: "--font-nunito",
@@ -20,15 +21,25 @@ const comfortaa = Comfortaa({
   variable: "--font-comfortaa",
   display: "swap",
 });
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
-  title: { default: SITE_NAME, template: `%s · ${SITE_NAME}` },
+  metadataBase: new URL(SITE_URL),
+  title: { default: `${SITE_NAME} — ${SITE_TAGLINE}`, template: `%s · ${SITE_NAME}` },
   description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export const viewport: Viewport = {
@@ -45,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${nunito.variable} ${comfortaa.variable} ${jetbrains.variable}`}
+      className={`${nunito.variable} ${comfortaa.variable}`}
     >
       <body className="flex min-h-dvh flex-col overflow-x-clip bg-canvas pb-16 text-ink lg:pb-0 lg:pl-64">
         <SiteNav />

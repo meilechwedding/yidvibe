@@ -39,7 +39,7 @@ export function UserMenu({
           <Item href="/dashboard/profile">Edit profile</Item>
           <Item href="/notifications">Notifications</Item>
           <Item href="/settings/notifications">Notification settings</Item>
-          <Item href="/showcase/submit">Submit a project</Item>
+          <Item href="/showcase/submit">Post your project</Item>
           {showGig && <Item href="/gigs/post">Post a gig</Item>}
           {isAdmin && (
             <>

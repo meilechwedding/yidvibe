@@ -73,7 +73,7 @@
   /* ---- Typography (vars injected by next/font in layout) ---- */
   --font-sans: var(--font-nunito), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: var(--font-comfortaa), "Nunito Sans", system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, "JetBrains Mono", monospace;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
   /* ---- Radii (redesign: 16px cards, full-pill buttons) ---- */
   --radius: 0.625rem; /* 10px — inputs + shadcn primitives */

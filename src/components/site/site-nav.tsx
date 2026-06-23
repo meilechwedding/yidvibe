@@ -102,7 +102,7 @@ export async function SiteNav() {
         </Container>
       </NavShell>
 
-      <MobileBottomNav navLinks={navLinks} enabledFlags={postFlags} />
+      <MobileBottomNav navLinks={navLinks} enabledFlags={postFlags} isAuthed={!!profile} />
     </>
   );
 }

@@ -90,7 +90,7 @@ export default async function DirectoryPage({
         <EmptyState
           className="mt-8"
           icon={<Compass size={22} />}
-          title={filtering ? "No listings found" : "Nothing listed yet"}
+          title={filtering ? "No listings found" : "No listings yet"}
           description={
             filtering
               ? "Try a broader search or clear your filters."
