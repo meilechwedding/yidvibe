@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { safeHttpsImageUrl } from "@/lib/security/image-urls";
 import { createClient } from "@/lib/supabase/server";
 import { normalizeTag } from "@/lib/queries";
 import { goPublic } from "@/lib/visibility";
@@ -39,11 +40,16 @@ export type ProjectFormState = {
   fieldErrors?: Record<string, string>;
 };
 
+const httpsImageUrl = z
+  .string()
+  .trim()
+  .refine((value) => safeHttpsImageUrl(value) !== null, "Use an HTTPS image URL");
+
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
   description: z.string().trim().min(1, "Description is required").max(2000),
   url: z.string().trim().url("Enter a valid URL").optional().or(z.literal("")),
-  image_url: z.string().trim().url().optional().or(z.literal("")),
+  image_url: httpsImageUrl.optional().or(z.literal("")),
   video_url: z.string().trim().url("Enter a valid URL").optional().or(z.literal("")),
 });
 

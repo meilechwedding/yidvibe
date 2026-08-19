@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Camera, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 import { uploadImage } from "@/lib/image/upload";
+import { safeHttpsImageUrl } from "@/lib/security/image-urls";
 
 /**
  * Identity media picker that mirrors the live profile hero: a full-width cover
@@ -24,6 +25,8 @@ export function CoverAvatarInput({
   const [busy, setBusy] = useState<"cover" | "avatar" | null>(null);
   const coverFile = useRef<HTMLInputElement>(null);
   const avatarFile = useRef<HTMLInputElement>(null);
+  const coverPreview = safeHttpsImageUrl(cover);
+  const avatarPreview = safeHttpsImageUrl(avatar);
 
   async function upload(
     e: React.ChangeEvent<HTMLInputElement>,
@@ -54,9 +57,9 @@ export function CoverAvatarInput({
       <div className="relative pb-10">
         <div className="overflow-hidden rounded-2xl border border-border">
           <div className="h-32 w-full bg-teal-50">
-            {cover && (
+            {coverPreview && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={cover} alt="" className="h-full w-full object-cover" />
+              <img src={coverPreview} alt="" className="h-full w-full object-cover" />
             )}
           </div>
         </div>
@@ -83,9 +86,9 @@ export function CoverAvatarInput({
 
         <div className="absolute top-20 left-5">
           <div className="relative h-20 w-20 overflow-hidden rounded-full border-4 border-surface bg-teal-50 text-teal-700 shadow-[0_4px_16px_rgba(0,0,0,0.12)]">
-            {avatar ? (
+            {avatarPreview ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={avatar} alt="" className="h-full w-full object-cover" />
+              <img src={avatarPreview} alt="" className="h-full w-full object-cover" />
             ) : (
               <span className="grid h-full w-full place-items-center font-display text-2xl">{fallbackInitial}</span>
             )}
