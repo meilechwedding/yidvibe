@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Upload, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 import { uploadImage } from "@/lib/image/upload";
@@ -16,23 +16,16 @@ export function ImageInput({
   defaultValue,
   shape = "rect",
   fallbackInitial,
-  seedUrl,
 }: {
   name: string;
   bucket: "avatars" | "project-media";
   defaultValue?: string | null;
   shape?: "circle" | "rect";
   fallbackInitial?: string;
-  /** When this changes to a non-empty value, it becomes the image (e.g. autofill). */
-  seedUrl?: string;
 }) {
   const [url, setUrl] = useState(defaultValue ?? "");
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (seedUrl) setUrl(seedUrl);
-  }, [seedUrl]);
 
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];

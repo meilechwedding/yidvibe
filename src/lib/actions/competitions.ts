@@ -140,6 +140,14 @@ export async function pickWinner(
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
+  const { data: submission } = await supabase
+    .from("competition_submissions")
+    .select("id")
+    .eq("id", submissionId)
+    .eq("competition_id", competitionId)
+    .maybeSingle();
+  if (!submission) return;
+
   await supabase
     .from("competitions")
     .update({ winner_submission_id: submissionId, status: "closed" })

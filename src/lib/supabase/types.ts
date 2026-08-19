@@ -926,6 +926,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_or_create_conversation: {
+        Args: {
+          p_about_id?: string | null
+          p_about_type?: string | null
+          p_other: string
+        }
+        Returns: string
+      }
+      mark_conversation_read: {
+        Args: { p_conversation_id: string }
+        Returns: undefined
+      }
       notify: {
         Args: {
           p_actor?: string

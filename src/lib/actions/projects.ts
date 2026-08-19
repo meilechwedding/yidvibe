@@ -71,12 +71,11 @@ function fieldErrors(parsed: z.SafeParseError<unknown>): ProjectFormState {
 }
 
 /**
- * Create a project. Phase 1 posting model:
- *  - Guest (no account)  → community submission (no builder, no contact).
- *  - Signed-in "I built this" (default) → attached to the poster.
- *  - Signed-in "I found it" → community submission, but tracked under their
+ * Create a project. Signed-in posting model:
+ *  - "I built this" (default) → attached to the poster.
+ *  - "I found it" → community submission, but tracked under their
  *    account (submitted_by) so it shows in their dashboard.
- * No login required. Goes live instantly (moderation = report + admin hide).
+ * Goes live instantly (moderation = report + admin hide).
  * `submitted_by` / `is_community` aren't in the generated types yet → cast.
  */
 export async function createProject(
@@ -87,6 +86,7 @@ export async function createProject(
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) return { error: "Please sign in to post a project." };
 
   const parsed = parse(formData);
   if (!parsed.success) return fieldErrors(parsed);
@@ -95,12 +95,12 @@ export async function createProject(
     return { error: "Add a cover image or a live link so people can see it." };
   }
 
-  const foundIt = !user || String(formData.get("ownership") ?? "mine") === "found";
+  const foundIt = String(formData.get("ownership") ?? "mine") === "found";
   const tags = multi(formData, "tags");
 
   const row = {
-    owner_id: user && !foundIt ? user.id : null,
-    submitted_by: user ? user.id : null,
+    owner_id: !foundIt ? user.id : null,
+    submitted_by: user.id,
     is_community: foundIt,
     name: v.name,
     description: v.description,
@@ -134,7 +134,7 @@ export async function createProject(
   // poster's profile public (idempotent) so they're discoverable on /builders
   // and their name links from the project. "Found it" community submissions
   // don't represent the poster's own work, so they stay as-is.
-  if (user && !foundIt) {
+  if (!foundIt) {
     await goPublic(supabase, user.id);
     revalidatePath("/builders");
   }

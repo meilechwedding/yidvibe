@@ -1,15 +1,13 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { Plus, Wand2, Loader2, UserCheck, Globe, Info } from "lucide-react";
-import { toast } from "sonner";
+import { Plus, UserCheck, Globe } from "lucide-react";
 import { ImageInput } from "@/components/brand/image-input";
 import { GalleryInput } from "@/components/brand/gallery-input";
 import { CancelButton } from "@/components/brand/cancel-button";
 import { FormSection } from "@/components/brand/form-section";
 import { useUnsavedChanges } from "@/hooks/use-unsaved-changes";
 import { useScrollToFirstError } from "@/hooks/use-scroll-to-error";
-import { fetchUrlMetadata } from "@/lib/actions/url-metadata";
 import { KNOWN_TOOLS, KNOWN_TAGS } from "@/lib/site";
 import type { ProjectFormState } from "@/lib/actions/projects";
 import type { Project } from "@/lib/queries";
@@ -17,15 +15,6 @@ import { cn } from "@/lib/utils";
 
 const inputClass =
   "h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
-
-const MAGIC_SPARKS = [
-  { dx: -18, dy: -12 },
-  { dx: 18, dy: -14 },
-  { dx: 0, dy: -20 },
-  { dx: -20, dy: 6 },
-  { dx: 20, dy: 8 },
-  { dx: 0, dy: 16 },
-];
 
 function Field({
   label,
@@ -159,9 +148,6 @@ export function ProjectForm({
   const [name, setName] = useState(project?.name ?? "");
   const [description, setDescription] = useState(project?.description ?? "");
   const [url, setUrl] = useState(project?.url ?? "");
-  const [cover, setCover] = useState<string | undefined>(undefined);
-  const [fetching, setFetching] = useState(false);
-  const [magic, setMagic] = useState(0);
 
   const [tools, setTools] = useState<string[]>(project?.tools ?? []);
   const [tags, setTags] = useState<string[]>(project?.tags ?? []);
@@ -172,35 +158,6 @@ export function ProjectForm({
 
   const [dirty, setDirty] = useState(false);
   useUnsavedChanges(dirty);
-
-  async function autofill() {
-    if (!url.trim()) {
-      toast.error("Paste your project link first.");
-      return;
-    }
-    setFetching(true);
-    setMagic((m) => m + 1);
-    try {
-      const meta = await fetchUrlMetadata(url);
-      if (meta.error) {
-        toast.error(meta.error);
-        return;
-      }
-      if (meta.url) setUrl(meta.url);
-      if (meta.title && !name.trim()) setName(meta.title.slice(0, 100));
-      if (meta.description && !description.trim())
-        setDescription(meta.description.slice(0, 2000));
-      if (meta.image) setCover(meta.image);
-      const got = [meta.title, meta.description, meta.image].filter(Boolean);
-      toast.success(
-        got.length
-          ? "Filled in what we could from your link."
-          : "We saved your link, but couldn't read any details from it.",
-      );
-    } finally {
-      setFetching(false);
-    }
-  }
 
   return (
     <form
@@ -216,68 +173,26 @@ export function ProjectForm({
         </div>
       )}
 
-      {!isLoggedIn && (
-        <div className="flex items-start gap-2.5 rounded-card border border-gold-deep/20 bg-gold-tint px-4 py-3 text-sm text-gold-deep">
-          <Info size={17} className="mt-0.5 shrink-0" />
-          <span>
-            Posting as a <strong>community submission</strong>.{" "}
-            <a href="/login?next=/showcase/submit" className="font-semibold underline">
-              Sign in
-            </a>{" "}
-            if you built this and want it on your profile.
-          </span>
-        </div>
-      )}
-
       <FormSection
         step={1}
         title="The basics"
-        description="Paste your link and let us fill in the rest — then tidy up the details."
+        description="Add a link and the details that help people understand the project."
       >
         <div className="rounded-card border border-border bg-secondary/40 p-3">
           <label className="mb-1.5 block text-sm font-medium text-ink">
             Project link
             <span className="ml-2 font-normal text-xs text-muted-foreground">
-              paste it and we&apos;ll fill in the rest
+              optional if you upload a cover image
             </span>
           </label>
-          <div className="flex gap-2">
-            <input
-              name="url"
-              type="url"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              className={inputClass}
-              placeholder="https://your-app.com"
-            />
-            <button
-              type="button"
-              onClick={autofill}
-              disabled={fetching}
-              className={cn(
-                "autofill-btn relative inline-flex h-10 shrink-0 items-center gap-1.5 overflow-visible rounded-[10px] border border-border bg-surface px-3 text-sm font-medium text-ink transition-colors hover:bg-secondary disabled:opacity-80",
-                fetching && "is-working",
-              )}
-            >
-              {fetching ? (
-                <Loader2 size={15} className="animate-spin" />
-              ) : (
-                <Wand2 size={15} />
-              )}
-              {fetching ? "Reading…" : "Autofill"}
-              {magic > 0 && (
-                <span key={magic} className="autofill-sparkles" aria-hidden>
-                  {MAGIC_SPARKS.map((s, i) => (
-                    <span
-                      key={i}
-                      className="autofill-spark"
-                      style={{ "--dx": `${s.dx}px`, "--dy": `${s.dy}px` } as React.CSSProperties}
-                    />
-                  ))}
-                </span>
-              )}
-            </button>
-          </div>
+          <input
+            name="url"
+            type="url"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            className={inputClass}
+            placeholder="https://your-app.com"
+          />
         </div>
 
         <Field label="Name" required>
@@ -325,7 +240,6 @@ export function ProjectForm({
             bucket="project-media"
             shape="rect"
             defaultValue={project?.image_url}
-            seedUrl={cover}
           />
         </Field>
 

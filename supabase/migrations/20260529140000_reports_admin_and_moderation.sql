@@ -69,6 +69,5 @@ begin
   end loop;
 end $$;
 
--- Bootstrap the first admin (the project owner). New admins are granted by an
--- existing admin; this row is the seed.
-update public.profiles set is_admin = true where handle = 'elimelechmoster';
+-- Bootstrap the first admin out of band by immutable auth.users UUID. Never use
+-- a user-claimable profile field such as handle or email for authorization.
