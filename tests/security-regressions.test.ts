@@ -47,6 +47,38 @@ describe("server-side request boundaries", () => {
   });
 });
 
+describe("image URL boundaries", () => {
+  test("accepts absolute HTTPS images and rejects executable or insecure schemes", async () => {
+    const modulePath = "../src/lib/security/image-urls";
+    const boundary = await import(/* @vite-ignore */ modulePath).catch(
+      () => null,
+    );
+
+    expect(boundary?.safeHttpsImageUrl).toBeTypeOf("function");
+    if (!boundary) return;
+
+    const { safeHttpsImageUrl } = boundary;
+    expect(
+      safeHttpsImageUrl(
+        "https://lqfqkivbxeexmrxuxefi.supabase.co/storage/v1/object/public/avatars/user/photo.webp",
+      ),
+    ).toBe(
+      "https://lqfqkivbxeexmrxuxefi.supabase.co/storage/v1/object/public/avatars/user/photo.webp",
+    );
+    expect(safeHttpsImageUrl("https://images.example/photo.png?size=2#crop")).toBe(
+      "https://images.example/photo.png?size=2#crop",
+    );
+    expect(safeHttpsImageUrl("http://images.example/photo.png")).toBeNull();
+    expect(safeHttpsImageUrl("javascript:alert(1)")).toBeNull();
+    expect(safeHttpsImageUrl("data:image/svg+xml,<svg></svg>")).toBeNull();
+    expect(safeHttpsImageUrl("//images.example/photo.png")).toBeNull();
+    expect(safeHttpsImageUrl("https://user:secret@images.example/photo.png")).toBeNull();
+    expect(safeHttpsImageUrl("https://images.example/\r\nphoto.png")).toBeNull();
+    expect(safeHttpsImageUrl("not a URL")).toBeNull();
+    expect(safeHttpsImageUrl("")).toBeNull();
+  });
+});
+
 describe("database authorization boundaries", () => {
   const migrationDir = join(root, "supabase/migrations");
   const migrations = () =>

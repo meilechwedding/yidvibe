@@ -3,12 +3,18 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { safeHttpsImageUrl } from "@/lib/security/image-urls";
 import { createClient } from "@/lib/supabase/server";
 
 export type ProfileFormState = {
   error?: string;
   fieldErrors?: Record<string, string>;
 };
+
+const httpsImageUrl = z
+  .string()
+  .trim()
+  .refine((value) => safeHttpsImageUrl(value) !== null, "Use an HTTPS image URL");
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(80),
@@ -21,8 +27,8 @@ const schema = z.object({
     ),
   bio: z.string().trim().max(600).optional(),
   location: z.string().trim().max(80).optional(),
-  avatar_url: z.string().trim().url().optional().or(z.literal("")),
-  cover_url: z.string().trim().url().optional().or(z.literal("")),
+  avatar_url: httpsImageUrl.optional().or(z.literal("")),
+  cover_url: httpsImageUrl.optional().or(z.literal("")),
 });
 
 function normUrl(value: FormDataEntryValue | null): string | undefined {

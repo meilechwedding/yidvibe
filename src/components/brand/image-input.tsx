@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Upload, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 import { uploadImage } from "@/lib/image/upload";
+import { safeHttpsImageUrl } from "@/lib/security/image-urls";
 import { cn } from "@/lib/utils";
 
 /**
@@ -26,6 +27,7 @@ export function ImageInput({
   const [url, setUrl] = useState(defaultValue ?? "");
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const previewUrl = safeHttpsImageUrl(url);
 
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -56,9 +58,9 @@ export function ImageInput({
             isCircle ? "h-16 w-16 rounded-full" : "aspect-[16/9] w-40 rounded-card",
           )}
         >
-          {url ? (
+          {previewUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={url} alt="" className="h-full w-full object-cover" />
+            <img src={previewUrl} alt="" className="h-full w-full object-cover" />
           ) : (
             <span className="font-display text-xl">{fallbackInitial ?? "+"}</span>
           )}
