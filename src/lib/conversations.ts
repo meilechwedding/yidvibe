@@ -11,11 +11,6 @@ export type ConvoParticipant = {
   avatar_url: string | null;
 };
 
-/** Normalize a participant pair so (a,b) is unique regardless of who starts. */
-function orderPair(x: string, y: string): [string, string] {
-  return x < y ? [x, y] : [y, x];
-}
-
 export type CanMessage =
   | { ok: true }
   | { ok: false; reason: "sign-in" | "self" | "blocked"; message: string };
@@ -60,27 +55,12 @@ export async function getOrCreateConversation(
   const me = await getCurrentProfile();
   if (!me || me.id === otherId) return null;
   const supabase = await createClient();
-  const [a, b] = orderPair(me.id, otherId);
-
-  const { data: existing } = await supabase
-    .from("conversations")
-    .select("id")
-    .eq("participant_a", a)
-    .eq("participant_b", b)
-    .maybeSingle();
-  if (existing) return existing.id;
-
-  const { data: created } = await supabase
-    .from("conversations")
-    .insert({
-      participant_a: a,
-      participant_b: b,
-      about_type: about?.type ?? null,
-      about_id: about?.id ?? null,
-    })
-    .select("id")
-    .single();
-  return created?.id ?? null;
+  const { data } = await supabase.rpc("get_or_create_conversation", {
+    p_other: otherId,
+    p_about_type: about?.type ?? null,
+    p_about_id: about?.id ?? null,
+  });
+  return data ?? null;
 }
 
 /** The signed-in user's conversations, newest activity first. */
@@ -158,12 +138,9 @@ export async function markConversationRead(conversationId: string): Promise<void
   const me = await getCurrentProfile();
   if (!me) return;
   const supabase = await createClient();
-  await supabase
-    .from("conversation_messages")
-    .update({ read_at: new Date().toISOString() })
-    .eq("conversation_id", conversationId)
-    .neq("sender_id", me.id)
-    .is("read_at", null);
+  await supabase.rpc("mark_conversation_read", {
+    p_conversation_id: conversationId,
+  });
 }
 
 /** Total unread private-reply messages for the signed-in user (for the dashboard). */

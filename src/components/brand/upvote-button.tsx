@@ -44,16 +44,22 @@ export function UpvoteButton({
     }),
   );
 
-  // Phase 1: upvoting works without an account (deduped by device token), so
-  // there's no sign-in gate here.
   function onClick() {
+    if (!isAuthed) {
+      router.push(`/login?next=${encodeURIComponent(redirectTo)}`);
+      return;
+    }
     const next = !state.upvoted;
     startTransition(async () => {
       applyOptimistic(next);
       if (next) setBurst((b) => b + 1); // animate only when voting up
       const res = await toggleUpvote(projectId);
       if (!res.ok) {
-        toast.error("Couldn't register your vote. Please try again.");
+        if (res.error === "auth") {
+          router.push(`/login?next=${encodeURIComponent(redirectTo)}`);
+        } else {
+          toast.error("Couldn't register your vote. Please try again.");
+        }
       }
       router.refresh();
     });

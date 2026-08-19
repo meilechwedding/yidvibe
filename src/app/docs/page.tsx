@@ -64,19 +64,11 @@ export default function DocsPage() {
       <div className="mt-10 space-y-8">
         <Section id="post" title="Posting a project" icon={Rocket}>
           <p>
-            Hit <strong>Post your project</strong> from anywhere. Paste a link and
-            tap <strong>Autofill</strong> — we pull in the title, description, and
-            cover image for you to tidy up. Add the <strong>tools</strong> you
-            built it with and a <strong>category</strong>, and post. It goes live
-            right away.
+            Sign in, hit <strong>Post your project</strong>, and add a link,
+            description, cover image, the <strong>tools</strong> you built it
+            with, and a <strong>category</strong>. It goes live right away.
           </p>
-          <Sub>You don&apos;t need an account to post</Sub>
-          <p>
-            Anyone can post — your own build, or a cool AI tool you found on the
-            web that the community would enjoy. Posts without an account appear as
-            a <strong>community submission</strong> (no maker attached).
-          </p>
-          <Sub>If you&apos;re signed in</Sub>
+          <Sub>Choose how it appears</Sub>
           <p>
             A post defaults to <strong>&ldquo;I built this&rdquo;</strong> — it
             shows <em>by you</em> and appears on your profile. Posting something

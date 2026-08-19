@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { safeRedirectPath } from "@/lib/security/redirects";
 
 export type AuthFormState = {
   error?: string;
@@ -38,7 +39,7 @@ export async function signUpWithPassword(
   _prev: AuthFormState,
   formData: FormData,
 ): Promise<AuthFormState> {
-  const next = String(formData.get("next") || "/");
+  const next = safeRedirectPath(formData.get("next"));
   const parsed = signUpSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
@@ -84,7 +85,7 @@ export async function signInWithPassword(
   _prev: AuthFormState,
   formData: FormData,
 ): Promise<AuthFormState> {
-  const next = String(formData.get("next") || "/");
+  const next = safeRedirectPath(formData.get("next"));
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
   const fieldErrors: Record<string, string> = {};
@@ -112,7 +113,7 @@ function siteOrigin(originHeader: string | null): string {
 
 /** Start Google OAuth. Redirects the browser to Google's consent screen. */
 export async function signInWithGoogle(formData: FormData) {
-  const next = (formData.get("next") as string) || "/";
+  const next = safeRedirectPath(formData.get("next"));
   const supabase = await createClient();
   const origin = siteOrigin((await headers()).get("origin"));
 

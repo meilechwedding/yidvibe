@@ -12,3 +12,4 @@ node_modules
 
 # Superpowers brainstorm visual-companion mockups (local only)
 .superpowers/
+docs/superpowers/

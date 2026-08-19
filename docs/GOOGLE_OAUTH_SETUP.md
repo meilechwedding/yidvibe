@@ -16,12 +16,12 @@ values:
    **APIs & Services → OAuth consent screen** (newer console: **Branding**).
 2. Fill in **exactly**:
    - **App name:** `YidVibe`
-   - **User support email:** `elimelechmoster@gmail.com`
+   - **User support email:** use the public support address configured for YidVibe.
    - **App logo:** upload **`public/brand/google-oauth-logo.png`** (a square 256×256 PNG I
      generated for this — grab it from the repo folder, or after a deploy from
      `https://yidvibe.vercel.app/brand/google-oauth-logo.png`).
    - **Application home page:** `https://yidvibe.vercel.app` (→ `https://yidvibe.com` later)
-   - **Developer contact email:** `elimelechmoster@gmail.com`
+   - **Developer contact email:** use the private operational address for YidVibe.
    - **Authorized domains:** leave empty for now on the `vercel.app` URL (you can't verify a
      domain you don't own); add `yidvibe.com` here once its DNS is live.
 3. **Publishing status → PUBLISH APP** (move from "Testing" → "In production"). With only the
