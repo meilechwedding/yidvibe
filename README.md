@@ -1,53 +1,86 @@
 # YidVibe
 
-A community marketplace for Jewish "vibe coders" — builders shipping apps and
-AI tools. Showcase your work, build a profile, get hired, post gigs, run
-competitions, and find community events.
+Full-stack community marketplace for AI builders—profiles, gigs, showcases, competitions, and events.
 
-## Stack
+[Visit YidVibe](https://yidvibe.com/)
 
-- **Framework:** Next.js 15 (App Router, React Server Components) + TypeScript
-- **Backend:** Supabase (Postgres + Auth + Storage), Row Level Security on every table
-- **Auth:** Google sign-in via Supabase Auth (`@supabase/ssr`)
-- **UI:** Tailwind v4 + shadcn/ui, Fraunces + Inter + JetBrains Mono
-- **Hosting:** Vercel
+![YidVibe homepage](docs/screenshots/home.png)
 
-## Features
+## The problem
 
-- **Showcase** — project gallery with upvotes (one per user, DB-enforced) and comments
-- **Profiles** — auto portfolio per builder + curated **Builders** page + searchable **Directory**
-- **Gigs** — post work, apply, and message privately (poster ↔ applicant only)
-- **Competitions** — prize + deadline, submissions, pick a winner
-- **Events** — community meetups
+Independent AI builders often ship in public but lack one place to present their work, find collaborators or paid opportunities, and participate in a focused local community. YidVibe brings those activities into one product instead of scattering them across chat groups, social feeds, and generic job boards.
 
-## Local dev
+## The product
 
-```bash
-npm install
-cp .env.example .env.local   # fill NEXT_PUBLIC_SUPABASE_URL + ANON_KEY
-npm run dev                  # http://localhost:3000
-```
+YidVibe is a multi-sided marketplace built around builder identity and shipped work:
 
-Google sign-in setup: see **`docs/GOOGLE_OAUTH_SETUP.md`**.
-Database schema lives in Supabase migrations (see `docs/superpowers/specs/`).
+- **Showcase** — publish projects, browse by tool or tag, upvote, and discuss
+- **Builder profiles** — maintain a public portfolio, skills, tools, and availability
+- **Directory** — search and filter community members
+- **Gigs** — post work, apply, review applicants, and use private message threads
+- **Competitions** — publish challenges, accept entries, and select a winner
+- **Events** — share community meetups and gatherings
 
-## Scripts
+## Architecture
 
-- `npm run dev` — start the dev server
-- `npm run build` — production build
-- `npm run typecheck` — `tsc --noEmit`
-- `npm run lint` — ESLint
+    Next.js 15 application
+    ├─ Server Components and route handlers
+    ├─ Supabase SSR authentication
+    ├─ Postgres data model and migrations
+    ├─ Row Level Security policies
+    ├─ Supabase Storage for uploaded media
+    └─ Tailwind CSS and reusable UI components
 
-## Deploy (Vercel)
+The application uses the Next.js App Router with TypeScript and React 19. Supabase provides Postgres, Google authentication, and storage; server and browser clients are separated through @supabase/ssr.
 
-Connected repo auto-deploys `main` to production; other branches get preview URLs.
-Set env vars in the Vercel project:
+## Security model
 
-```
-NEXT_PUBLIC_SUPABASE_URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY
-NEXT_PUBLIC_SITE_URL        # your production domain
-```
+- Row Level Security is enabled at the database layer.
+- Authorization-sensitive actions are scoped to the signed-in user or resource owner.
+- Gig conversations are limited to the poster and the relevant applicant.
+- Privileged admin operations are isolated from browser clients.
+- Environment-specific values are loaded from local or deployment configuration and are not committed.
 
-Then set the production Site URL + redirect URLs in Supabase Auth, and add the
-production origin to the Google OAuth credentials.
+The repository documents setup patterns; production security still depends on applying the migrations, configuring OAuth redirect allowlists, protecting server-only credentials, and reviewing Supabase security advisories for the deployed project.
+
+## Core stack
+
+- Next.js 15 and React 19
+- TypeScript
+- Supabase Postgres, Auth, Storage, and SSR helpers
+- Tailwind CSS 4
+- Radix UI primitives
+- React Hook Form and Zod
+- Vercel-compatible deployment
+
+## Local setup
+
+    npm ci
+    cp .env.example .env.local
+    npm run dev
+
+Configure the values documented in .env.example, then follow [Google OAuth setup](docs/GOOGLE_OAUTH_SETUP.md) for Google sign-in.
+
+## Verification
+
+    npm run typecheck
+    npm run build
+
+Run these checks from a clean install before deployment. The repository's current verification result should be taken from a fresh run, not from historical build notes.
+
+## AI-assisted workflow
+
+The project was developed with an AI-first, human-directed workflow: requirements and architecture were decided intentionally, changes were reviewed in small scopes, and security-sensitive behavior was validated against the database and application boundaries. The reusable process is documented in [docs/AI_WORKFLOW.md](docs/AI_WORKFLOW.md).
+
+## Deployment
+
+The application is designed for Vercel with Supabase as its managed backend. Production configuration requires:
+
+- Public Supabase URL and anonymous key
+- Production site URL
+- Matching Supabase and Google OAuth redirect URLs
+- Applied database migrations and reviewed Row Level Security policies
+
+## Repository note
+
+This is a portfolio project and application source. No open-source license is granted by this repository.
