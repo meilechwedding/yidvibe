@@ -101,6 +101,11 @@ $$;
 revoke all on function public.mark_conversation_read(uuid) from public, anon;
 grant execute on function public.mark_conversation_read(uuid) to authenticated;
 
+-- Trigger functions are invoked by PostgreSQL, never directly through the
+-- Data API. Remove the default EXECUTE grant so they cannot be called as RPCs.
+revoke all on function public.bump_follower_count() from public, anon, authenticated;
+revoke all on function public.notify_followers_on_project() from public, anon, authenticated;
+
 -- Anonymous projects and votes were easy to automate because client-provided
 -- identifiers were the only deduplication. Require an authenticated account.
 revoke insert, delete on public.upvotes from anon;

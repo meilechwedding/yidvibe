@@ -75,6 +75,12 @@ describe("database authorization boundaries", () => {
     expect(sql).toContain(
       "revoke all on function public.mark_conversation_read(uuid)",
     );
+    expect(sql).toContain(
+      "revoke all on function public.bump_follower_count() from public, anon, authenticated",
+    );
+    expect(sql).toContain(
+      "revoke all on function public.notify_followers_on_project() from public, anon, authenticated",
+    );
   });
 
   test("anonymous project and vote writes are revoked", () => {
