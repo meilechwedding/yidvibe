@@ -99,9 +99,34 @@ The same computer's browser initialization was retried and still failed before e
 MXC launcher: cannot locate required Windows platform directory: HRESULT 0x80070003
 ```
 
-No alternate supported usable local browser surface was verified. Local patched UI/mobile/Google-session testing is therefore unperformed. jsdom/source checks are not visual browser validation.
+No alternate supported usable local browser surface was verified. Local browser testing on that computer remains unperformed. jsdom/source checks are not visual browser validation. The authorized cloud preview review below supplies separate actual desktop browser evidence.
 
-The parent separately obtained authorization for cloud production testing. That signed-out review covered six live sections and reported the private-builder contact dead end and duplicate-cased Codex facets. It reviewed current production, not this unpublished patch. Google rejected the secure sign-in attempt; manual user handoff is pending, and no signed-in coverage is claimed. Directory/Gigs detail paths could not be exercised because their live lists are empty; mobile viewport testing was unavailable.
+An earlier authorized cloud production review covered six live sections and reported the private-builder contact dead end and duplicate-cased Codex facets. That baseline review was of production, not the patch. After publication, a separate user-approved cloud browser review tested the patched preview as described below. No signed-in coverage is claimed.
+
+### Actual patched-preview desktop QA, October 13, 2026
+
+Tested application baseline: **`898f4c124e300ad17510739bfac56085aa27b3f2`**. The later documentation-only commit does not change the application baseline. Evidence was reported by the separate authorized cloud browser reviewer through the parent task. These were actual rendered browser interactions, distinct from local jsdom/source tests.
+
+Context: signed out, desktop cloud browser. Exact browser engine and viewport dimensions were not supplied in the handoff. A supported mobile viewport tool was unavailable. Temporary preview access was approved by the user; no access token or bearer link is stored in this report.
+
+| Area | Actual actions and result |
+| --- | --- |
+| Auth mode changes | Entered dummy fields and switched modes both ways. Fields cleared correctly. No account created or form submitted. |
+| Showcase filters | Combined search, tool and category; made rapid changes; used browser Back and Clear all. Applied state restored and cleared correctly. |
+| Builders filters | Rapid search, tool and availability changes, plus skill selection followed immediately by Clear. No stale-state defect reproduced. |
+| Directory entry | Verified signup mode and preserved next destination, guest control labels and docs anchor. No listing submitted. |
+| Competitions | Verified ended competition has no entry CTA; exercised status, search and prize filters. No entry submitted. |
+| Feedback dialog | Exercised focus trap, Shift+Tab, Escape and focus return to the trigger. No feedback submitted. |
+| Signed-out gates | Save, Upvote, Claim and Post project/gig/competition actions preserved their intended sign-in return paths. No protected mutation completed. |
+| Links and sharing | Checked project/profile links and a clean share URL. |
+| Media | Observed loaded media for Family Schedule, Gabbai Cards and Ayn Kol Ai. |
+| Desktop layout | Inspected sampled desktop layouts; the reviewer reported them clean. This does not establish all viewport or text-scale behavior. |
+
+No new confirmed functional defect was found in this signed-out patched-preview pass. It did not access database resources or mutate production data.
+
+The user's secure Google sign-in form repeatedly failed to complete. No successful login or authenticated test session resulted. This is a test handoff limitation, **not a confirmed YidVibe authentication failure**. Manual user handoff remains the next authentication step; OAuth/security settings were not changed.
+
+Untested: authenticated account/dashboard workflows, real uploads, submissions and other write actions; mobile/touch layouts; natural multi-image galleries and broken-media recovery where sampled content did not provide those cases. The mocked media regressions still supply local evidence for failure recovery, but that scenario was not reproduced naturally in the browser sample. Directory/Gigs detail flows remain untested because the sampled live lists had no entries.
 
 Remaining issues/limits:
 
