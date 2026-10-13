@@ -124,9 +124,29 @@ Context: signed out, desktop cloud browser. Exact browser engine and viewport di
 
 No new confirmed functional defect was found in this signed-out patched-preview pass. It did not access database resources or mutate production data.
 
-The user's secure Google sign-in form repeatedly failed to complete. No successful login or authenticated test session resulted. This is a test handoff limitation, **not a confirmed YidVibe authentication failure**. Manual user handoff remains the next authentication step; OAuth/security settings were not changed.
+At the time of the signed-out preview pass, the user's secure Google sign-in form repeatedly failed to complete. That was a test handoff limitation, **not a confirmed YidVibe authentication failure**. A later cloud-session update confirmed successful production Google sign-in with the existing matching account, without a password reprompt. That confirms production sign-in, not authenticated preview workflows. OAuth/security settings were not changed.
 
 Untested: authenticated account/dashboard workflows, real uploads, submissions and other write actions; mobile/touch layouts; natural multi-image galleries and broken-media recovery where sampled content did not provide those cases. The mocked media regressions still supply local evidence for failure recovery, but that scenario was not reproduced naturally in the browser sample. Directory/Gigs detail flows remain untested because the sampled live lists had no entries.
+
+### App-side OAuth redirect review, October 13, 2026
+
+The cloud reviewer subsequently reported that preview sign-in requested the preview's `/auth/callback`, but the return landed on the production homepage carrying an authorization code and did not establish a preview session. No live callback URL, authorization code, cookie or token was copied into this report or test fixtures.
+
+The user permitted a narrowly scoped source review of `src/lib/actions/auth.ts`, `src/app/auth/callback/route.ts` and the existing redirect validator. This is a separate exception to the earlier source-inventory auth-transport exclusion; the earlier inventory still describes its original broad review scope. Supabase client implementations, auth settings, database/admin resources, migrations and secrets remain excluded.
+
+Source evidence:
+
+- Google initiation derives its origin from the request Origin header, with configured site URL/local fallback only when that header is absent. It passes that origin's `/auth/callback` and a validated app-local next path to the existing transport.
+- Callback handling obtains origin from its own request URL, exchanges a supplied code through the existing transport, and redirects success to a validated path on that origin. Missing/failed exchanges return a generic login error on the same origin.
+- The application homepage does not perform the callback exchange. The reported production-homepage landing did not reach the intended preview callback handler.
+
+No app-side defect causing this observed cross-origin landing was reproduced. Application redirect/callback code was not changed. Seven new mocked regressions pass in `tests/oauth-callback.test.ts`, covering preview vs production request origins, unsafe next paths, preview callback success, missing code and exchange failure. Transport functions are mocked, not loaded or queried; fixtures contain no live credentials or codes.
+
+An external allowed-redirect/default-site configuration mismatch is a **plausible, unverified inference**, not a confirmed setting diagnosis. Public [redirect documentation](https://supabase.com/docs/guides/auth/redirect-urls) says the requested redirect must match the configured allowed list. Production sign-in success alone does not establish that the preview callback is allowed. No project configuration was viewed.
+
+Minimum additional scope needed to verify that inference: read only the relevant Auth URL Configuration's Site URL and allowed Redirect URLs, comparing them with the expected preview callback and its next-query handling. No database tables, migrations, provider credentials, tokens or OAuth scopes are needed. If a missing entry is confirmed, changing an exact approved preview callback entry requires explicit setting-change approval. No broad wildcard, production Site URL change or new grant is proposed here.
+
+One bounded desktop state recheck was also performed after a runtime reset. It still failed before exposing a browser with `HRESULT 0x80070003`. No desktop sign-in actions competed with the cloud session.
 
 Remaining issues/limits:
 
