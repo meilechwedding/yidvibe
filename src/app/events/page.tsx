@@ -1,3 +1,4 @@
+import { EVENTS_COPY } from "@/content/pages/events";
 import Link from "next/link";
 import { CalendarDays } from "lucide-react";
 import { listAllEvents } from "@/lib/events";
@@ -6,10 +7,7 @@ import { PageHeader } from "@/components/brand/page-header";
 import { EmptyState } from "@/components/brand/empty-state";
 import { EventsBoard } from "@/components/events/events-board";
 
-export const metadata = {
-  title: "Events",
-  description: "Community workshops and meetups for builders.",
-};
+export const metadata = EVENTS_COPY.metadata;
 
 export default async function EventsPage() {
   const events = await listAllEvents();
@@ -18,9 +16,9 @@ export default async function EventsPage() {
     <Container className="max-w-4xl py-10 md:py-14">
       <PageHeader
         accent="sage"
-        eyebrow="Gather"
-        title="Events"
-        subtitle="Browse community workshops and meetups by date, place, or keyword."
+        eyebrow={EVENTS_COPY.eyebrow}
+        title={EVENTS_COPY.title}
+        subtitle={EVENTS_COPY.subtitle}
       />
 
       {events.length === 0 ? (

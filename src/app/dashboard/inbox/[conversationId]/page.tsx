@@ -128,6 +128,7 @@ export default async function ThreadPage({
           </div>
           <Link
             href={`/u/${other.handle}`}
+            aria-label={`View ${other.name}'s profile`}
             className="btn btn-ghost btn-sm shrink-0"
           >
             <span className="hidden sm:inline">View profile</span>

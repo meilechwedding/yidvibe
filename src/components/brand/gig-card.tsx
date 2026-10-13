@@ -18,7 +18,7 @@ export function GigCard({
   return (
     <Link
       href={`/gigs/${gig.slug}`}
-      className="group flex flex-col rounded-2xl border border-border bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]"
+      className="group flex flex-col rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 motion-reduce:transition-none motion-reduce:hover:translate-y-0 border border-border bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]"
     >
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
@@ -62,7 +62,7 @@ export function GigCard({
         )}
         <ArrowRight
           size={15}
-          className="ml-auto shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5"
+          className="ml-auto shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 motion-reduce:transform-none"
         />
       </div>
     </Link>

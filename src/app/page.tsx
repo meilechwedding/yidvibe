@@ -1,3 +1,4 @@
+import { HOME_COPY } from "@/content/pages/home";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -14,51 +15,29 @@ import { BrowseBy } from "@/components/brand/browse-by";
 import { RotatingRow } from "@/components/brand/rotating-row";
 import { ProjectRowCard } from "@/components/showcase/project-row-card";
 import { BuilderCard } from "@/components/brand/builder-card";
-import { listProjects, listTopBuilders, getBrowseTags } from "@/lib/queries";
+import { listProjects, listTopBuilders, getBrowseTags, getMyUpvotedProjectIds, getMySavedProjectIds } from "@/lib/queries";
 import { getAuthUser } from "@/lib/current-user";
 import { KNOWN_TOOLS } from "@/lib/site";
 
-const AUDIENCES = [
-  {
-    tag: "I build",
-    title: "Show what you made",
-    body: "Post an app, tool, or MVP. Add a link or screenshot, tag how you built it, and let the community find it.",
-    cta: "Post your project",
-    href: "/showcase/submit",
-    tint: "tint-teal",
-    Icon: Hammer,
-  },
-  {
-    tag: "I'm hiring",
-    title: "Find a builder through their work",
-    body: "Browse the projects and reach the maker through YidVibe — to hire, buy, or partner. No tech background needed.",
-    cta: "Browse builders",
-    href: "/builders",
-    tint: "tint-gold",
-    Icon: Briefcase,
-  },
-  {
-    tag: "I'm curious",
-    title: "Just look around",
-    body: "New to all of this? Explore freely — no account required. See what the community's making with AI.",
-    cta: "Explore the showcase",
-    href: "/showcase",
-    tint: "tint-blue",
-    Icon: Compass,
-  },
-];
+const AUDIENCE_PRESENTATION = [
+  { tint: "tint-teal", Icon: Hammer },
+  { tint: "tint-gold", Icon: Briefcase },
+  { tint: "tint-blue", Icon: Compass },
+] as const;
 
 // Display-only casing fix (stored tool value stays "base44").
 const toolLabel = (t: string) => (t === "base44" ? "Base44" : t);
 const TOOL_STRIP = KNOWN_TOOLS.filter((t) => t !== "Other");
 
 export default async function Home() {
-  const [topList, recent, builders, tags, user] = await Promise.all([
+  const [topList, recent, builders, tags, user, upvoted, saved] = await Promise.all([
     listProjects({ sort: "top", limit: 1 }),
     listProjects({ sort: "new", limit: 8 }),
     listTopBuilders(8),
     getBrowseTags(),
     getAuthUser(),
+    getMyUpvotedProjectIds(),
+    getMySavedProjectIds(),
   ]);
   const isAuthed = !!user;
   // Featured-first ordering means topList[0] is the editorial pick if one exists.
@@ -91,7 +70,7 @@ export default async function Home() {
         <Container className="flex flex-col items-center py-20 text-center md:py-28">
           <span className="badge-pill">
             <Sparkle size={14} />
-            The home for frum builders
+            {HOME_COPY.tagline}
           </span>
 
           <h1 className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.5vw,4.5rem)] font-bold leading-[1.06] tracking-tight text-ink">
@@ -156,7 +135,7 @@ export default async function Home() {
             <Reveal>
               <Eyebrow>★ Featured</Eyebrow>
               <div className="mt-5">
-                <ProjectRowCard project={spotlight} isAuthed={isAuthed} upvoted={false} />
+                <ProjectRowCard project={spotlight} isAuthed={isAuthed} upvoted={upvoted.has(spotlight.id)} saved={saved.has(spotlight.id)} />
               </div>
             </Reveal>
           </Container>
@@ -278,12 +257,12 @@ export default async function Home() {
             </h2>
           </Reveal>
           <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {AUDIENCES.map((a, i) => {
-              const Icon = a.Icon;
+            {HOME_COPY.audiences.map((a, i) => {
+              const { Icon, tint } = AUDIENCE_PRESENTATION[i]!;
               return (
                 <Reveal key={a.tag} delay={i * 80}>
                   <div className="group flex h-full flex-col rounded-3xl border border-border bg-surface p-7 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]">
-                    <span className={`grid h-12 w-12 place-items-center rounded-[14px] ${a.tint}`}>
+                    <span className={`grid h-12 w-12 place-items-center rounded-[14px] ${tint}`}>
                       <Icon size={22} />
                     </span>
                     <span className="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">

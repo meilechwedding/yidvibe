@@ -1,15 +1,5 @@
 import Link from "next/link";
-import type { Accent } from "@/lib/site";
-
-/** Deep accent gradients for detail covers — tuned for white overlaid text. */
-const HERO: Record<Accent, string> = {
-  teal: "linear-gradient(135deg, var(--teal-400) 0%, var(--teal-800) 100%)",
-  blue: "linear-gradient(135deg, var(--blue-mid) 0%, var(--blue-deep) 100%)",
-  orange: "linear-gradient(135deg, var(--orange-mid) 0%, var(--orange-deep) 100%)",
-  clay: "linear-gradient(135deg, var(--clay-mid) 0%, var(--clay-deep) 100%)",
-  sage: "linear-gradient(135deg, var(--sage-mid) 0%, var(--sage-deep) 100%)",
-  gold: "linear-gradient(135deg, var(--gold-500) 0%, var(--gold-700) 100%)",
-};
+import { ACCENT_HERO, type Accent } from "@/lib/design/accents";
 
 export type HeroTag = { label: string; href?: string };
 
@@ -41,8 +31,9 @@ export function DetailHero({
   return (
     <div
       className="relative flex min-h-[210px] flex-col justify-end overflow-hidden rounded-3xl border border-border p-6 sm:min-h-[240px] sm:p-8"
-      style={{ backgroundImage: HERO[accent] }}
+      style={{ backgroundImage: ACCENT_HERO[accent] }}
     >
+      {!coverImage && <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/60 via-ink/40 to-ink/20" />}
       {coverImage ? (
         <>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -72,7 +63,7 @@ export function DetailHero({
           </div>
         )}
         <h1
-          className="font-display text-[clamp(1.8rem,4.5vw,2.75rem)] font-bold leading-tight tracking-tight text-white"
+          className="font-display text-[clamp(1.8rem,4.5vw,2.75rem)] font-bold leading-tight tracking-tight text-white break-words"
           dir="auto"
         >
           {title}

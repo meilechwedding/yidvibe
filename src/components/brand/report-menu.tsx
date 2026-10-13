@@ -70,6 +70,7 @@ export function ReportMenu({
             </div>
 
             <textarea
+              aria-label="Report details"
               value={details}
               onChange={(e) => setDetails(e.target.value)}
               rows={3}

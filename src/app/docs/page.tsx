@@ -1,3 +1,4 @@
+import { DOCS_COPY } from "@/content/pages/docs";
 import Link from "next/link";
 import {
   Rocket,
@@ -11,11 +12,7 @@ import {
 } from "lucide-react";
 import { Container, Eyebrow } from "@/components/brand/layout";
 
-export const metadata = {
-  title: "How YidVibe works",
-  description:
-    "How to post a project, upvote, comment, claim, and set up a profile on YidVibe — the home for frum builders. Free.",
-};
+export const metadata = { title: DOCS_COPY.title, description: DOCS_COPY.description };
 
 function Section({
   id,
@@ -50,19 +47,16 @@ function Sub({ children }: { children: React.ReactNode }) {
 export default function DocsPage() {
   return (
     <Container className="max-w-2xl py-12 md:py-16">
-      <Eyebrow>How it works</Eyebrow>
+      <Eyebrow>{DOCS_COPY.eyebrow}</Eyebrow>
       <h1 className="mt-3 font-display text-[clamp(2.2rem,5vw,3rem)] font-bold leading-tight tracking-tight text-ink">
-        How YidVibe works
+        {DOCS_COPY.title}
       </h1>
       <p className="mt-4 text-lg text-muted-foreground">
-        YidVibe is a curated board of AI projects and tools built by frum
-        builders — Torah apps, community tools, business software, personal
-        productivity. Browse it, upvote what you like, and post your own. Always
-        free.
+        {DOCS_COPY.intro}
       </p>
 
       <div className="mt-10 space-y-8">
-        <Section id="post" title="Posting a project" icon={Rocket}>
+        <Section id="post" title={DOCS_COPY.sections.post} icon={Rocket}>
           <p>
             Sign in, hit <strong>Post your project</strong>, and add a link,
             description, cover image, the <strong>tools</strong> you built it
@@ -78,12 +72,9 @@ export default function DocsPage() {
           </p>
         </Section>
 
-        <Section id="engage" title="Upvotes & comments" icon={ChevronUp}>
+        <Section id="engage" title={DOCS_COPY.sections.engage} icon={ChevronUp}>
           <p>
-            <strong>Upvoting</strong> works without an account — it&apos;s how good
-            work rises to the top. To <strong>comment or reply</strong>,
-            you&apos;ll need a free account; conversations are public so everyone
-            can follow along.
+            {DOCS_COPY.engagement}
           </p>
           <p>
             A <strong>Featured</strong> badge is hand-picked by our team to
@@ -92,11 +83,9 @@ export default function DocsPage() {
           </p>
         </Section>
 
-        <Section id="accounts" title="Accounts & profiles" icon={UserCircle}>
+        <Section id="accounts" title={DOCS_COPY.sections.accounts} icon={UserCircle}>
           <p>
-            You can browse, post, and upvote without an account. Make a free one
-            (Google, or email &amp; password) to comment, save projects, and have
-            a profile.
+            {DOCS_COPY.accountRequirements}
           </p>
           <Sub>Your profile is yours to shape</Sub>
           <p>
@@ -108,7 +97,20 @@ export default function DocsPage() {
           </p>
         </Section>
 
-        <Section id="claim" title="Claiming a project" icon={Hand}>
+        <Section id="directory" title={DOCS_COPY.sections.directory} icon={UserCircle}>
+          <p>
+            <Link href="/signup?next=/directory/list-me" className="font-medium text-teal-700 hover:underline">Create a free account</Link>{" "}
+            to add a listing using your profile details. Already signed in?{" "}
+            <Link href="/directory/list-me" className="font-medium text-teal-700 hover:underline">Add yourself to the directory</Link>.
+          </p>
+          <p>
+            You can also use the{" "}
+            <Link href="/directory/list" className="font-medium text-teal-700 hover:underline">public listing form</Link>{" "}
+            without an account. We review those submissions before they appear.
+          </p>
+        </Section>
+
+        <Section id="claim" title={DOCS_COPY.sections.claim} icon={Hand}>
           <p>
             Did someone post a tool <em>you</em> made as a community submission?
             On the project page, hit{" "}
@@ -118,7 +120,7 @@ export default function DocsPage() {
           </p>
         </Section>
 
-        <Section id="contact" title="Reaching makers" icon={MessageSquare}>
+        <Section id="contact" title={DOCS_COPY.sections.contact} icon={MessageSquare}>
           <p>
             There are no public phone numbers or emails unless someone adds them.
             On a project by a signed-in builder, the{" "}
@@ -127,7 +129,7 @@ export default function DocsPage() {
           </p>
         </Section>
 
-        <Section id="safety" title="Reporting & guidelines" icon={ShieldCheck}>
+        <Section id="safety" title={DOCS_COPY.sections.safety} icon={ShieldCheck}>
           <p>
             See something that doesn&apos;t belong? Every project and comment has a
             quiet <strong>Report</strong> option in its menu — reports go to our
@@ -142,14 +144,13 @@ export default function DocsPage() {
           </ul>
         </Section>
 
-        <Section id="faq" title="FAQ" icon={HelpCircle}>
+        <Section id="faq" title={DOCS_COPY.sections.faq} icon={HelpCircle}>
           <p className="font-medium text-ink">Does it cost anything?</p>
           <p>No. Browsing, posting, upvoting, and connecting are all free.</p>
 
           <p className="mt-3 font-medium text-ink">Do I need an account?</p>
           <p>
-            Not to browse, post, or upvote. You need one to comment, save
-            projects, claim a project, or have a profile.
+            {DOCS_COPY.accountFaq}
           </p>
 
           <p className="mt-3 font-medium text-ink">
@@ -161,7 +162,7 @@ export default function DocsPage() {
           </p>
         </Section>
 
-        <Section id="start" title="Ready?" icon={LogIn}>
+        <Section id="start" title={DOCS_COPY.sections.start} icon={LogIn}>
           <p>Now you know how it works — go build something.</p>
           <div className="pt-2">
             <Link

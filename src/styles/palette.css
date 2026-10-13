@@ -1,0 +1,36 @@
+/* Generated from palette.json. Run npm run theme:sync after editing colors. */
+@theme {
+  --color-canvas: #fbfcfd;
+  --color-surface: #ffffff;
+  --color-border: #e5e9ed;
+  --color-border-hover: #d4dae0;
+  --color-ink: #16202b;
+  --color-teal-50: #edf3f2;
+  --color-teal-100: #c2d6d1;
+  --color-teal-400: #5c928a;
+  --color-teal-600: #1f6e66;
+  --color-teal-700: #155952;
+  --color-teal-800: #134b45;
+  --color-teal-900: #0c2e2a;
+  --color-amber-50: #fbf3df;
+  --color-amber-100: #f8e9c7;
+  --color-amber-300: #eec56a;
+  --color-amber-500: #e0a12e;
+  --color-amber-700: #a9741a;
+  --color-amber-900: #5a3f0e;
+  --color-clay-tint: #fbeee8;
+  --color-clay-mid: #c9714e;
+  --color-clay-deep: #8c3e22;
+  --color-orange-tint: #fbede3;
+  --color-orange-mid: #d17f4a;
+  --color-orange-deep: #8f4e20;
+  --color-blue-tint: #eaeff4;
+  --color-blue-mid: #4a6d8c;
+  --color-blue-deep: #2a4258;
+  --color-sage-tint: #e6f0eb;
+  --color-sage-mid: #3f8a6e;
+  --color-sage-deep: #2c5e48;
+  --color-secondary: #f1f4f6;
+  --color-muted-foreground: #5b6670;
+  --color-destructive: #b23a2b;
+}

@@ -25,7 +25,7 @@ export default async function ListMePage() {
         subtitle="We pulled in what we already know from your profile — just fill the gaps."
       />
       <div className="mt-3">
-        <FormHelpLink>See how the directory works →</FormHelpLink>
+        <FormHelpLink href="/docs#directory">See how the directory works →</FormHelpLink>
       </div>
       <div className="mt-6">
         <SelfListingForm

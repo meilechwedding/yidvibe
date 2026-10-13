@@ -1,5 +1,7 @@
 "use client";
 
+import * as Dialog from "@radix-ui/react-dialog";
+import { COMMON_COPY } from "@/content/common";
 import { useState } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 
@@ -61,7 +63,7 @@ export function SearchField({
         <button
           type="button"
           onClick={() => onChange("")}
-          aria-label="Clear search"
+          aria-label={COMMON_COPY.actions.clearSearch}
           className="absolute right-2.5 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-ink"
         >
           <X size={15} />
@@ -145,19 +147,15 @@ export function FilterShell({
         )}
       </div>
 
-      {open && (
-        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
-          <button
-            aria-label="Close filters"
-            onClick={() => setOpen(false)}
-            className="absolute inset-0 bg-black/30"
-          />
-          <div className="absolute inset-x-0 bottom-0 rounded-t-3xl border-t border-border bg-surface p-5 pb-8 shadow-float">
+      <Dialog.Root open={open} onOpenChange={setOpen}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 z-50 bg-black/30 lg:hidden" />
+          <Dialog.Content aria-describedby={undefined} className="fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] overflow-y-auto lg:hidden rounded-t-3xl border-t border-border bg-surface p-5 pb-8 shadow-float">
             <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border" />
             <div className="mb-4 flex items-center justify-between">
-              <span className="font-display text-lg font-semibold text-ink">
+              <Dialog.Title className="font-display text-lg font-semibold text-ink">
                 Filters
-              </span>
+              </Dialog.Title>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
@@ -187,9 +185,9 @@ export function FilterShell({
                 Done
               </button>
             </div>
-          </div>
-        </div>
-      )}
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </div>
   );
 }
@@ -208,7 +206,7 @@ export function Chip({
       <button
         type="button"
         onClick={onClear}
-        aria-label="Remove filter"
+        aria-label={COMMON_COPY.actions.removeFilter}
         className="-mr-0.5 rounded-full text-teal-700 hover:text-teal-900"
       >
         <X size={13} />

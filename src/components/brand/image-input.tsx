@@ -17,12 +17,16 @@ export function ImageInput({
   defaultValue,
   shape = "rect",
   fallbackInitial,
+  onUploadingChange,
+  onValueChange,
 }: {
   name: string;
   bucket: "avatars" | "project-media";
   defaultValue?: string | null;
   shape?: "circle" | "rect";
   fallbackInitial?: string;
+  onUploadingChange?: (uploading: boolean) => void;
+  onValueChange?: () => void;
 }) {
   const [url, setUrl] = useState(defaultValue ?? "");
   const [uploading, setUploading] = useState(false);
@@ -33,6 +37,7 @@ export function ImageInput({
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
+    onUploadingChange?.(true);
     try {
       const { url: uploaded, error } = await uploadImage(file, bucket);
       if (error || !uploaded) {
@@ -40,8 +45,12 @@ export function ImageInput({
         return;
       }
       setUrl(uploaded);
+      onValueChange?.();
+    } catch {
+      toast.error("Upload failed. Please try again.");
     } finally {
       setUploading(false);
+      onUploadingChange?.(false);
       if (fileRef.current) fileRef.current.value = "";
     }
   }
@@ -67,7 +76,8 @@ export function ImageInput({
           {url && (
             <button
               type="button"
-              onClick={() => setUrl("")}
+              disabled={uploading}
+              onClick={() => { setUrl(""); onValueChange?.(); }}
               aria-label="Remove image"
               className="absolute right-1 top-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-ink/70 text-white"
             >
@@ -98,10 +108,12 @@ export function ImageInput({
             onChange={handleFile}
           />
           <input
+            aria-label="Image URL"
             type="url"
             inputMode="url"
             value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            disabled={uploading}
+            onChange={(e) => { setUrl(e.target.value); onValueChange?.(); }}
             placeholder="…or paste an image URL"
             className="h-9 w-64 max-w-full rounded-[10px] border border-border bg-surface px-3 text-sm text-ink outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
           />

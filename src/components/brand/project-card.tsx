@@ -5,20 +5,10 @@ import { TagPill } from "./pill";
 import { UpvoteButton } from "./upvote-button";
 import { SaveButton } from "./save-button";
 import { Sparkle } from "./sparkle";
-import { accentFor, type Accent } from "@/lib/site";
+import { accentFor, ACCENT_COVER } from "@/lib/design/accents";
 import { cn } from "@/lib/utils";
 import { displayName } from "@/lib/display";
 import type { ProjectWithOwner } from "@/lib/queries";
-
-/** Soft branded cover tints, keyed to the project's stable accent. */
-const COVER: Record<Accent, { bg: string; fg: string }> = {
-  teal: { bg: "var(--teal-50)", fg: "var(--teal-700)" },
-  blue: { bg: "var(--blue-bg)", fg: "var(--blue-deep)" },
-  orange: { bg: "var(--orange-bg)", fg: "var(--orange-deep)" },
-  clay: { bg: "var(--clay-bg)", fg: "var(--clay-deep)" },
-  sage: { bg: "var(--sage-bg)", fg: "var(--sage-deep)" },
-  gold: { bg: "var(--gold-50)", fg: "var(--gold-700)" },
-};
 
 export function ProjectCard({
   project,
@@ -40,7 +30,7 @@ export function ProjectCard({
   const owner = project.owner;
   const href = `/showcase/${project.id}`;
   const featured = !!project.featured;
-  const cover = COVER[accentFor(project.name)];
+  const cover = ACCENT_COVER[accentFor(project.name)];
   const initial = project.name.slice(0, 1).toUpperCase();
   // A featured/live flag already lives at top-left; stack the medal under it.
   const hasFlag = featured || !!project.url;
@@ -73,7 +63,7 @@ export function ProjectCard({
 
           {featured ? (
             <span className="pc-flag">
-              <Sparkle size={12} color="var(--gold-900)" /> Featured
+              <Sparkle size={12} color="var(--ink)" /> Featured
             </span>
           ) : project.url ? (
             <span className="pc-flag is-live">

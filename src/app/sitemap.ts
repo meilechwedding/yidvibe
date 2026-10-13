@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL } from "@/config/site";
 import { listProjects, listBuilders, getBrowseTags } from "@/lib/queries";
 
 // Rebuild the sitemap hourly so new projects/builders get discovered.

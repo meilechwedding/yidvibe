@@ -1,59 +1,19 @@
 "use client";
 
+import { directoryFormCopy } from "@/content/forms/directory";
+
+import { FORM_INPUT_CLASS, FORM_TEXTAREA_CLASS } from "@/lib/design/controls";
+
+import { FormField as Field } from "@/components/brand/form-field";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check } from "lucide-react";
 import {
   createMyDirectoryListing,
   type DirectoryListingState,
 } from "@/lib/actions/directory";
 import { useActionState } from "react";
 import { useScrollToFirstError } from "@/hooks/use-scroll-to-error";
-
-const inputClass =
-  "h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
-
-/** Subtle "from profile" affordance shown next to prefilled labels. */
-function FromProfile() {
-  return (
-    <span
-      className="ml-2 inline-flex items-center gap-1 align-middle text-[11px] font-normal"
-      style={{ color: "var(--sage-deep)" }}
-    >
-      <Check size={12} /> from profile
-    </span>
-  );
-}
-
-function Field({
-  label,
-  hint,
-  fromProfile,
-  error,
-  children,
-}: {
-  label: string;
-  hint?: string;
-  fromProfile?: boolean;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <label className="mb-1.5 block text-sm font-medium text-ink">
-        {label}
-        {hint && (
-          <span className="ml-2 font-normal text-xs text-muted-foreground">
-            {hint}
-          </span>
-        )}
-        {fromProfile && <FromProfile />}
-      </label>
-      {children}
-      {error && <p className="mt-1 text-xs text-clay-deep">{error}</p>}
-    </div>
-  );
-}
 
 export function SelfListingForm({
   defaults,
@@ -93,28 +53,29 @@ export function SelfListingForm({
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field
-          label="Name / business"
+          label={directoryFormCopy.name}
           fromProfile={!!defaults.name}
           error={state.fieldErrors?.name}
         >
           <input
             name="name"
+            aria-label={directoryFormCopy.name}
             defaultValue={defaults.name}
             maxLength={120}
             dir="auto"
-            className={inputClass}
-            placeholder="Your name or company"
+            className={FORM_INPUT_CLASS}
+            placeholder={directoryFormCopy.namePlaceholder}
           />
         </Field>
-        <Field label="Category" error={state.fieldErrors?.category}>
+        <Field label={directoryFormCopy.category} error={state.fieldErrors?.category}>
           <select
             name="category"
             defaultValue=""
-            className={inputClass}
-            aria-label="Category"
+            className={FORM_INPUT_CLASS}
+            aria-label={directoryFormCopy.category}
           >
             <option value="" disabled>
-              Choose one…
+              {directoryFormCopy.categoryPlaceholder}
             </option>
             {categories.map((c) => (
               <option key={c} value={c}>
@@ -126,56 +87,61 @@ export function SelfListingForm({
       </div>
 
       <Field
-        label="What you do"
+        label={directoryFormCopy.description}
         fromProfile={!!defaults.what_you_do}
         error={state.fieldErrors?.what_you_do}
       >
         <textarea
           name="what_you_do"
+          aria-label={directoryFormCopy.description}
           defaultValue={defaults.what_you_do}
           rows={3}
           maxLength={600}
           dir="auto"
-          className="w-full resize-y rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
-          placeholder="A sentence or two about what you do."
+          className={FORM_TEXTAREA_CLASS}
+          placeholder={directoryFormCopy.descriptionPlaceholder}
         />
       </Field>
 
-      <Field label="What you're looking for" hint="optional">
+      <Field label={directoryFormCopy.wants} hint="optional">
         <textarea
           name="wants"
+          aria-label={directoryFormCopy.wants}
           rows={2}
           maxLength={600}
           dir="auto"
-          className="w-full resize-y rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
-          placeholder="Clients, collaborators, work…"
+          className={FORM_TEXTAREA_CLASS}
+          placeholder={directoryFormCopy.wantsPlaceholder}
         />
       </Field>
 
       <Field
-        label="Contact"
-        hint="at least one — how people reach you"
+        label={directoryFormCopy.contact}
+        hint={directoryFormCopy.contactHint}
         fromProfile={!!(defaults.email || defaults.phone || defaults.website)}
         error={state.fieldErrors?.contact_email}
       >
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
           <input
             name="contact_email"
+            aria-label="Contact email"
             type="email"
             defaultValue={defaults.email}
-            className={inputClass}
+            className={FORM_INPUT_CLASS}
             placeholder="Email"
           />
           <input
             name="contact_phone"
+            aria-label="Contact phone"
             defaultValue={defaults.phone}
-            className={inputClass}
+            className={FORM_INPUT_CLASS}
             placeholder="Phone"
           />
           <input
             name="contact_website"
+            aria-label="Contact website"
             defaultValue={defaults.website}
-            className={inputClass}
+            className={FORM_INPUT_CLASS}
             placeholder="Website"
           />
         </div>

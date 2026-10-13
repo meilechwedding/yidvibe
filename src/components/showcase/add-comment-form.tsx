@@ -38,6 +38,7 @@ export function AddCommentForm({
       {parentId && <input type="hidden" name="parent_id" value={parentId} />}
       <textarea
         name="body"
+        aria-label={parentId ? "Reply" : "Comment"}
         rows={compact ? 2 : 3}
         dir="auto"
         maxLength={2000}

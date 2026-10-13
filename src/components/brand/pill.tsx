@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { type Accent, ACCENT_PILL } from "@/lib/site";
+import { type Accent, ACCENT_PILL } from "@/lib/design/accents";
 
 type PillAccent = Accent | "neutral";
 

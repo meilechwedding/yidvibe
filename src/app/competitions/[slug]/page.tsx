@@ -51,7 +51,8 @@ export default async function CompetitionDetailPage({
   // Pending competitions are visible only to their creator and admins.
   if (comp.review_status !== "approved" && !isCreator && !admin) notFound();
   const winnerId = comp.winner_submission_id;
-  const canSubmit = !!me && !isCreator && !dl.ended && comp.status === "open";
+  const acceptingEntries = !dl.ended && comp.status === "open";
+  const canSubmit = !!me && !isCreator && acceptingEntries;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 md:px-6">
@@ -64,7 +65,7 @@ export default async function CompetitionDetailPage({
           badge={
             <span className="inline-flex items-center gap-1.5">
               <Trophy size={14} /> ${comp.prize_amount.toLocaleString()} ·{" "}
-              {winnerId ? "Winner picked" : dl.text}
+              {winnerId ? "Winner picked" : comp.status !== "open" ? "Closed" : dl.text}
             </span>
           }
           tags={comp.tags.map((t) => ({ label: t }))}
@@ -135,7 +136,11 @@ export default async function CompetitionDetailPage({
       )}
 
       <section className="mt-8">
-        {canSubmit ? (
+        {!acceptingEntries ? (
+          <p className="text-sm text-muted-foreground">
+            This competition is no longer accepting entries.
+          </p>
+        ) : canSubmit ? (
           <div className="rounded-card border border-border bg-surface p-5">
             <h2 className="font-display text-lg font-bold text-ink">Submit your entry</h2>
             <div className="mt-3">
@@ -166,7 +171,7 @@ export default async function CompetitionDetailPage({
         </h2>
         {submissions.length === 0 ? (
           <p className="mt-2 text-sm text-muted-foreground">
-            No entries yet — be the first.
+            {acceptingEntries ? "No entries yet - be the first." : "No entries were submitted."}
           </p>
         ) : (
           <ul className="mt-4 space-y-3">

@@ -1,5 +1,6 @@
 import { BadgeCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SITE_NAME } from "@/config/site";
 
 /**
  * Author byline for content posted by the platform itself ("Official YidVibe").
@@ -26,7 +27,7 @@ export function OfficialAuthor({
         <BadgeCheck size={icon} />
       </span>
       <span className="inline-flex items-center gap-1 font-medium text-ink">
-        YidVibe
+        {SITE_NAME}
         <BadgeCheck size={14} className="text-teal-600" />
       </span>
     </span>

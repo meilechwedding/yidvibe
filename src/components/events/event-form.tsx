@@ -1,36 +1,16 @@
 "use client";
 
+import { eventFormCopy } from "@/content/forms/events";
+
+import { FORM_INPUT_CLASS, FORM_TEXTAREA_CLASS } from "@/lib/design/controls";
+
+import { FormField as Field } from "@/components/brand/form-field";
+
 import { useActionState, useState } from "react";
 import { createEvent, type EventFormState } from "@/lib/actions/events";
 import { CancelButton } from "@/components/brand/cancel-button";
 import { useUnsavedChanges } from "@/hooks/use-unsaved-changes";
 import { useScrollToFirstError } from "@/hooks/use-scroll-to-error";
-
-const inputClass =
-  "h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
-
-function Field({
-  label,
-  children,
-  required,
-  error,
-}: {
-  label: string;
-  children: React.ReactNode;
-  required?: boolean;
-  error?: string;
-}) {
-  return (
-    <div>
-      <label className="mb-1.5 block text-sm font-medium text-ink">
-        {label}
-        {required && <span className="ml-0.5 text-clay-mid">*</span>}
-      </label>
-      {children}
-      {error && <p className="mt-1 text-xs text-clay-deep">{error}</p>}
-    </div>
-  );
-}
 
 export function EventForm() {
   const [state, action, pending] = useActionState<EventFormState, FormData>(
@@ -56,47 +36,47 @@ export function EventForm() {
         </div>
       )}
 
-      <Field label="Title" required error={state.fieldErrors?.title}>
+      <Field label={eventFormCopy.labelTitle} required error={state.fieldErrors?.title}>
         <input
           name="title"
           maxLength={140}
           dir="auto"
-          className={inputClass}
-          placeholder="Vibe coders meetup"
+          className={FORM_INPUT_CLASS}
+          placeholder={eventFormCopy.titlePlaceholder}
         />
       </Field>
 
-      <Field label="Date & time" required error={state.fieldErrors?.starts_at}>
-        <input name="starts_at" type="datetime-local" className={inputClass} />
+      <Field label={eventFormCopy.labelDateTime} required error={state.fieldErrors?.starts_at}>
+        <input name="starts_at" type="datetime-local" className={FORM_INPUT_CLASS} />
       </Field>
 
-      <Field label="Location" error={state.fieldErrors?.location}>
+      <Field label={eventFormCopy.labelLocation} error={state.fieldErrors?.location}>
         <input
           name="location"
           maxLength={140}
           dir="auto"
-          className={inputClass}
-          placeholder="Brooklyn, NY — or Online"
+          className={FORM_INPUT_CLASS}
+          placeholder={eventFormCopy.locationPlaceholder}
         />
       </Field>
 
-      <Field label="Description">
+      <Field label={eventFormCopy.labelDescription}>
         <textarea
           name="description"
           maxLength={2000}
           rows={4}
           dir="auto"
-          className="w-full resize-y rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
-          placeholder="What's happening?"
+          className={FORM_TEXTAREA_CLASS}
+          placeholder={eventFormCopy.descriptionPlaceholder}
         />
       </Field>
 
-      <Field label="Link (RSVP / details)" error={state.fieldErrors?.url}>
+      <Field label={eventFormCopy.labelLinkRSVPDetails} error={state.fieldErrors?.url}>
         <input
           name="url"
           type="url"
-          className={inputClass}
-          placeholder="https://lu.ma/…"
+          className={FORM_INPUT_CLASS}
+          placeholder={eventFormCopy.urlPlaceholder}
         />
       </Field>
 
@@ -107,7 +87,7 @@ export function EventForm() {
           disabled={pending}
           className="btn btn-primary h-12 flex-1 text-[15px] disabled:opacity-70"
         >
-          {pending ? "Adding…" : "Add event"}
+          {pending ? eventFormCopy.addingLabel : eventFormCopy.addLabel}
         </button>
       </div>
     </form>

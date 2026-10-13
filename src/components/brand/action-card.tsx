@@ -1,26 +1,10 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { type Accent } from "@/lib/site";
+import { ACCENT_ICON, ACCENT_BORDER, type Accent } from "@/lib/design/accents";
 import { cn } from "@/lib/utils";
 
-const ICON_TINT: Record<Accent, string> = {
-  teal: "bg-teal-50 text-teal-700",
-  blue: "bg-blue-tint text-blue-deep",
-  orange: "bg-orange-tint text-orange-deep",
-  clay: "bg-clay-tint text-clay-deep",
-  sage: "bg-sage-tint text-sage-deep",
-  gold: "bg-gold-tint text-gold-deep",
-};
 
 /** Top-border accent via confirmed CSS vars (see detail-hero). */
-const ACCENT_VAR: Record<Accent, string> = {
-  teal: "var(--teal-400)",
-  blue: "var(--blue-mid)",
-  orange: "var(--orange-mid)",
-  clay: "var(--clay-mid)",
-  sage: "var(--sage-mid)",
-  gold: "var(--gold-500)",
-};
 
 /**
  * Big branded action tile — icon, title, one-line description, accent top-border.
@@ -42,13 +26,13 @@ export function ActionCard({
   return (
     <Link
       href={href}
-      style={{ borderTopColor: ACCENT_VAR[accent] }}
+      style={{ borderTopColor: ACCENT_BORDER[accent] }}
       className="group flex flex-col gap-3 rounded-2xl border border-t-[3px] border-border bg-surface p-4 shadow-[var(--shadow-sm)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]"
     >
       <span
         className={cn(
           "grid h-11 w-11 place-items-center rounded-xl",
-          ICON_TINT[accent],
+          ACCENT_ICON[accent],
         )}
       >
         {icon}

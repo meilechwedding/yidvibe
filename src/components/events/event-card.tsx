@@ -1,12 +1,16 @@
+"use client";
+
+import { useState } from "react";
 import { Clock, MapPin, ArrowUpRight } from "lucide-react";
 import type { EventRow } from "@/lib/events";
-import { formatTime } from "./calendar-utils";
+import { formatTime } from "@/lib/domain/calendar";
 
 /**
  * One event row, shared by the calendar day-panel and the agenda list. Time and
  * location are optional and collapse cleanly when an event has neither.
  */
 export function EventCard({ event }: { event: EventRow }) {
+  const [expanded, setExpanded] = useState(false);
   const time = formatTime(event.starts_at);
   return (
     <li className="flex items-start gap-4 rounded-2xl border border-border bg-surface p-4 transition-all hover:border-border-hover hover:shadow-[var(--shadow-sm)]">
@@ -29,12 +33,23 @@ export function EventCard({ event }: { event: EventRow }) {
           </p>
         )}
         {event.description && (
-          <p
-            className="mt-2 line-clamp-2 text-sm text-muted-foreground"
-            dir="auto"
-          >
-            {event.description}
-          </p>
+          <div>
+            <p
+              className={`mt-2 whitespace-pre-line text-sm text-muted-foreground${expanded ? "" : " line-clamp-2"}`}
+              dir="auto"
+            >
+              {event.description}
+            </p>
+            <button
+              type="button"
+              aria-expanded={expanded}
+              aria-label={`${expanded ? "Show less" : "Read more"} about ${event.title}`}
+              onClick={() => setExpanded((value) => !value)}
+              className="mt-1 text-xs font-medium text-teal-700 hover:underline"
+            >
+              {expanded ? "Show less" : "Read more"}
+            </button>
+          </div>
         )}
       </div>
       {event.url && (

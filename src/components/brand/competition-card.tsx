@@ -24,7 +24,7 @@ export function CompetitionCard({
   return (
     <Link
       href={`/competitions/${competition.slug}`}
-      className="group flex flex-col rounded-2xl border border-border bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]"
+      className="group flex flex-col rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 motion-reduce:transition-none motion-reduce:hover:translate-y-0 border border-border bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]"
     >
       <div className="flex items-center justify-between gap-2">
         <span className="inline-flex items-center gap-1.5 font-display text-xl font-bold text-clay-deep">
@@ -34,7 +34,7 @@ export function CompetitionCard({
         {hasWinner ? (
           <Pill accent="gold">Winner picked</Pill>
         ) : (
-          <Pill accent="clay">{dl.text}</Pill>
+          <Pill accent="clay">{competition.status !== "open" ? "Closed" : dl.text}</Pill>
         )}
       </div>
       <h3 className="mt-3 line-clamp-2 font-display text-lg font-bold text-ink" dir="auto">

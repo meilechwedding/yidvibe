@@ -19,7 +19,7 @@ import {
   formatDayHeading,
   groupByDay,
   startOfMonth,
-} from "./calendar-utils";
+} from "@/lib/domain/calendar";
 
 type View = "calendar" | "agenda";
 

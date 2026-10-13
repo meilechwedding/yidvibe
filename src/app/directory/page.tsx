@@ -1,3 +1,5 @@
+import { BROWSE_COPY } from "@/content/pages/browse";
+import { DIRECTORY_COPY } from "@/content/pages/directory";
 import Link from "next/link";
 import { Compass } from "lucide-react";
 import { getAuthUser } from "@/lib/current-user";
@@ -10,10 +12,7 @@ import { EmptyState } from "@/components/brand/empty-state";
 import { FilterBar } from "@/components/brand/filter-bar";
 import { Pagination } from "@/components/brand/pagination";
 
-export const metadata = {
-  title: "Directory",
-  description: "A free listing of builders, makers, agencies and services.",
-};
+export const metadata = DIRECTORY_COPY.metadata;
 
 const PER_PAGE = 24;
 
@@ -40,9 +39,9 @@ export default async function DirectoryPage({
     <Container className="py-10 md:py-14">
       <PageHeader
         accent="blue"
-        eyebrow="Connect"
-        title="Directory"
-        subtitle="A free listing of builders, makers, agencies and services in the community."
+        eyebrow={DIRECTORY_COPY.eyebrow}
+        title={DIRECTORY_COPY.title}
+        subtitle={DIRECTORY_COPY.subtitle}
         action={
           user ? (
             <Link href="/directory/list-me" className="btn btn-primary shrink-0">
@@ -50,7 +49,7 @@ export default async function DirectoryPage({
             </Link>
           ) : (
             <Link
-              href="/login?next=/directory/list-me"
+              href="/signup?next=/directory/list-me"
               className="btn btn-primary shrink-0"
             >
               Sign up to get listed
@@ -79,7 +78,7 @@ export default async function DirectoryPage({
         selects={[
           {
             name: "category",
-            allLabel: "All categories",
+            allLabel: BROWSE_COPY.allCategories,
             value: category,
             options: [...DIRECTORY_CATEGORIES],
           },
@@ -93,11 +92,11 @@ export default async function DirectoryPage({
           title={filtering ? "No listings found" : "No listings yet"}
           description={
             filtering
-              ? "Try a broader search or clear your filters."
+              ? BROWSE_COPY.noResults
               : "Be the first — add yourself to the directory. It's free."
           }
           actionHref={filtering ? "/directory" : "/directory/list"}
-          actionLabel={filtering ? "Clear filters" : "Get listed"}
+          actionLabel={filtering ? BROWSE_COPY.clearFilters : "Get listed"}
         />
       ) : (
         <>

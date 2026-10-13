@@ -1,11 +1,14 @@
 "use client";
 
+import { competitionFormCopy } from "@/content/forms/competitions";
+
+import { FORM_INPUT_CLASS, FORM_TEXTAREA_CLASS } from "@/lib/design/controls";
+
 import { useActionState, useEffect, useRef } from "react";
 import { submitEntry, type SubmissionState } from "@/lib/actions/competitions";
 import { toast } from "sonner";
 
-const inputClass =
-  "h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
+
 
 export function SubmitEntryForm({
   competitionId,
@@ -24,7 +27,7 @@ export function SubmitEntryForm({
   useEffect(() => {
     if (state.ok) {
       ref.current?.reset();
-      toast.success("Entry submitted!");
+      toast.success(competitionFormCopy.entrySuccess);
     }
   }, [state]);
 
@@ -32,24 +35,27 @@ export function SubmitEntryForm({
     <form ref={ref} action={formAction} noValidate className="space-y-3">
       <input
         name="submission_url"
+        aria-label={competitionFormCopy.entryUrlLabel}
         type="url"
         required
-        className={inputClass}
-        placeholder="Link to your entry (https://…)"
+        className={FORM_INPUT_CLASS}
+        placeholder={competitionFormCopy.entryUrlPlaceholder}
       />
       <input
         name="loom_url"
+        aria-label={competitionFormCopy.entryDemoLabel}
         type="url"
-        className={inputClass}
-        placeholder="Demo / Loom URL (optional)"
+        className={FORM_INPUT_CLASS}
+        placeholder={competitionFormCopy.entryDemoPlaceholder}
       />
       <textarea
         name="description"
+        aria-label={competitionFormCopy.entryDescriptionLabel}
         rows={3}
         dir="auto"
         maxLength={1000}
-        className="w-full resize-y rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
-        placeholder="Tell the judge about your entry (optional)"
+        className={FORM_TEXTAREA_CLASS}
+        placeholder={competitionFormCopy.entryDescriptionPlaceholder}
       />
       {state.error && <p className="text-xs text-clay-deep">{state.error}</p>}
       <button
@@ -57,7 +63,7 @@ export function SubmitEntryForm({
         disabled={pending}
         className="btn btn-gold btn-sm disabled:opacity-70"
       >
-        {pending ? "Submitting…" : "Submit entry"}
+        {pending ? competitionFormCopy.submittingLabel : competitionFormCopy.submitEntryLabel}
       </button>
     </form>
   );

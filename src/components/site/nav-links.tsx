@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV_LINKS } from "@/lib/site";
+import { NAV_LINKS } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
 export function NavLinks() {
@@ -16,6 +16,7 @@ export function NavLinks() {
           <Link
             key={l.href}
             href={l.href}
+            aria-current={active ? "page" : undefined}
             className={cn(
               "rounded-full px-3 py-2 text-sm font-medium transition-colors",
               active

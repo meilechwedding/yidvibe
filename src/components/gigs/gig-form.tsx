@@ -1,50 +1,17 @@
 "use client";
 
+import { gigTypes, gigFormCopy } from "@/content/forms/gigs";
+
+import { FORM_INPUT_CLASS, FORM_TEXTAREA_CLASS } from "@/lib/design/controls";
+
+import { FormField as Field } from "@/components/brand/form-field";
+
 import { useActionState, useState } from "react";
 import { createGig, type GigFormState } from "@/lib/actions/gigs";
 import { CancelButton } from "@/components/brand/cancel-button";
 import { useUnsavedChanges } from "@/hooks/use-unsaved-changes";
 import { useScrollToFirstError } from "@/hooks/use-scroll-to-error";
 import { cn } from "@/lib/utils";
-
-const inputClass =
-  "h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
-
-const TYPES = [
-  { value: "task", label: "Task", hint: "One-off, fixed scope" },
-  { value: "build", label: "Build", hint: "A full project" },
-  { value: "hourly", label: "Hourly", hint: "Ongoing, by the hour" },
-] as const;
-
-function Field({
-  label,
-  children,
-  required,
-  hint,
-  error,
-}: {
-  label: string;
-  children: React.ReactNode;
-  required?: boolean;
-  hint?: string;
-  error?: string;
-}) {
-  return (
-    <div>
-      <label className="mb-1.5 block text-sm font-medium text-ink">
-        {label}
-        {required && <span className="ml-0.5 text-clay-mid">*</span>}
-        {hint && (
-          <span className="ml-2 font-normal text-xs text-muted-foreground">
-            {hint}
-          </span>
-        )}
-      </label>
-      {children}
-      {error && <p className="mt-1 text-xs text-clay-deep">{error}</p>}
-    </div>
-  );
-}
 
 export function GigForm() {
   const [state, action, pending] = useActionState<GigFormState, FormData>(
@@ -74,13 +41,14 @@ export function GigForm() {
       <Field label="Type" required>
         <input type="hidden" name="type" value={type} />
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-          {TYPES.map((t) => {
+          {gigTypes.map((t) => {
             const active = type === t.value;
             return (
               <button
                 key={t.value}
                 type="button"
-                onClick={() => setType(t.value)}
+                onClick={() => { setType(t.value); setDirty(true); }}
+                aria-pressed={type === t.value}
                 className={cn(
                   "rounded-card border px-4 py-3 text-left transition-colors",
                   active
@@ -110,7 +78,7 @@ export function GigForm() {
           name="title"
           maxLength={120}
           dir="auto"
-          className={inputClass}
+          className={FORM_INPUT_CLASS}
           placeholder="What do you need built?"
         />
       </Field>
@@ -121,7 +89,7 @@ export function GigForm() {
           maxLength={4000}
           rows={5}
           dir="auto"
-          className="w-full resize-y rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
+          className={FORM_TEXTAREA_CLASS}
           placeholder="Describe the work, scope, and what 'done' looks like."
         />
       </Field>
@@ -132,17 +100,17 @@ export function GigForm() {
             name="hourly_rate"
             type="number"
             min={0}
-            className={cn(inputClass, "max-w-xs")}
+            className={cn(FORM_INPUT_CLASS, "max-w-xs")}
             placeholder="50"
           />
         </Field>
       ) : (
         <div className="grid grid-cols-2 gap-4">
           <Field label="Budget min ($)">
-            <input name="budget_min" type="number" min={0} className={inputClass} placeholder="500" />
+            <input name="budget_min" type="number" min={0} className={FORM_INPUT_CLASS} placeholder="500" />
           </Field>
           <Field label="Budget max ($)">
-            <input name="budget_max" type="number" min={0} className={inputClass} placeholder="2000" />
+            <input name="budget_max" type="number" min={0} className={FORM_INPUT_CLASS} placeholder="2000" />
           </Field>
         </div>
       )}
@@ -151,7 +119,7 @@ export function GigForm() {
         <input
           name="tags"
           dir="auto"
-          className={inputClass}
+          className={FORM_INPUT_CLASS}
           placeholder="Automation, Next.js, Design"
         />
       </Field>
@@ -160,7 +128,7 @@ export function GigForm() {
         <input
           name="loom_url"
           type="url"
-          className={inputClass}
+          className={FORM_INPUT_CLASS}
           placeholder="https://loom.com/…"
         />
       </Field>
@@ -172,7 +140,7 @@ export function GigForm() {
           disabled={pending}
           className="btn btn-orange h-12 flex-1 text-[15px] disabled:opacity-70"
         >
-          {pending ? "Posting…" : "Post gig"}
+          {pending ? gigFormCopy.posting : gigFormCopy.post}
         </button>
       </div>
     </form>

@@ -1,5 +1,9 @@
 "use client";
 
+import { authFormCopy } from "@/content/forms/auth";
+
+import { FORM_INPUT_CLASS } from "@/lib/design/controls";
+
 import { useActionState, useState } from "react";
 import {
   signInWithGoogle,
@@ -10,9 +14,6 @@ import {
 import { cn } from "@/lib/utils";
 import { useScrollToFirstError } from "@/hooks/use-scroll-to-error";
 import { LogoMark } from "@/components/brand/sparkle";
-
-const inputClass =
-  "h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
 
 function GoogleIcon() {
   return (
@@ -40,13 +41,13 @@ function GoogleIcon() {
 function Note({ state }: { state: AuthFormState }) {
   if (state.notice)
     return (
-      <p className="mt-4 rounded-lg bg-teal-50 px-3 py-2 text-sm text-teal-800">
+      <p role="status" className="mt-4 rounded-lg bg-teal-50 px-3 py-2 text-sm text-teal-800">
         {state.notice}
       </p>
     );
   if (state.error)
     return (
-      <p className="mt-4 rounded-lg bg-clay-tint px-3 py-2 text-sm text-clay-deep">
+      <p role="alert" className="mt-4 rounded-lg bg-clay-tint px-3 py-2 text-sm text-clay-deep">
         {state.error}
       </p>
     );
@@ -78,42 +79,43 @@ export function AuthForms({
         <LogoMark size={40} />
       </div>
       <h1 className="text-center font-display text-2xl font-bold leading-tight text-ink">
-        {mode === "signin" ? "Welcome back" : "Join YidVibe"}
+        {authFormCopy[mode].title}
       </h1>
       <p className="mt-1.5 text-center text-sm text-muted-foreground">
-        {mode === "signin"
-          ? "Sign in to post, upvote, and connect."
-          : "One account to show your work, get hired, and more."}
+        {authFormCopy[mode].description}
       </p>
 
       <form action={signInWithGoogle} className="mt-6">
         <input type="hidden" name="next" value={next} />
         <button type="submit" className="btn btn-ghost btn-block h-11 gap-2.5">
           <GoogleIcon />
-          Continue with Google
+          {authFormCopy.google}
         </button>
       </form>
 
       <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
         <span className="h-px flex-1 bg-border" />
-        or with email
+        {authFormCopy.emailDivider}
         <span className="h-px flex-1 bg-border" />
       </div>
 
       {mode === "signin" ? (
-        <form ref={signInRef} action={signInAction} noValidate className="space-y-3">
+        <form key="signin" ref={signInRef} action={signInAction} noValidate className="space-y-3">
           <input type="hidden" name="next" value={next} />
           <div>
             <input
               name="email"
+              aria-invalid={!!signInState.fieldErrors?.email}
+              aria-describedby={signInState.fieldErrors?.email ? "signin-email-error" : undefined}
+              aria-label="Email"
               type="email"
               autoComplete="email"
               required
-              className={inputClass}
+              className={FORM_INPUT_CLASS}
               placeholder="Email"
             />
             {signInState.fieldErrors?.email && (
-              <p className="mt-1 text-xs text-clay-deep">
+              <p id="signin-email-error" className="mt-1 text-xs text-clay-deep">
                 {signInState.fieldErrors.email}
               </p>
             )}
@@ -121,14 +123,17 @@ export function AuthForms({
           <div>
             <input
               name="password"
+              aria-invalid={!!signInState.fieldErrors?.password}
+              aria-describedby={signInState.fieldErrors?.password ? "signin-password-error" : undefined}
+              aria-label="Password"
               type="password"
               autoComplete="current-password"
               required
-              className={inputClass}
+              className={FORM_INPUT_CLASS}
               placeholder="Password"
             />
             {signInState.fieldErrors?.password && (
-              <p className="mt-1 text-xs text-clay-deep">
+              <p id="signin-password-error" className="mt-1 text-xs text-clay-deep">
                 {signInState.fieldErrors.password}
               </p>
             )}
@@ -138,22 +143,26 @@ export function AuthForms({
             disabled={signingIn}
             className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-transform active:scale-[0.99] disabled:opacity-70"
           >
-            {signingIn ? "Signing in…" : "Sign in"}
+            {signingIn ? authFormCopy.signin.pending : authFormCopy.signin.submit}
           </button>
           <Note state={signInState} />
         </form>
       ) : (
-        <form ref={signUpRef} action={signUpAction} noValidate className="space-y-3">
+        <form key="signup" ref={signUpRef} action={signUpAction} noValidate className="space-y-3">
           <input type="hidden" name="next" value={next} />
           <div>
             <input
               name="name"
+              autoComplete="name"
+              aria-invalid={!!signUpState.fieldErrors?.name}
+              aria-describedby={signUpState.fieldErrors?.name ? "signup-name-error" : undefined}
+              aria-label="Your name"
               required
-              className={inputClass}
+              className={FORM_INPUT_CLASS}
               placeholder="Your name"
             />
             {signUpState.fieldErrors?.name && (
-              <p className="mt-1 text-xs text-clay-deep">
+              <p id="signup-name-error" className="mt-1 text-xs text-clay-deep">
                 {signUpState.fieldErrors.name}
               </p>
             )}
@@ -161,12 +170,16 @@ export function AuthForms({
           <div>
             <input
               name="username"
+              autoComplete="username"
+              aria-invalid={!!signUpState.fieldErrors?.username}
+              aria-describedby={signUpState.fieldErrors?.username ? "signup-username-error" : undefined}
+              aria-label="Username"
               required
-              className={cn(inputClass, "font-mono")}
+              className={cn(FORM_INPUT_CLASS, "font-mono")}
               placeholder="username"
             />
             {signUpState.fieldErrors?.username && (
-              <p className="mt-1 text-xs text-clay-deep">
+              <p id="signup-username-error" className="mt-1 text-xs text-clay-deep">
                 {signUpState.fieldErrors.username}
               </p>
             )}
@@ -174,14 +187,17 @@ export function AuthForms({
           <div>
             <input
               name="email"
+              aria-invalid={!!signUpState.fieldErrors?.email}
+              aria-describedby={signUpState.fieldErrors?.email ? "signup-email-error" : undefined}
+              aria-label="Email"
               type="email"
               autoComplete="email"
               required
-              className={inputClass}
+              className={FORM_INPUT_CLASS}
               placeholder="Email"
             />
             {signUpState.fieldErrors?.email && (
-              <p className="mt-1 text-xs text-clay-deep">
+              <p id="signup-email-error" className="mt-1 text-xs text-clay-deep">
                 {signUpState.fieldErrors.email}
               </p>
             )}
@@ -189,14 +205,17 @@ export function AuthForms({
           <div>
             <input
               name="password"
+              aria-invalid={!!signUpState.fieldErrors?.password}
+              aria-describedby={signUpState.fieldErrors?.password ? "signup-password-error" : undefined}
+              aria-label="Password"
               type="password"
               autoComplete="new-password"
               required
-              className={inputClass}
+              className={FORM_INPUT_CLASS}
               placeholder="Password (8+ characters)"
             />
             {signUpState.fieldErrors?.password && (
-              <p className="mt-1 text-xs text-clay-deep">
+              <p id="signup-password-error" className="mt-1 text-xs text-clay-deep">
                 {signUpState.fieldErrors.password}
               </p>
             )}
@@ -206,7 +225,7 @@ export function AuthForms({
             disabled={signingUp}
             className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-transform active:scale-[0.99] disabled:opacity-70"
           >
-            {signingUp ? "Creating…" : "Create account"}
+            {signingUp ? authFormCopy.signup.pending : authFormCopy.signup.submit}
           </button>
           <Note state={signUpState} />
         </form>

@@ -29,7 +29,7 @@ export function SaveButton({
 }) {
   const router = useRouter();
   const [saved, setSaved] = useState(initialSaved);
-  const [, startTransition] = useTransition();
+  const [pending, startTransition] = useTransition();
 
   function onClick(e: React.MouseEvent) {
     e.preventDefault();
@@ -57,6 +57,7 @@ export function SaveButton({
     <button
       type="button"
       onClick={onClick}
+      disabled={pending}
       aria-pressed={saved}
       aria-label={saved ? "Remove from saved" : "Save"}
       title={saved ? "Saved" : "Save"}

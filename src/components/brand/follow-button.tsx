@@ -20,7 +20,7 @@ export function FollowButton({
 }) {
   const router = useRouter();
   const [following, setFollowing] = useState(initialFollowing);
-  const [, startTransition] = useTransition();
+  const [pending, startTransition] = useTransition();
 
   function onClick() {
     if (!isAuthed) {
@@ -47,6 +47,7 @@ export function FollowButton({
     <button
       type="button"
       onClick={onClick}
+      disabled={pending}
       aria-pressed={following}
       className={cn("btn btn-sm", following ? "btn-ghost" : "btn-primary")}
     >

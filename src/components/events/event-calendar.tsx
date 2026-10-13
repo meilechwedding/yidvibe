@@ -9,7 +9,7 @@ import {
   formatMonthYear,
   monthGrid,
   sameDay,
-} from "./calendar-utils";
+} from "@/lib/domain/calendar";
 
 /**
  * Lightweight month grid (no deps). Days that hold matching events get a count
@@ -97,7 +97,7 @@ export function EventCalendar({
               type="button"
               onClick={() => onSelect(d)}
               aria-pressed={isSelected}
-              aria-label={`${d.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}${
+              aria-label={`${d.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}${
                 hasEvents ? `, ${count} event${count > 1 ? "s" : ""}` : ""
               }`}
               className={cn(

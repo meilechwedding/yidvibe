@@ -1,0 +1,1116 @@
+{
+  "scope": "Source review only; no rendered-browser or backend coverage claim.",
+  "summary": {
+    "reviewed": 194,
+    "excluded": 66,
+    "uncovered": 0
+  },
+  "files": [
+    {
+      "path": "src/app/admin/claims/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/competitions/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/content/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/content/post/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/directory/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/events/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/feedback/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/launch/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/layout.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/reports/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/tags/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/unlock/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/admin/users/page.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/app/apple-icon.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/auth/callback/route.ts",
+      "status": "excluded",
+      "reason": "Authentication transport excluded from frontend review."
+    },
+    {
+      "path": "src/app/builders/layout.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/builders/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/competitions/[slug]/opengraph-image.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/competitions/[slug]/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/competitions/layout.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/competitions/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/competitions/post/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/dashboard/account/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/dashboard/inbox/[conversationId]/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/dashboard/inbox/layout.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/dashboard/inbox/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/dashboard/layout.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/dashboard/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/dashboard/posts/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/dashboard/profile/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/dashboard/saved/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/directory/layout.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/directory/list-me/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/directory/list/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/directory/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/docs/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/error.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/events/layout.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/events/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/events/post/page.tsx",
+      "status": "excluded",
+      "reason": "Admin-only event posting entry, excluded from behavior edits."
+    },
+    {
+      "path": "src/app/events/request/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/gigs/[slug]/opengraph-image.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/gigs/[slug]/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/gigs/[slug]/thread/[threadId]/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/gigs/layout.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/gigs/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/gigs/post/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/globals.css",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/login/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/manifest.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/not-found.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/notifications/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/opengraph-image.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/robots.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/saved/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/settings/notifications/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/settings/profile/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/showcase/[id]/edit/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/showcase/[id]/opengraph-image.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/showcase/[id]/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/showcase/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/showcase/submit/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/signup/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/sitemap.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/app/u/[handle]/page.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/admin/admin-post-form.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/components/admin/admin-report-actions.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/components/admin/admin-sidebar.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/components/admin/admin-unlock-form.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/components/admin/claim-actions.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/components/admin/content-manager.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/components/admin/feature-toggle.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/components/admin/invite-user.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/components/admin/launch-control.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/components/admin/post-as-control.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/components/admin/users-table.tsx",
+      "status": "excluded",
+      "reason": "Privileged admin resources excluded by instruction."
+    },
+    {
+      "path": "src/components/auth/auth-forms.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/action-card.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/avatar-circle.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/back-link.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/browse-by.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/builder-card.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/cancel-button.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/competition-card.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/confirm-dialog.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/detail-hero.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/empty-state.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/filter-bar.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/follow-button.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/form-field.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/form-help-link.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/form-section.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/gallery-input.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/gig-card.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/image-input.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/kebab-menu.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/layout.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/listing-card.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/media-gallery.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/official-author.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/page-header.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/pagination.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/panel.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/pill.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/posted-share-card.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/project-card.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/report-menu.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/reveal.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/rotating-row.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/save-button.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/section-crumb.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/share-button.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/sparkle.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/stat-grid.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/brand/upvote-button.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/competitions/competition-form.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/competitions/competitions-board.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/competitions/submit-entry-form.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/dashboard/dashboard-hub.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/dashboard/dashboard-mobile-bar.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/dashboard/dashboard-tabs.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/dashboard/glance-row.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/directory/get-listed-form.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/directory/self-listing-form.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/events/event-calendar.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/events/event-card.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/events/event-form.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/events/event-request-form.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/events/events-board.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/filters/filter-shell.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/gigs/apply-button.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/gigs/gig-form.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/gigs/gigs-board.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/gigs/message-composer.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/messaging/note-button.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/messaging/note-composer.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/profile/cover-avatar-input.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/profile/profile-form.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/profile/tools-skills.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/showcase/add-comment-form.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/showcase/claim-button.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/showcase/comment-thread.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/showcase/comments-card.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/showcase/delete-project-button.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/showcase/interest-button.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/showcase/project-form.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/showcase/project-row-card.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/context-bar.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/feedback-widget.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/logo.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/mark-read-on-view.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/mobile-bottom-nav.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/nav-links.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/nav-shell.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/notification-bell.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/post-menu.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/sidebar.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/site-footer.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/site-nav.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/site/user-menu.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/ui/avatar.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/ui/badge.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/ui/button.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/ui/card.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/ui/dialog.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/ui/input.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/ui/label.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/ui/select.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/ui/separator.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/ui/skeleton.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/components/ui/textarea.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/config/catalog.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/config/navigation.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/config/site.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/common.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/forms/auth.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/forms/competitions.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/forms/directory.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/forms/events.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/forms/gigs.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/forms/profile.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/forms/projects.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/interactions.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/navigation.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/pages/browse.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/pages/builders.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/pages/competitions.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/pages/directory.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/pages/docs.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/pages/events.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/pages/gigs.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/pages/home.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/pages/showcase.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/content/pages/status.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/hooks/navigation/history.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/hooks/navigation/unsaved.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/hooks/use-scroll-to-error.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/hooks/use-unsaved-changes.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/actions/admin.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/auth.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/claims.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/comments.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/competitions.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/conversations.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/directory.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/event-requests.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/events.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/feedback.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/flags.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/follows.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/gigs.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/notifications.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/profile.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/projects.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/reports.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/saves.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/actions/upvotes.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/admin.ts",
+      "status": "excluded",
+      "reason": "Database-facing query/data adapter excluded by instruction."
+    },
+    {
+      "path": "src/lib/competitions.ts",
+      "status": "excluded",
+      "reason": "Database-facing query/data adapter excluded by instruction."
+    },
+    {
+      "path": "src/lib/conversations.ts",
+      "status": "excluded",
+      "reason": "Database-facing query/data adapter excluded by instruction."
+    },
+    {
+      "path": "src/lib/current-user.ts",
+      "status": "excluded",
+      "reason": "Database-facing query/data adapter excluded by instruction."
+    },
+    {
+      "path": "src/lib/dashboard.ts",
+      "status": "excluded",
+      "reason": "Database-facing query/data adapter excluded by instruction."
+    },
+    {
+      "path": "src/lib/design/accents.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/design/controls.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/design/image-theme.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/design/logo.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/directory.ts",
+      "status": "excluded",
+      "reason": "Database-facing query/data adapter excluded by instruction."
+    },
+    {
+      "path": "src/lib/display.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/domain/calendar.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/domain/competition.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/domain/contacts.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/domain/money.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/events.ts",
+      "status": "excluded",
+      "reason": "Database-facing query/data adapter excluded by instruction."
+    },
+    {
+      "path": "src/lib/flags.ts",
+      "status": "excluded",
+      "reason": "Database-facing query/data adapter excluded by instruction."
+    },
+    {
+      "path": "src/lib/gigs.ts",
+      "status": "excluded",
+      "reason": "Database-facing query/data adapter excluded by instruction."
+    },
+    {
+      "path": "src/lib/html.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/image/compress.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/image/upload.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/media/site-screenshot.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/notifications.ts",
+      "status": "excluded",
+      "reason": "Database-facing query/data adapter excluded by instruction."
+    },
+    {
+      "path": "src/lib/og.tsx",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/queries.ts",
+      "status": "excluded",
+      "reason": "Database-facing query/data adapter excluded by instruction."
+    },
+    {
+      "path": "src/lib/security/image-urls.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/security/redirects.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/site.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/supabase/admin.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/supabase/client.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/supabase/config.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/supabase/middleware.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/supabase/server.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/supabase/types.ts",
+      "status": "excluded",
+      "reason": "Database/storage/auth adapters excluded by instruction."
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/visibility.ts",
+      "status": "excluded",
+      "reason": "Database-facing query/data adapter excluded by instruction."
+    },
+    {
+      "path": "src/middleware.ts",
+      "status": "excluded",
+      "reason": "Authentication transport excluded from frontend review."
+    },
+    {
+      "path": "src/styles/palette.css",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/styles/palette.json",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/styles/theme.css",
+      "status": "reviewed"
+    }
+  ]
+}

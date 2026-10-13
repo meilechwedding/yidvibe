@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCurrentProfile } from "@/lib/current-user";
 import { getAdminContext } from "@/lib/admin";
-import { NAV_LINKS_ALL } from "@/lib/site";
+import { NAV_LINKS_ALL } from "@/config/navigation";
 import { isFeatureEnabled } from "@/lib/flags";
 import {
   getNotificationSummary,
@@ -9,13 +9,11 @@ import {
 } from "@/lib/notifications";
 import { Container } from "@/components/brand/layout";
 import { Logo } from "./logo";
-import { NavLinks } from "./nav-links";
 import { NavShell } from "./nav-shell";
 import { UserMenu } from "./user-menu";
 import { Sidebar } from "./sidebar";
 import { MobileBottomNav } from "./mobile-bottom-nav";
 import { NotificationBell, type BellItem } from "./notification-bell";
-import { PostMenu } from "./post-menu";
 
 export async function SiteNav() {
   const profile = await getCurrentProfile();
@@ -75,14 +73,8 @@ export async function SiteNav() {
       <NavShell className="lg:hidden">
         <Container className="flex h-16 items-center gap-4">
           <Logo />
-          <div className="hidden flex-1 lg:block">
-            <NavLinks />
-          </div>
           <div className="ml-auto flex items-center gap-1.5 sm:gap-2 lg:gap-3">
             {profile && <NotificationBell items={bellItems} unread={unread} />}
-            <div className="hidden lg:block">
-              <PostMenu enabledFlags={postFlags} />
-            </div>
             {profile ? (
               <UserMenu
                 profile={{

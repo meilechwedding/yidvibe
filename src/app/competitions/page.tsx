@@ -1,3 +1,4 @@
+import { COMPETITIONS_COPY } from "@/content/pages/competitions";
 import Link from "next/link";
 import { Plus, Trophy } from "lucide-react";
 import { listCompetitions } from "@/lib/competitions";
@@ -10,10 +11,7 @@ import {
   type CompetitionFilterItem,
 } from "@/components/competitions/competitions-board";
 
-export const metadata = {
-  title: "Competitions",
-  description: "Post a bounty. Anyone submits. You pick the winner.",
-};
+export const metadata = COMPETITIONS_COPY.metadata;
 
 export default async function CompetitionsPage() {
   const competitions = await listCompetitions();
@@ -25,6 +23,7 @@ export default async function CompetitionsPage() {
     description: c.description,
     prize_amount: c.prize_amount,
     deadline: c.deadline,
+    status: c.status,
     hasWinner: !!c.winner_submission_id,
     tags: c.tags ?? [],
   }));
@@ -36,9 +35,9 @@ export default async function CompetitionsPage() {
     <Container className="py-10 md:py-14">
       <PageHeader
         accent="clay"
-        eyebrow="Compete"
-        title="Competitions"
-        subtitle="Post a bounty. Anyone submits. You pick the winner."
+        eyebrow={COMPETITIONS_COPY.eyebrow}
+        title={COMPETITIONS_COPY.title}
+        subtitle={COMPETITIONS_COPY.subtitle}
         action={
           <Link href="/competitions/post" className="btn btn-gold shrink-0">
             <Plus size={16} /> Post a competition

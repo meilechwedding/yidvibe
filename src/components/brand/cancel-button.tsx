@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { ConfirmDialog } from "./confirm-dialog";
+import { hasSafeAppHistory } from "@/hooks/navigation/history";
+import { COMMON_COPY } from "@/content/common";
 import { cn } from "@/lib/utils";
 
 function parentOf(path: string): string {
@@ -18,7 +20,7 @@ function parentOf(path: string): string {
 export function CancelButton({
   dirty = false,
   fallbackHref,
-  label = "Cancel",
+  label = COMMON_COPY.actions.cancel,
   className,
 }: {
   dirty?: boolean;
@@ -31,7 +33,7 @@ export function CancelButton({
   const [open, setOpen] = useState(false);
 
   function navigateBack() {
-    if (typeof window !== "undefined" && window.history.length > 1) {
+    if (hasSafeAppHistory()) {
       router.back();
     } else {
       router.push(fallbackHref ?? (parentOf(pathname) || "/"));
@@ -51,10 +53,10 @@ export function CancelButton({
         open={open}
         onOpenChange={setOpen}
         onConfirm={navigateBack}
-        title="Discard your draft?"
-        description="You have unsaved changes. If you leave now, they'll be lost."
-        confirmLabel="Discard"
-        cancelLabel="Keep editing"
+        title={COMMON_COPY.draft.title}
+        description={COMMON_COPY.draft.description}
+        confirmLabel={COMMON_COPY.draft.confirm}
+        cancelLabel={COMMON_COPY.draft.keepEditing}
       />
     </>
   );

@@ -1,5 +1,7 @@
 "use client";
 
+import { gigFormCopy } from "@/content/forms/gigs";
+
 import { useActionState, useEffect, useRef } from "react";
 import { Send } from "lucide-react";
 import { sendMessage, type MessageState } from "@/lib/actions/gigs";
@@ -27,10 +29,12 @@ export function MessageComposer({
       <form ref={ref} action={formAction} className="flex items-end gap-2">
         <textarea
           name="body"
+          required
+          aria-label="Message"
           rows={2}
           dir="auto"
           maxLength={4000}
-          placeholder="Write a message…"
+          placeholder={gigFormCopy.messagePlaceholder}
           className="flex-1 resize-none rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
         />
         <button
@@ -43,7 +47,7 @@ export function MessageComposer({
         </button>
       </form>
       {state.error && (
-        <p className="mt-1 text-xs text-clay-deep">{state.error}</p>
+        <p role="alert" className="mt-1 text-xs text-clay-deep">{state.error}</p>
       )}
     </div>
   );

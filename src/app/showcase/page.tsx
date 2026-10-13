@@ -1,3 +1,5 @@
+import { BROWSE_COPY } from "@/content/pages/browse";
+import { SHOWCASE_COPY } from "@/content/pages/showcase";
 import Link from "next/link";
 import { Plus, Rocket } from "lucide-react";
 import {
@@ -15,11 +17,7 @@ import { EmptyState } from "@/components/brand/empty-state";
 import { FilterBar } from "@/components/brand/filter-bar";
 import { Pagination } from "@/components/brand/pagination";
 
-export const metadata = {
-  title: "Showcase",
-  description:
-    "Every app, tool, and MVP frum builders are shipping with AI. Browse it, upvote it, reach the maker.",
-};
+export const metadata = SHOWCASE_COPY.metadata;
 
 const PER_PAGE = 24;
 
@@ -62,9 +60,9 @@ export default async function ShowcasePage({
     <Container className="py-10 md:py-14">
       <PageHeader
         accent="teal"
-        eyebrow="Explore"
-        title="Showcase"
-        subtitle="Every app, tool, and MVP frum builders are shipping with AI. Browse it, upvote it, reach the maker."
+        eyebrow={SHOWCASE_COPY.eyebrow}
+        title={SHOWCASE_COPY.title}
+        subtitle={SHOWCASE_COPY.subtitle}
         action={
           <Link href="/showcase/submit" className="btn btn-primary shrink-0">
             <Plus size={17} /> Post your project
@@ -77,8 +75,8 @@ export default async function ShowcasePage({
         searchValue={q}
         placeholder="Search projects or tools…"
         selects={[
-          { name: "tool", allLabel: "All tools", value: tool, options: facets.tools },
-          { name: "tag", allLabel: "All categories", value: tag, options: facets.tags },
+          { name: "tool", allLabel: BROWSE_COPY.allTools, value: tool, options: facets.tools },
+          { name: "tag", allLabel: BROWSE_COPY.allCategories, value: tag, options: facets.tags },
         ]}
         sort={{
           name: "sort",
@@ -97,11 +95,11 @@ export default async function ShowcasePage({
           title={filtering ? "No projects found" : "No projects yet"}
           description={
             filtering
-              ? "Try a broader search or clear your filters."
+              ? BROWSE_COPY.noResults
               : "Be the first to post."
           }
           actionHref={filtering ? "/showcase" : "/showcase/submit"}
-          actionLabel={filtering ? "Clear filters" : "Post your project"}
+          actionLabel={filtering ? BROWSE_COPY.clearFilters : "Post your project"}
         />
       ) : (
         <>

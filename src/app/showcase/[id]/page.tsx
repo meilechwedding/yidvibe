@@ -94,7 +94,8 @@ export default async function ProjectDetailPage({
 
   // Pull the builder's chosen public contact links (community posts have none).
   const ownerProfile = owner ? await getProfileByHandle(owner.handle) : null;
-  const links = (ownerProfile?.links ?? {}) as Record<string, string | undefined>;
+  const canViewOwnerProfile = !!ownerProfile && (ownerProfile.is_public || isOwner);
+  const links = ((canViewOwnerProfile ? ownerProfile?.links : null) ?? {}) as Record<string, string | undefined>;
   const contacts = CONTACT_KEYS.filter((k) => links[k] && String(links[k]).trim());
 
   const postedDate = new Date(project.created_at).toLocaleDateString(undefined, {
@@ -262,7 +263,7 @@ export default async function ProjectDetailPage({
           </Panel>
 
           <Panel>
-            <PanelLabel>Reach out</PanelLabel>
+            <PanelLabel>{contacts.length > 0 ? "Reach out" : "Builder"}</PanelLabel>
             {owner ? (
               <>
                 <div className="mt-3 flex items-center gap-3">
@@ -280,13 +281,23 @@ export default async function ProjectDetailPage({
                       @{owner.handle}
                     </p>
                   </div>
-                  <Link
+                  {canViewOwnerProfile && <Link
                     href={`/u/${owner.handle}`}
                     className="btn btn-ghost btn-sm shrink-0"
                   >
-                    View <ArrowRight size={15} />
-                  </Link>
+                    View profile <ArrowRight size={15} />
+                  </Link>}
                 </div>
+                {!canViewOwnerProfile && (
+                  <p className="mt-3 text-sm text-muted-foreground">
+                    This builder has not made their profile public yet. Contact details are unavailable.
+                  </p>
+                )}
+                {canViewOwnerProfile && contacts.length === 0 && (
+                  <p className="mt-3 text-sm text-muted-foreground">
+                    This builder has not shared contact details.
+                  </p>
+                )}
                 {contacts.length > 0 && (
                   <div className="mt-3 flex flex-wrap gap-2 border-t border-border/60 pt-3">
                     {contacts.map((k) => {

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import * as Dialog from "@radix-ui/react-dialog";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -44,41 +45,59 @@ export function FilterBar({
   sort?: SortDef;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [q, setQ] = useState(searchValue);
   const [open, setOpen] = useState(false);
-
-  const buildUrl = (overrides: Record<string, string | null>) => {
-    const params = new URLSearchParams();
-    if (q.trim()) params.set(searchName, q.trim());
-    for (const s of selects) if (s.value) params.set(s.name, s.value);
-    for (const t of toggles) if (t.value) params.set(t.name, "1");
-    if (sort?.value) params.set(sort.name, sort.value);
-    for (const [k, v] of Object.entries(overrides)) {
-      if (!v) params.delete(k);
-      else params.set(k, v);
-    }
-    const qs = params.toString();
-    return qs ? `${basePath}?${qs}` : basePath;
+  const filterTrigger = useRef<HTMLButtonElement>(null);
+  const serverValues: Record<string, string> = {
+    [searchName]: searchValue,
+    ...Object.fromEntries(selects.map((s) => [s.name, s.value])),
+    ...Object.fromEntries(toggles.map((t) => [t.name, t.value ? "1" : ""])),
+    ...(sort ? { [sort.name]: sort.value } : {}),
   };
-  const go = (overrides: Record<string, string | null>) =>
-    router.push(buildUrl(overrides));
+  const signature = `${basePath}?${searchParams.toString()}|${JSON.stringify(serverValues)}`;
+  const [committed, setCommitted] = useState(signature);
+  const [values, setValues] = useState(serverValues);
+  // Event handlers merge into the latest requested filters, including changes
+  // made before the previous server navigation has finished.
+  const requested = useRef(serverValues);
+  if (committed !== signature) {
+    setCommitted(signature);
+    setValues(serverValues);
+    setQ(searchValue);
+    requested.current = serverValues;
+  }
+
+  const go = (overrides: Record<string, string | null>) => {
+    const next = { ...requested.current, [searchName]: q.trim(), ...overrides };
+    requested.current = Object.fromEntries(
+      Object.entries(next).map(([key, value]) => [key, value ?? ""]),
+    );
+    setValues(requested.current);
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(next)) if (value) params.set(key, value);
+    const qs = params.toString();
+    router.push(qs ? `${basePath}?${qs}` : basePath);
+  };
 
   const clearAll = () => {
     setQ("");
+    requested.current = {};
+    setValues({});
     router.push(basePath);
     setOpen(false);
   };
 
   const activeCount =
-    selects.filter((s) => s.value).length + toggles.filter((t) => t.value).length;
+    selects.filter((s) => values[s.name]).length + toggles.filter((t) => values[t.name]).length;
   const hasFilterControls = selects.length > 0 || toggles.length > 0 || !!sort;
 
   const renderControls = (inSheet: boolean) => (
     <>
       {selects.map((s) => (
         <select
-          key={`${s.name}-${s.value}`}
-          defaultValue={s.value}
+          key={s.name}
+          value={values[s.name] ?? ""}
           aria-label={s.allLabel}
           onChange={(e) => go({ [s.name]: e.target.value || null })}
           className={cn(controlClass, inSheet && "w-full")}
@@ -94,7 +113,7 @@ export function FilterBar({
 
       {toggles.map((t) => (
         <label
-          key={`${t.name}-${t.value}`}
+          key={t.name}
           className={cn(
             "inline-flex h-11 cursor-pointer items-center gap-2 whitespace-nowrap rounded-xl border border-border bg-canvas px-3.5 text-sm text-ink",
             inSheet && "w-full justify-between",
@@ -103,7 +122,7 @@ export function FilterBar({
           {t.label}
           <input
             type="checkbox"
-            defaultChecked={t.value}
+            checked={!!values[t.name]}
             onChange={(e) => go({ [t.name]: e.target.checked ? "1" : null })}
             className="h-4 w-4 rounded border-border accent-teal-600"
           />
@@ -121,11 +140,12 @@ export function FilterBar({
             <button
               key={o.value}
               type="button"
+              aria-pressed={values[sort.name] === o.value}
               onClick={() => go({ [sort.name]: o.value })}
               className={cn(
                 "rounded-lg px-3.5 py-1.5 text-sm font-medium transition-colors",
                 inSheet && "flex-1",
-                sort.value === o.value
+                values[sort.name] === o.value
                   ? "bg-teal-600 text-white"
                   : "text-muted-foreground hover:text-ink",
               )}
@@ -157,6 +177,7 @@ export function FilterBar({
             onChange={(e) => setQ(e.target.value)}
             dir="auto"
             placeholder={placeholder}
+            aria-label={placeholder}
             className="h-11 w-full rounded-xl border border-transparent bg-canvas pl-10 pr-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:bg-surface"
           />
         </form>
@@ -169,6 +190,7 @@ export function FilterBar({
 
         {hasFilterControls && (
           <button
+            ref={filterTrigger}
             type="button"
             onClick={() => setOpen(true)}
             className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl border border-border bg-canvas px-3.5 text-sm font-medium text-ink hover:border-border-hover lg:hidden"
@@ -183,22 +205,22 @@ export function FilterBar({
         )}
       </div>
 
-      {(activeCount > 0 || !!q.trim()) && (
+      {(activeCount > 0 || !!values[searchName]) && (
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          {q.trim() && (
+          {values[searchName] && (
             <Chip onClear={() => { setQ(""); go({ [searchName]: null }); }}>
-              &ldquo;{q.trim()}&rdquo;
+              &ldquo;{values[searchName]}&rdquo;
             </Chip>
           )}
           {selects
-            .filter((s) => s.value)
+            .filter((s) => values[s.name])
             .map((s) => (
               <Chip key={s.name} onClear={() => go({ [s.name]: null })}>
-                {s.value}
+                {values[s.name]}
               </Chip>
             ))}
           {toggles
-            .filter((t) => t.value)
+            .filter((t) => values[t.name])
             .map((t) => (
               <Chip key={t.name} onClear={() => go({ [t.name]: null })}>
                 {t.label}
@@ -214,19 +236,15 @@ export function FilterBar({
         </div>
       )}
 
-      {open && (
-        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
-          <button
-            aria-label="Close filters"
-            onClick={() => setOpen(false)}
-            className="absolute inset-0 bg-black/30"
-          />
-          <div className="absolute inset-x-0 bottom-0 rounded-t-3xl border-t border-border bg-surface p-5 pb-8 shadow-float">
+      <Dialog.Root open={open} onOpenChange={setOpen}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 z-50 bg-black/30 lg:hidden" />
+          <Dialog.Content aria-describedby={undefined} onCloseAutoFocus={(event) => { event.preventDefault(); filterTrigger.current?.focus(); }} className="fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] overflow-y-auto rounded-t-3xl border-t border-border bg-surface p-5 pb-8 shadow-float lg:hidden">
             <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border" />
             <div className="mb-4 flex items-center justify-between">
-              <span className="font-display text-lg font-semibold text-ink">
+              <Dialog.Title className="font-display text-lg font-semibold text-ink">
                 Filters
-              </span>
+              </Dialog.Title>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
@@ -249,9 +267,9 @@ export function FilterBar({
                 Done
               </button>
             </div>
-          </div>
-        </div>
-      )}
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </div>
   );
 }

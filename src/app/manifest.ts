@@ -1,5 +1,6 @@
+import { IMAGE_THEME } from "@/lib/design/image-theme";
 import type { MetadataRoute } from "next";
-import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
+import { SITE_NAME, SITE_DESCRIPTION } from "@/config/site";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
@@ -8,8 +9,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: SITE_DESCRIPTION,
     start_url: "/",
     display: "standalone",
-    background_color: "#fbfcfd",
-    theme_color: "#1f6e66",
+    background_color: IMAGE_THEME.canvas,
+    theme_color: IMAGE_THEME.primary,
     icons: [
       {
         src: "/icon.svg",

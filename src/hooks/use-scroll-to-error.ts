@@ -21,8 +21,8 @@ export function useScrollToFirstError(
     // Walk fields in DOM order so we land on the first visible problem.
     for (const el of Array.from(form.elements)) {
       const named = el as HTMLInputElement;
-      if (named.name && fieldErrors[named.name]) {
-        named.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (named.name && fieldErrors[named.name] && named.type !== "hidden" && !named.disabled) {
+        named.scrollIntoView({ behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
         // preventScroll: the smooth scroll above owns the motion.
         named.focus?.({ preventScroll: true });
         break;

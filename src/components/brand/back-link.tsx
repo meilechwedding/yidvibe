@@ -3,6 +3,8 @@
 import { useRouter, usePathname } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { hasSafeAppHistory } from "@/hooks/navigation/history";
+import { confirmUnsavedNavigation } from "@/hooks/navigation/unsaved";
 
 /** Sensible section root for a path ("/showcase/abc" -> "/showcase"). */
 function sectionRoot(path: string): string {
@@ -10,19 +12,6 @@ function sectionRoot(path: string): string {
   if (parts.length <= 1) return "/";
   parts.pop();
   return "/" + parts.join("/");
-}
-
-/** True when there's same-origin in-app history we can safely return to. */
-function hasSafeHistory(): boolean {
-  if (typeof window === "undefined") return false;
-  if (window.history.length <= 1) return false;
-  const ref = document.referrer;
-  if (!ref) return false;
-  try {
-    return new URL(ref).origin === window.location.origin;
-  } catch {
-    return false;
-  }
 }
 
 /**
@@ -43,7 +32,8 @@ export function BackLink({
   const pathname = usePathname();
 
   function onClick() {
-    if (hasSafeHistory()) router.back();
+    if (!confirmUnsavedNavigation()) return;
+    if (hasSafeAppHistory()) router.back();
     else router.push(fallbackHref ?? sectionRoot(pathname));
   }
 

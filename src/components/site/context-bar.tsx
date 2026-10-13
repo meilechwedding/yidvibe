@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Container } from "@/components/brand/layout";
 import { BackLink } from "@/components/brand/back-link";
+import { hasSafeAppHistory, recordAppNavigation } from "@/hooks/navigation/history";
 
 /** Top-level destinations + hubs that never show a Back affordance. */
 const NO_BACK = new Set([
@@ -47,18 +48,6 @@ function fallbackFor(pathname: string): string | undefined {
 }
 
 /** True when there's same-origin in-app history we can safely return to. */
-function hasSafeHistory(): boolean {
-  if (typeof window === "undefined") return false;
-  if (window.history.length <= 1) return false;
-  const ref = document.referrer;
-  if (!ref) return false;
-  try {
-    return new URL(ref).origin === window.location.origin;
-  } catch {
-    return false;
-  }
-}
-
 /**
  * Slim bar carrying the branded Back link on inner/detail pages. The bar only
  * renders when Back has somewhere real to go — a known section fallback or
@@ -66,13 +55,17 @@ function hasSafeHistory(): boolean {
  */
 export function ContextBar() {
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [canGoBack, setCanGoBack] = useState(false);
+  const previousUrl = useRef<string | null>(null);
+  useEffect(() => {
+    previousUrl.current = recordAppNavigation(previousUrl.current);
+    setCanGoBack(hasSafeAppHistory());
+  }, [pathname]);
 
   if (NO_BACK.has(pathname) || pathname.startsWith("/dashboard")) return null;
 
   const fallback = fallbackFor(pathname);
-  const show = fallback != null || (mounted && hasSafeHistory());
+  const show = fallback != null || canGoBack;
   if (!show) return null;
 
   return (

@@ -1,0 +1,20 @@
+export const DOCS_COPY = {
+  title: "How YidVibe works",
+  description: "How to post a project, upvote, comment, claim, and set up a profile on YidVibe - the home for frum builders. Free.",
+  eyebrow: "How it works",
+  intro: "YidVibe is a curated board of AI projects and tools built by frum builders - Torah apps, community tools, business software, personal productivity. Browse it, upvote what you like, and post your own. Always free.",
+  engagement: "Sign in to upvote, comment or reply. Upvotes help good work rise to the top. Conversations are public so everyone can follow along.",
+  accountRequirements: "You can browse without an account. Make a free one with Google or email and password to post, upvote, comment, save projects, claim a project, and create a profile.",
+  accountFaq: "You can browse without an account. You need a free account to post, upvote, comment, save projects, claim a project, or create a profile.",
+  sections: {
+    post: "Posting a project",
+    engage: "Upvotes & comments",
+    accounts: "Accounts & profiles",
+    directory: "Getting listed in the directory",
+    claim: "Claiming a project",
+    contact: "Reaching makers",
+    safety: "Reporting & guidelines",
+    faq: "FAQ",
+    start: "Ready?",
+  },
+} as const;

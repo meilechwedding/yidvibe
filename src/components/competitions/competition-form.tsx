@@ -1,5 +1,11 @@
 "use client";
 
+import { competitionFormCopy } from "@/content/forms/competitions";
+
+import { FORM_INPUT_CLASS, FORM_TEXTAREA_CLASS } from "@/lib/design/controls";
+
+import { FormField as Field } from "@/components/brand/form-field";
+
 import { useActionState, useState } from "react";
 import { CancelButton } from "@/components/brand/cancel-button";
 import { useUnsavedChanges } from "@/hooks/use-unsaved-changes";
@@ -8,39 +14,6 @@ import {
   createCompetition,
   type CompetitionFormState,
 } from "@/lib/actions/competitions";
-
-const inputClass =
-  "h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
-
-function Field({
-  label,
-  children,
-  required,
-  hint,
-  error,
-}: {
-  label: string;
-  children: React.ReactNode;
-  required?: boolean;
-  hint?: string;
-  error?: string;
-}) {
-  return (
-    <div>
-      <label className="mb-1.5 block text-sm font-medium text-ink">
-        {label}
-        {required && <span className="ml-0.5 text-clay-mid">*</span>}
-        {hint && (
-          <span className="ml-2 font-normal text-xs text-muted-foreground">
-            {hint}
-          </span>
-        )}
-      </label>
-      {children}
-      {error && <p className="mt-1 text-xs text-clay-deep">{error}</p>}
-    </div>
-  );
-}
 
 export function CompetitionForm() {
   const [state, action, pending] = useActionState<
@@ -66,61 +39,61 @@ export function CompetitionForm() {
         </div>
       )}
 
-      <Field label="Title" required error={state.fieldErrors?.title}>
+      <Field label={competitionFormCopy.labelTitle} required error={state.fieldErrors?.title}>
         <input
           name="title"
           maxLength={120}
           dir="auto"
-          className={inputClass}
-          placeholder="Build the best ___"
+          className={FORM_INPUT_CLASS}
+          placeholder={competitionFormCopy.titlePlaceholder}
         />
       </Field>
 
-      <Field label="Brief" required error={state.fieldErrors?.description}>
+      <Field label={competitionFormCopy.labelBrief} required error={state.fieldErrors?.description}>
         <textarea
           name="description"
           maxLength={4000}
           rows={5}
           dir="auto"
-          className="w-full resize-y rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
-          placeholder="What should people build? How will you judge it?"
+          className={FORM_TEXTAREA_CLASS}
+          placeholder={competitionFormCopy.briefPlaceholder}
         />
       </Field>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Field label="Prize ($)" required error={state.fieldErrors?.prize_amount}>
+        <Field label={competitionFormCopy.labelPrize} required error={state.fieldErrors?.prize_amount}>
           <input
             name="prize_amount"
             type="number"
             min={1}
-            className={inputClass}
-            placeholder="500"
+            className={FORM_INPUT_CLASS}
+            placeholder={competitionFormCopy.prizePlaceholder}
           />
         </Field>
-        <Field label="Deadline" required error={state.fieldErrors?.deadline}>
+        <Field label={competitionFormCopy.labelDeadline} required error={state.fieldErrors?.deadline}>
           <input
             name="deadline"
             type="datetime-local"
-            className={inputClass}
+            className={FORM_INPUT_CLASS}
           />
         </Field>
       </div>
 
-      <Field label="Tags" hint="comma separated">
+      <Field label={competitionFormCopy.labelTags} hint={competitionFormCopy.hintCommaSeparated}>
         <input
           name="tags"
           dir="auto"
-          className={inputClass}
-          placeholder="AI, Design, Open source"
+          className={FORM_INPUT_CLASS}
+          placeholder={competitionFormCopy.tagsPlaceholder}
         />
       </Field>
 
-      <Field label="Loom / video URL" error={state.fieldErrors?.loom_url}>
+      <Field label={competitionFormCopy.labelLoomVideoURL} error={state.fieldErrors?.loom_url}>
         <input
           name="loom_url"
           type="url"
-          className={inputClass}
-          placeholder="https://loom.com/…"
+          className={FORM_INPUT_CLASS}
+          placeholder={competitionFormCopy.videoPlaceholder}
         />
       </Field>
 
@@ -131,7 +104,7 @@ export function CompetitionForm() {
           disabled={pending}
           className="btn btn-gold h-12 flex-1 text-[15px] disabled:opacity-70"
         >
-          {pending ? "Posting…" : "Post competition"}
+          {pending ? competitionFormCopy.postingLabel : competitionFormCopy.postLabel}
         </button>
       </div>
     </form>

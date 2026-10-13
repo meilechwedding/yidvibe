@@ -15,10 +15,14 @@ export function GalleryInput({
   name,
   defaultValue = [],
   max = 5,
+  onUploadingChange,
+  onValueChange,
 }: {
   name: string;
   defaultValue?: string[];
   max?: number;
+  onUploadingChange?: (uploading: boolean) => void;
+  onValueChange?: () => void;
 }) {
   const [urls, setUrls] = useState<string[]>(defaultValue);
   const [uploading, setUploading] = useState(false);
@@ -33,6 +37,7 @@ export function GalleryInput({
       return;
     }
     setUploading(true);
+    onUploadingChange?.(true);
     try {
       for (const file of files.slice(0, room)) {
         const { url, error } = await uploadImage(file, "project-media");
@@ -40,18 +45,25 @@ export function GalleryInput({
           toast.error(error ?? "Upload failed.");
           continue;
         }
+        onValueChange?.();
         setUrls((cur) => (cur.length < max ? [...cur, url] : cur));
       }
       if (files.length > room) {
         toast.message(`Added ${room} — limit is ${max} images.`);
       }
+    } catch {
+      toast.error("Upload failed. Please try again.");
     } finally {
       setUploading(false);
+      onUploadingChange?.(false);
       if (fileRef.current) fileRef.current.value = "";
     }
   }
 
-  const remove = (u: string) => setUrls((cur) => cur.filter((x) => x !== u));
+  const remove = (u: string) => {
+    setUrls((cur) => cur.filter((x) => x !== u));
+    onValueChange?.();
+  };
   const full = urls.length >= max;
 
   return (
@@ -70,6 +82,7 @@ export function GalleryInput({
             <img src={u} alt="" className="h-full w-full object-cover" />
             <button
               type="button"
+              disabled={uploading}
               onClick={() => remove(u)}
               aria-label="Remove image"
               className="absolute right-1 top-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-ink/70 text-white"

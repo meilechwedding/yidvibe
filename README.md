@@ -64,9 +64,34 @@ Configure the values documented in .env.example, then follow [Google OAuth setup
 ## Verification
 
     npm run typecheck
+    npm run theme:check
+    npm run test:eligible
     npm run build
 
 Run these checks from a clean install before deployment. The repository's current verification result should be taken from a fresh run, not from historical build notes.
+
+`test:eligible` runs UI regressions and source-only boundary checks. Four migration-reading checks are excluded from that command; `npm test` retains the original complete suite for authorized database-source review. Tests use mocked actions and do not submit production data.
+
+## Where to make changes
+
+| Change | Location |
+| --- | --- |
+| Colors | `src/styles/palette.json`; `npm run theme:sync` updates generated CSS |
+| Typography, spacing, motion and semantic tokens | `src/styles/theme.css` |
+| Global component classes | `src/app/globals.css` |
+| Shared UI primitives and composed product UI | `src/components/ui` and `src/components/brand` |
+| Accent maps, form-control styling and serialized image colors | `src/lib/design` |
+| Public identity and feature/navigation catalogs | `src/config` |
+| Page, form and interaction text | `src/content` |
+| Interaction hooks and navigation/draft behavior | `src/hooks`, especially `src/hooks/navigation` |
+| Pure calendar, contact, competition and budget functions | `src/lib/domain` |
+| Feature UI | Feature folders under `src/components` |
+| Next.js routes and metadata entry points | `src/app`; required framework filenames stay here |
+| Existing server actions and data adapters | `src/lib/actions` and existing server-only `src/lib` modules |
+
+The palette is shared by CSS, manifest metadata and server-rendered social images. Generated `palette.css` is committed and synchronized before dev/build; edit the JSON source, not the generated file. Rich instructional JSX and user-provided/dynamic text remain with their rendering rather than becoming string fragments. `src/lib/site.ts` is a compatibility export surface for unchanged existing imports; it owns no definitions or behavior.
+
+Review scope and exceptions are recorded in [the repository review](docs/qa/2026-10-13-organization.md). `npm run review:coverage` checks the explicit source inventory; it does not certify runtime, visual or backend coverage.
 
 ## AI-assisted workflow
 

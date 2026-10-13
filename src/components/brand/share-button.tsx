@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Share2, Check } from "lucide-react";
 import { toast } from "sonner";
+import { interactionCopy } from "@/content/interactions";
 import { cn } from "@/lib/utils";
 
 /**
@@ -14,7 +15,7 @@ export function ShareButton({
   path,
   title,
   caption,
-  label = "Share",
+  label = interactionCopy.share,
   className,
 }: {
   path: string;
@@ -25,6 +26,8 @@ export function ShareButton({
   className?: string;
 }) {
   const [copied, setCopied] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
 
   async function onClick(e: React.MouseEvent) {
     e.preventDefault();
@@ -38,17 +41,19 @@ export function ShareButton({
       try {
         await navigator.share({ title, text: caption, url });
         return;
-      } catch {
-        return; // user dismissed the share sheet
+      } catch (error) {
+        if (typeof error === "object" && error !== null && "name" in error && error.name === "AbortError") return;
+        // Platform failures can still use copy-link.
       }
     }
     try {
       await navigator.clipboard.writeText(caption ? `${caption} ${url}` : url);
       setCopied(true);
-      toast.success("Link copied");
-      setTimeout(() => setCopied(false), 1800);
+      toast.success(interactionCopy.linkCopied);
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), 1800);
     } catch {
-      toast.error("Couldn't copy the link.");
+      toast.error(interactionCopy.copyFailed);
     }
   }
 

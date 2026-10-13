@@ -1,5 +1,11 @@
 "use client";
 
+import { profileFormCopy } from "@/content/forms/profile";
+
+import { FORM_INPUT_CLASS, FORM_TEXTAREA_CLASS } from "@/lib/design/controls";
+
+import { FormField as Field } from "@/components/brand/form-field";
+
 import { useActionState, useState } from "react";
 import { Plus, X } from "lucide-react";
 import { updateProfile, type ProfileFormState } from "@/lib/actions/profile";
@@ -12,39 +18,6 @@ import { KNOWN_TOOLS } from "@/lib/site";
 import type { Profile } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 
-const inputClass =
-  "h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
-
-function Field({
-  label,
-  children,
-  required,
-  hint,
-  error,
-}: {
-  label: string;
-  children: React.ReactNode;
-  required?: boolean;
-  hint?: string;
-  error?: string;
-}) {
-  return (
-    <div>
-      <label className="mb-1.5 block text-sm font-medium text-ink">
-        {label}
-        {required && <span className="ml-0.5 text-clay-mid">*</span>}
-        {hint && (
-          <span className="ml-2 font-normal text-xs text-muted-foreground">
-            {hint}
-          </span>
-        )}
-      </label>
-      {children}
-      {error && <p className="mt-1 text-xs text-clay-deep">{error}</p>}
-    </div>
-  );
-}
-
 export function ProfileForm({ profile }: { profile: Profile }) {
   const [state, action, pending] = useActionState<ProfileFormState, FormData>(
     updateProfile,
@@ -54,16 +27,19 @@ export function ProfileForm({ profile }: { profile: Profile }) {
 
   const [dirty, setDirty] = useState(false);
   useUnsavedChanges(dirty);
+  const [uploading, setUploading] = useState(false);
   const links = (profile.links ?? {}) as Record<string, string | undefined>;
 
   const [tools, setTools] = useState<string[]>(profile.tools ?? []);
   const [customTool, setCustomTool] = useState("");
 
-  const toggleTool = (t: string) =>
+  const toggleTool = (t: string) => {
+    setDirty(true);
     setTools((cur) => (cur.includes(t) ? cur.filter((x) => x !== t) : [...cur, t]));
+  };
   const addCustom = () => {
     const t = customTool.trim();
-    if (t && !tools.includes(t)) setTools((cur) => [...cur, t]);
+    if (t && !tools.includes(t)) { setTools((cur) => [...cur, t]); setDirty(true); }
     setCustomTool("");
   };
   const chipTools = [...new Set([...KNOWN_TOOLS, ...tools])];
@@ -71,11 +47,13 @@ export function ProfileForm({ profile }: { profile: Profile }) {
   const [skills, setSkills] = useState<string[]>(profile.skills ?? []);
   const [customSkill, setCustomSkill] = useState("");
 
-  const removeSkill = (s: string) =>
+  const removeSkill = (s: string) => {
     setSkills((cur) => cur.filter((x) => x !== s));
+    setDirty(true);
+  };
   const addSkill = () => {
     const s = customSkill.trim();
-    if (s && !skills.includes(s)) setSkills((cur) => [...cur, s]);
+    if (s && !skills.includes(s)) { setSkills((cur) => [...cur, s]); setDirty(true); }
     setCustomSkill("");
   };
 
@@ -84,6 +62,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
       ref={formRef}
       action={action}
       onChange={() => setDirty(true)}
+      onSubmit={(event) => { if (uploading) event.preventDefault(); }}
       noValidate
       className="space-y-5"
     >
@@ -95,72 +74,74 @@ export function ProfileForm({ profile }: { profile: Profile }) {
 
       <FormSection
         step={1}
-        title="Identity"
-        description="Your photo, name, and the handle people will find you by."
+        title={profileFormCopy.identityTitle}
+        description={profileFormCopy.identityDescription}
       >
         <CoverAvatarInput
+          onUploadingChange={setUploading}
+          onValueChange={() => setDirty(true)}
           defaultCover={profile.cover_url}
           defaultAvatar={profile.avatar_url}
           fallbackInitial={profile.name.slice(0, 1).toUpperCase()}
         />
 
-        <Field label="Display name" required error={state.fieldErrors?.name}>
+        <Field label={profileFormCopy.labelDisplayName} required error={state.fieldErrors?.name}>
           <input
             name="name"
             defaultValue={profile.name}
             maxLength={80}
-            className={inputClass}
-            placeholder="Your name"
+            className={FORM_INPUT_CLASS}
+            placeholder={profileFormCopy.placeholderYourName}
           />
         </Field>
 
         <Field
-          label="Handle"
-          hint="yidvibe.com/u/your-handle"
+          label={profileFormCopy.labelHandle}
+          hint={profileFormCopy.hintYidvibeComUYourHandle}
           error={state.fieldErrors?.handle}
         >
           <input
             name="handle"
             defaultValue={profile.handle}
-            className={cn(inputClass, "font-mono")}
-            placeholder="your-handle"
+            className={cn(FORM_INPUT_CLASS, "font-mono")}
+            placeholder={profileFormCopy.placeholderYourHandle}
           />
         </Field>
       </FormSection>
 
       <FormSection
         step={2}
-        title="About you"
-        description="A short intro and where you're based — what people read first."
+        title={profileFormCopy.aboutTitle}
+        description={profileFormCopy.aboutDescription}
       >
-        <Field label="Bio">
+        <Field label={profileFormCopy.labelBio}>
           <textarea
             name="bio"
             defaultValue={profile.bio ?? ""}
             maxLength={600}
             rows={4}
-            className="w-full resize-y rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
-            placeholder="A short intro — what you build, your background, your passion…"
+            className={FORM_TEXTAREA_CLASS}
+            placeholder={profileFormCopy.placeholderAShortIntroWhatYou}
           />
         </Field>
 
-        <Field label="Location">
+        <Field label={profileFormCopy.labelLocation}>
           <input
             name="location"
             defaultValue={profile.location ?? ""}
             maxLength={80}
-            className={inputClass}
-            placeholder="Brooklyn, NY"
+            className={FORM_INPUT_CLASS}
+            placeholder={profileFormCopy.placeholderBrooklynNY}
           />
         </Field>
       </FormSection>
 
       <FormSection
         step={3}
-        title="Tools & skills"
-        description="The AI tools you build with and the skills you bring — shown on your profile and used to filter the Builders directory."
+        title={profileFormCopy.toolsSkillsTitle}
+        description={profileFormCopy.toolsSkillsDescription}
       >
-        <Field label="Tools you use">
+        <Field label={profileFormCopy.labelToolsYouUse}>
           <div className="flex flex-wrap gap-2">
             {chipTools.map((t) => {
               const active = tools.includes(t);
@@ -169,6 +150,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
                   key={t}
                   type="button"
                   onClick={() => toggleTool(t)}
+                  aria-pressed={active}
                   className={cn(
                     "rounded-full border px-3 py-1 text-sm transition-colors",
                     active
@@ -183,6 +165,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
           </div>
           <div className="mt-2 flex gap-2">
             <input
+              aria-label={profileFormCopy.accessibleAddAnotherTool}
               value={customTool}
               onChange={(e) => setCustomTool(e.target.value)}
               onKeyDown={(e) => {
@@ -191,12 +174,11 @@ export function ProfileForm({ profile }: { profile: Profile }) {
                   addCustom();
                 }
               }}
-              placeholder="Add another tool"
-              className={cn(inputClass, "h-9 max-w-xs")}
+              placeholder={profileFormCopy.accessibleAddAnotherTool}
+              className={cn(FORM_INPUT_CLASS, "h-9 max-w-xs")}
             />
             <button type="button" onClick={addCustom} className="btn btn-ghost btn-sm">
-              <Plus size={15} /> Add
-            </button>
+              <Plus size={15} />{profileFormCopy.textAdd}</button>
           </div>
           {tools.map((t) => (
             <input key={t} type="hidden" name="tools" value={t} />
@@ -204,8 +186,8 @@ export function ProfileForm({ profile }: { profile: Profile }) {
         </Field>
 
         <Field
-          label="Skills"
-          hint="what you can do — used by the Builders filter"
+          label={profileFormCopy.labelSkills}
+          hint={profileFormCopy.hintWhatYouCanDoUsed}
         >
           {skills.length > 0 && (
             <div className="mb-2 flex flex-wrap gap-2">
@@ -215,7 +197,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
                   type="button"
                   onClick={() => removeSkill(s)}
                   className="inline-flex items-center gap-1 rounded-full border border-sage-mid bg-sage-tint px-3 py-1 text-sm text-sage-deep transition-colors hover:border-clay-mid hover:text-clay-deep"
-                  title="Remove"
+                  title={profileFormCopy.titleRemove}
                 >
                   {s}
                   <X size={13} />
@@ -225,6 +207,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
           )}
           <div className="flex gap-2">
             <input
+              aria-label={profileFormCopy.accessibleAddASkill}
               value={customSkill}
               onChange={(e) => setCustomSkill(e.target.value)}
               onKeyDown={(e) => {
@@ -233,12 +216,11 @@ export function ProfileForm({ profile }: { profile: Profile }) {
                   addSkill();
                 }
               }}
-              placeholder="e.g. React, AI prompting, UI design"
-              className={cn(inputClass, "h-9 max-w-xs")}
+              placeholder={profileFormCopy.placeholderEGReactAIPrompting}
+              className={cn(FORM_INPUT_CLASS, "h-9 max-w-xs")}
             />
             <button type="button" onClick={addSkill} className="btn btn-ghost btn-sm">
-              <Plus size={15} /> Add
-            </button>
+              <Plus size={15} />{profileFormCopy.textAdd}</button>
           </div>
           {skills.map((s) => (
             <input key={s} type="hidden" name="skills" value={s} />
@@ -248,17 +230,14 @@ export function ProfileForm({ profile }: { profile: Profile }) {
 
       <FormSection
         step={4}
-        title="Visibility"
-        description="Whether you have a public profile, how your name shows, and whether you're open to work."
+        title={profileFormCopy.visibilityTitle}
+        description={profileFormCopy.visibilityDescription}
       >
         <label className="flex cursor-pointer items-center justify-between rounded-card border border-border bg-secondary/40 px-4 py-3">
           <span>
-            <span className="block text-sm font-medium text-ink">
-              Show my profile publicly
-            </span>
+            <span className="block text-sm font-medium text-ink">{profileFormCopy.publicProfileLabel}</span>
             <span className="block text-xs text-muted-foreground">
-              On = people can open your profile from your projects and reach you.
-              Off = you stay private and your name isn&apos;t a link.
+              {profileFormCopy.publicProfileHint}
             </span>
           </span>
           <input
@@ -272,12 +251,9 @@ export function ProfileForm({ profile }: { profile: Profile }) {
 
         <label className="flex cursor-pointer items-center justify-between rounded-card border border-border bg-secondary/40 px-4 py-3">
           <span>
-            <span className="block text-sm font-medium text-ink">
-              Available for hire
-            </span>
+            <span className="block text-sm font-medium text-ink">{profileFormCopy.availableForHireLabel}</span>
             <span className="block text-xs text-muted-foreground">
-              On = a green &ldquo;Available&rdquo; badge shows on your card, and you
-              appear under the Builders &ldquo;Available for hire&rdquo; filter.
+              {profileFormCopy.availableForHireHint}
             </span>
           </span>
           <input
@@ -291,12 +267,8 @@ export function ProfileForm({ profile }: { profile: Profile }) {
 
         <label className="flex cursor-pointer items-center justify-between rounded-card border border-border bg-secondary/40 px-4 py-3">
           <span>
-            <span className="block text-sm font-medium text-ink">
-              Show my real name
-            </span>
-            <span className="block text-xs text-muted-foreground">
-              Off = people only see your @handle — on posts, comments, everywhere
-            </span>
+            <span className="block text-sm font-medium text-ink">{profileFormCopy.realNameLabel}</span>
+            <span className="block text-xs text-muted-foreground">{profileFormCopy.realNameHint}</span>
           </span>
           <input
             type="checkbox"
@@ -310,27 +282,27 @@ export function ProfileForm({ profile }: { profile: Profile }) {
 
       <FormSection
         step={5}
-        title="Contact & links"
-        description="Fill in whatever you want shown — people use these to reach you."
+        title={profileFormCopy.contactLinksTitle}
+        description={profileFormCopy.contactLinksDescription}
       >
         <Field
-          label="Contact (public)"
-          hint="direct ways to reach you"
+          label={profileFormCopy.labelContactPublic}
+          hint={profileFormCopy.hintDirectWaysToReachYou}
         >
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            <input name="link_email" type="email" defaultValue={links.email ?? ""} className={inputClass} placeholder="Email" />
-            <input name="link_phone" defaultValue={links.phone ?? ""} className={inputClass} placeholder="Phone" />
-            <input name="link_whatsapp" defaultValue={links.whatsapp ?? ""} className={inputClass} placeholder="WhatsApp number" />
-            <input name="link_instagram" defaultValue={links.instagram ?? ""} className={inputClass} placeholder="Instagram @handle" />
+            <input name="link_email" aria-label={profileFormCopy.accessibleEmail} type="email" defaultValue={links.email ?? ""} className={FORM_INPUT_CLASS} placeholder={profileFormCopy.accessibleEmail} />
+            <input name="link_phone" aria-label={profileFormCopy.accessiblePhone} defaultValue={links.phone ?? ""} className={FORM_INPUT_CLASS} placeholder={profileFormCopy.accessiblePhone} />
+            <input name="link_whatsapp" aria-label={profileFormCopy.accessibleWhatsAppNumber} defaultValue={links.whatsapp ?? ""} className={FORM_INPUT_CLASS} placeholder={profileFormCopy.accessibleWhatsAppNumber} />
+            <input name="link_instagram" aria-label={profileFormCopy.accessibleInstagramHandle} defaultValue={links.instagram ?? ""} className={FORM_INPUT_CLASS} placeholder={profileFormCopy.placeholderInstagramHandle} />
           </div>
         </Field>
 
-        <Field label="Links">
+        <Field label={profileFormCopy.labelLinks}>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            <input name="link_website" defaultValue={links.website ?? ""} className={inputClass} placeholder="Website" />
-            <input name="link_github" defaultValue={links.github ?? ""} className={inputClass} placeholder="GitHub" />
-            <input name="link_x" defaultValue={links.x ?? ""} className={inputClass} placeholder="X / Twitter" />
-            <input name="link_linkedin" defaultValue={links.linkedin ?? ""} className={inputClass} placeholder="LinkedIn" />
+            <input name="link_website" aria-label={profileFormCopy.accessibleWebsite} defaultValue={links.website ?? ""} className={FORM_INPUT_CLASS} placeholder={profileFormCopy.accessibleWebsite} />
+            <input name="link_github" aria-label={profileFormCopy.accessibleGitHub} defaultValue={links.github ?? ""} className={FORM_INPUT_CLASS} placeholder={profileFormCopy.accessibleGitHub} />
+            <input name="link_x" aria-label={profileFormCopy.accessibleXTwitter} defaultValue={links.x ?? ""} className={FORM_INPUT_CLASS} placeholder={profileFormCopy.accessibleXTwitter} />
+            <input name="link_linkedin" aria-label={profileFormCopy.accessibleLinkedIn} defaultValue={links.linkedin ?? ""} className={FORM_INPUT_CLASS} placeholder={profileFormCopy.accessibleLinkedIn} />
           </div>
         </Field>
       </FormSection>
@@ -339,10 +311,10 @@ export function ProfileForm({ profile }: { profile: Profile }) {
         <CancelButton dirty={dirty} fallbackHref={`/u/${profile.handle}`} />
         <button
           type="submit"
-          disabled={pending}
+          disabled={pending || uploading}
           className="btn-sweep inline-flex h-12 flex-1 items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-transform active:scale-[0.99] disabled:opacity-70"
         >
-          {pending ? "Saving…" : "Save profile"}
+          {pending ? profileFormCopy.savingLabel : profileFormCopy.saveLabel}
         </button>
       </div>
     </form>

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { type Accent, ACCENT_AVATAR, accentFor } from "@/lib/site";
+import { type Accent, ACCENT_AVATAR, accentFor } from "@/lib/design/accents";
 
 function initials(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -36,13 +36,14 @@ export function AvatarCircle({
         className,
       )}
       style={{ width: size, height: size, fontSize }}
-      aria-hidden={false}
+      role="img"
+      aria-label={name}
     >
       {src ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
-          alt={name}
+          alt=""
           width={size}
           height={size}
           className="h-full w-full object-cover"

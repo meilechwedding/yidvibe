@@ -45,7 +45,7 @@ function Row({
 }
 
 /** Two rows — Tools and Skills — each showing the first 3, with an inline
- *  "+N more" expander. Pills link to the Directory filtered by that value. */
+ *  "+N more" expander. Pills link to Builders filtered by that value. */
 export function ToolsSkills({
   tools,
   skills,
@@ -60,13 +60,13 @@ export function ToolsSkills({
         label="Tools"
         items={tools}
         kind="tool"
-        hrefFor={(v) => `/directory?tool=${encodeURIComponent(v)}`}
+        hrefFor={(v) => `/builders?tool=${encodeURIComponent(v)}`}
       />
       <Row
         label="Skills"
         items={skills}
         kind="skill"
-        hrefFor={(v) => `/directory?skill=${encodeURIComponent(v)}`}
+        hrefFor={(v) => `/builders?skill=${encodeURIComponent(v)}`}
       />
     </div>
   );

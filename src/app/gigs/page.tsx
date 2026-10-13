@@ -1,3 +1,4 @@
+import { GIGS_COPY } from "@/content/pages/gigs";
 import Link from "next/link";
 import { Plus, Briefcase } from "lucide-react";
 import { listGigs } from "@/lib/gigs";
@@ -7,10 +8,7 @@ import { GigCard } from "@/components/brand/gig-card";
 import { EmptyState } from "@/components/brand/empty-state";
 import { GigsBoard, type GigFilterItem } from "@/components/gigs/gigs-board";
 
-export const metadata = {
-  title: "Gigs",
-  description: "Post a gig, get applicants, manage it all in one place.",
-};
+export const metadata = GIGS_COPY.metadata;
 
 export default async function GigsPage() {
   const gigs = await listGigs({ status: "open" });
@@ -40,9 +38,9 @@ export default async function GigsPage() {
     <Container className="py-10 md:py-14">
       <PageHeader
         accent="gold"
-        eyebrow="Work"
-        title="Gigs"
-        subtitle="Post a gig, get applicants, manage it all in one place."
+        eyebrow={GIGS_COPY.eyebrow}
+        title={GIGS_COPY.title}
+        subtitle={GIGS_COPY.subtitle}
         action={
           <Link href="/gigs/post" className="btn btn-orange shrink-0">
             <Plus size={16} /> Post a gig

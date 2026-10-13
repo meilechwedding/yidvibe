@@ -1,3 +1,5 @@
+import { BROWSE_COPY } from "@/content/pages/browse";
+import { BUILDERS_COPY } from "@/content/pages/builders";
 import { listBuilders, countBuilders, getBuilderFacets } from "@/lib/queries";
 import { Container } from "@/components/brand/layout";
 import { PageHeader } from "@/components/brand/page-header";
@@ -6,10 +8,7 @@ import { EmptyState } from "@/components/brand/empty-state";
 import { FilterBar } from "@/components/brand/filter-bar";
 import { Pagination } from "@/components/brand/pagination";
 
-export const metadata = {
-  title: "Builders",
-  description: "Meet the builders shipping AI projects in the community.",
-};
+export const metadata = BUILDERS_COPY.metadata;
 
 const PER_PAGE = 24;
 
@@ -49,9 +48,9 @@ export default async function BuildersPage({
     <Container className="py-10 md:py-14">
       <PageHeader
         accent="blue"
-        eyebrow="The people behind it"
-        title="Builders"
-        subtitle="Meet the people shipping AI apps and tools in the community."
+        eyebrow={BUILDERS_COPY.eyebrow}
+        title={BUILDERS_COPY.title}
+        subtitle={BUILDERS_COPY.subtitle}
       />
 
       <FilterBar
@@ -59,7 +58,7 @@ export default async function BuildersPage({
         searchValue={q}
         placeholder="Search builders…"
         selects={[
-          { name: "tool", allLabel: "All tools", value: tool, options: facets.tools },
+          { name: "tool", allLabel: BROWSE_COPY.allTools, value: tool, options: facets.tools },
           { name: "skill", allLabel: "All skills", value: skill, options: facets.skills },
         ]}
         toggles={[
@@ -73,11 +72,11 @@ export default async function BuildersPage({
           title={filtering ? "No builders found" : "No builders yet"}
           description={
             filtering
-              ? "Try a broader search or clear your filters."
+              ? BROWSE_COPY.noResults
               : "Be the first to set up a builder profile and show what you build."
           }
           actionHref={filtering ? "/builders" : "/dashboard/profile"}
-          actionLabel={filtering ? "Clear filters" : "Create your profile"}
+          actionLabel={filtering ? BROWSE_COPY.clearFilters : "Create your profile"}
         />
       ) : (
         <>

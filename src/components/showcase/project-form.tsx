@@ -1,5 +1,11 @@
 "use client";
 
+import { projectFormCopy } from "@/content/forms/projects";
+
+import { FORM_INPUT_CLASS, FORM_TEXTAREA_CLASS } from "@/lib/design/controls";
+
+import { FormField as Field } from "@/components/brand/form-field";
+
 import { useActionState, useState } from "react";
 import { Plus, UserCheck, Globe } from "lucide-react";
 import { ImageInput } from "@/components/brand/image-input";
@@ -13,36 +19,6 @@ import type { ProjectFormState } from "@/lib/actions/projects";
 import type { Project } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 
-const inputClass =
-  "h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
-
-function Field({
-  label,
-  children,
-  required,
-  hint,
-}: {
-  label: string;
-  children: React.ReactNode;
-  required?: boolean;
-  hint?: string;
-}) {
-  return (
-    <div>
-      <label className="mb-1.5 block text-sm font-medium text-ink">
-        {label}
-        {required && <span className="ml-0.5 text-clay-mid">*</span>}
-        {hint && (
-          <span className="ml-2 font-normal text-xs text-muted-foreground">
-            {hint}
-          </span>
-        )}
-      </label>
-      {children}
-    </div>
-  );
-}
-
 /**
  * Multi-select chip field with suggestions + custom entries. Carries each value
  * in a hidden input named `name`. `activeClass` controls the selected-chip color
@@ -55,6 +31,7 @@ function ChipField({
   setValues,
   activeClass,
   placeholder,
+  onValueChange,
 }: {
   name: string;
   suggestions: string[];
@@ -62,15 +39,18 @@ function ChipField({
   setValues: React.Dispatch<React.SetStateAction<string[]>>;
   activeClass: string;
   placeholder: string;
+  onValueChange: () => void;
 }) {
   const [custom, setCustom] = useState("");
-  const toggle = (t: string) =>
+  const toggle = (t: string) => {
+    onValueChange();
     setValues((cur) =>
       cur.includes(t) ? cur.filter((x) => x !== t) : [...cur, t],
     );
+  };
   const addCustom = () => {
     const t = custom.trim();
-    if (t && !values.includes(t)) setValues((cur) => [...cur, t]);
+    if (t && !values.includes(t)) { setValues((cur) => [...cur, t]); onValueChange(); }
     setCustom("");
   };
   const chips = [...new Set([...suggestions, ...values])];
@@ -85,6 +65,7 @@ function ChipField({
               key={t}
               type="button"
               onClick={() => toggle(t)}
+              aria-pressed={on}
               className={cn(
                 "rounded-full border px-3 py-1 text-sm transition-colors",
                 on
@@ -107,16 +88,16 @@ function ChipField({
               addCustom();
             }
           }}
+          aria-label={placeholder}
           placeholder={placeholder}
-          className={cn(inputClass, "h-9 max-w-xs")}
+          className={cn(FORM_INPUT_CLASS, "h-9 max-w-xs")}
         />
         <button
           type="button"
           onClick={addCustom}
           className="inline-flex h-9 items-center gap-1 rounded-[10px] border border-border bg-surface px-3 text-sm text-ink hover:bg-secondary"
         >
-          <Plus size={15} /> Add
-        </button>
+          <Plus size={15} />{projectFormCopy.addLabel}</button>
       </div>
       {values.map((t) => (
         <input key={t} type="hidden" name={name} value={t} />
@@ -128,7 +109,7 @@ function ChipField({
 export function ProjectForm({
   action,
   project,
-  submitLabel = "Post your project",
+  submitLabel = projectFormCopy.postLabel,
   isLoggedIn = false,
 }: {
   action: (
@@ -158,12 +139,16 @@ export function ProjectForm({
 
   const [dirty, setDirty] = useState(false);
   useUnsavedChanges(dirty);
+  const [coverUploading, setCoverUploading] = useState(false);
+  const [galleryUploading, setGalleryUploading] = useState(false);
+  const uploading = coverUploading || galleryUploading;
 
   return (
     <form
       ref={formRef}
       action={formAction}
       onChange={() => setDirty(true)}
+      onSubmit={(event) => { if (uploading) event.preventDefault(); }}
       noValidate
       className="space-y-5"
     >
@@ -175,42 +160,40 @@ export function ProjectForm({
 
       <FormSection
         step={1}
-        title="The basics"
-        description="Add a link and the details that help people understand the project."
+        title={projectFormCopy.basicsTitle}
+        description={projectFormCopy.basicsDescription}
       >
         <div className="rounded-card border border-border bg-secondary/40 p-3">
-          <label className="mb-1.5 block text-sm font-medium text-ink">
-            Project link
-            <span className="ml-2 font-normal text-xs text-muted-foreground">
-              optional if you upload a cover image
-            </span>
+          <label htmlFor="project-live-url" className="mb-1.5 block text-sm font-medium text-ink">{projectFormCopy.linkLabel}<span className="ml-2 font-normal text-xs text-muted-foreground">{projectFormCopy.linkHint}</span>
           </label>
           <input
+            id="project-live-url"
             name="url"
             type="url"
+            aria-invalid={!!state.fieldErrors?.url}
+            aria-describedby={state.fieldErrors?.url ? "project-live-url-error" : undefined}
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className={inputClass}
-            placeholder="https://your-app.com"
+            className={FORM_INPUT_CLASS}
+            placeholder={projectFormCopy.linkPlaceholder}
           />
+          {state.fieldErrors?.url && <p id="project-live-url-error" className="mt-1 text-xs text-clay-deep">{state.fieldErrors.url}</p>}
         </div>
 
-        <Field label="Name" required>
+        <Field label={projectFormCopy.nameLabel} required error={state.fieldErrors?.name}>
           <input
             name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             maxLength={100}
             dir="auto"
-            className={inputClass}
-            placeholder="What's it called?"
+            className={FORM_INPUT_CLASS}
+            placeholder={projectFormCopy.namePlaceholder}
           />
-          {state.fieldErrors?.name && (
-            <p className="mt-1 text-xs text-clay-deep">{state.fieldErrors.name}</p>
-          )}
+
         </Field>
 
-        <Field label="Description" required>
+        <Field label={projectFormCopy.descriptionLabel} required error={state.fieldErrors?.description}>
           <textarea
             name="description"
             value={description}
@@ -218,80 +201,77 @@ export function ProjectForm({
             maxLength={2000}
             rows={4}
             dir="auto"
-            className="w-full resize-y rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
-            placeholder="What does it do? Who's it for?"
+            className={FORM_TEXTAREA_CLASS}
+            placeholder={projectFormCopy.descriptionPlaceholder}
           />
-          {state.fieldErrors?.description && (
-            <p className="mt-1 text-xs text-clay-deep">
-              {state.fieldErrors.description}
-            </p>
-          )}
+
         </Field>
       </FormSection>
 
       <FormSection
         step={2}
-        title="Media"
-        description="Give people something to look at — a cover, screenshots, or a demo."
+        title={projectFormCopy.mediaTitle}
+        description={projectFormCopy.mediaDescription}
       >
-        <Field label="Cover image" hint="upload or paste a URL">
+        <Field label={projectFormCopy.coverLabel} hint={projectFormCopy.coverHint}>
           <ImageInput
             name="image_url"
             bucket="project-media"
             shape="rect"
+            onUploadingChange={setCoverUploading}
+            onValueChange={() => setDirty(true)}
             defaultValue={project?.image_url}
           />
         </Field>
 
-        <Field label="More screenshots" hint="optional · up to 5">
-          <GalleryInput name="images" defaultValue={project?.images ?? []} />
+        <Field label={projectFormCopy.screenshotsLabel} hint={projectFormCopy.screenshotsHint}>
+          <GalleryInput name="images" defaultValue={project?.images ?? []} onUploadingChange={setGalleryUploading} onValueChange={() => setDirty(true)} />
         </Field>
 
-        <Field label="Video / demo URL">
+        <Field label={projectFormCopy.videoLabel} error={state.fieldErrors?.video_url}>
           <input
             name="video_url"
             type="url"
             defaultValue={project?.video_url ?? ""}
-            className={inputClass}
-            placeholder="https://loom.com/…"
+            className={FORM_INPUT_CLASS}
+            placeholder={projectFormCopy.videoPlaceholder}
           />
-          {state.fieldErrors?.video_url && (
-            <p className="mt-1 text-xs text-clay-deep">
-              {state.fieldErrors.video_url}
-            </p>
-          )}
+
         </Field>
 
         <p className="rounded-lg bg-teal-50 px-3 py-2 text-xs text-teal-800">
-          Add a <strong>cover image</strong> or a <strong>live link</strong> (or
-          both) so people can actually see your project.
+          {projectFormCopy.textAddA}{" "}<strong>{projectFormCopy.textCoverImage}</strong>{" "}
+          {projectFormCopy.textOrA}{" "}<strong>{projectFormCopy.textLiveLink}</strong>{" "}
+          {projectFormCopy.textOrBothSoPeopleCan}
         </p>
       </FormSection>
 
       <FormSection
         step={3}
-        title="Tags & tools"
-        description="Help the right people find it — how it was built and what it's about."
+        title={projectFormCopy.tagsToolsTitle}
+        description={projectFormCopy.tagsToolsDescription}
       >
-        <Field label="Tools used" hint="how it was built">
+        <Field label={projectFormCopy.toolsLabel} hint={projectFormCopy.toolsHint}>
           <ChipField
             name="tools"
             suggestions={KNOWN_TOOLS}
             values={tools}
             setValues={setTools}
+            onValueChange={() => setDirty(true)}
             activeClass="border-blue-mid bg-blue-tint text-blue-deep"
-            placeholder="Add another tool"
+            placeholder={projectFormCopy.toolPlaceholder}
           />
         </Field>
 
-        <Field label="Category" hint="what it's about">
+        <Field label={projectFormCopy.categoryLabel} hint={projectFormCopy.categoryHint}>
           <ChipField
             name="tags"
             suggestions={KNOWN_TAGS}
             values={tags}
             setValues={setTags}
+            onValueChange={() => setDirty(true)}
             activeClass="border-teal-400 bg-teal-50 text-teal-800"
-            placeholder="Add another category"
+            placeholder={projectFormCopy.categoryPlaceholder}
           />
         </Field>
       </FormSection>
@@ -299,14 +279,15 @@ export function ProjectForm({
       {showOwnership && (
         <FormSection
           step={4}
-          title="Whose project is this?"
-          description="Tells people whether to credit you — switch off if you're just sharing something you found."
+          title={projectFormCopy.ownershipTitle}
+          description={projectFormCopy.ownershipDescription}
         >
           <input type="hidden" name="ownership" value={ownership} />
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             <button
               type="button"
-              onClick={() => setOwnership("mine")}
+              onClick={() => { setOwnership("mine"); setDirty(true); }}
+              aria-pressed={ownership === "mine"}
               className={cn(
                 "flex items-start gap-3 rounded-[12px] border px-4 py-3 text-left transition-colors",
                 ownership === "mine"
@@ -316,17 +297,16 @@ export function ProjectForm({
             >
               <UserCheck size={18} className="mt-0.5 shrink-0 text-teal-700" />
               <span>
-                <span className="block text-sm font-semibold text-ink">
-                  I built this
-                </span>
+                <span className="block text-sm font-semibold text-ink">{projectFormCopy.builtOwnershipLabel}</span>
                 <span className="block text-xs text-muted-foreground">
-                  Shows &ldquo;by you&rdquo; and adds it to your profile.
+                  {projectFormCopy.ownerCreditHint}
                 </span>
               </span>
             </button>
             <button
               type="button"
-              onClick={() => setOwnership("found")}
+              onClick={() => { setOwnership("found"); setDirty(true); }}
+              aria-pressed={ownership === "found"}
               className={cn(
                 "flex items-start gap-3 rounded-[12px] border px-4 py-3 text-left transition-colors",
                 ownership === "found"
@@ -336,12 +316,8 @@ export function ProjectForm({
             >
               <Globe size={18} className="mt-0.5 shrink-0 text-teal-700" />
               <span>
-                <span className="block text-sm font-semibold text-ink">
-                  I found it on the web
-                </span>
-                <span className="block text-xs text-muted-foreground">
-                  Posts as a community submission — no builder shown.
-                </span>
+                <span className="block text-sm font-semibold text-ink">{projectFormCopy.foundOwnershipLabel}</span>
+                <span className="block text-xs text-muted-foreground">{projectFormCopy.foundOwnershipHint}</span>
               </span>
             </button>
           </div>
@@ -355,15 +331,13 @@ export function ProjectForm({
         />
         <button
           type="submit"
-          disabled={pending}
+          disabled={pending || uploading}
           className="btn-sweep inline-flex h-12 flex-1 items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-transform active:scale-[0.99] disabled:opacity-70"
         >
-          {pending ? "Saving…" : submitLabel}
+          {pending ? projectFormCopy.savingLabel : submitLabel}
         </button>
       </div>
-      <p className="text-center text-xs text-muted-foreground">
-        Goes live right away. Please only post things the community will enjoy.
-      </p>
+      <p className="text-center text-xs text-muted-foreground">{projectFormCopy.publicationNotice}</p>
     </form>
   );
 }

@@ -2,20 +2,10 @@ import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { UpvoteButton } from "@/components/brand/upvote-button";
 import { SaveButton } from "@/components/brand/save-button";
-import { accentFor, type Accent } from "@/lib/site";
+import { accentFor, ACCENT_HERO } from "@/lib/design/accents";
 import { displayName } from "@/lib/display";
 import { cn } from "@/lib/utils";
 import type { ProjectWithOwner } from "@/lib/queries";
-
-/** Deep accent gradient for the cover thumbnail fallback. */
-const COVER: Record<Accent, string> = {
-  teal: "linear-gradient(135deg, var(--teal-400), var(--teal-800))",
-  blue: "linear-gradient(135deg, var(--blue-mid), var(--blue-deep))",
-  orange: "linear-gradient(135deg, var(--orange-mid), var(--orange-deep))",
-  clay: "linear-gradient(135deg, var(--clay-mid), var(--clay-deep))",
-  sage: "linear-gradient(135deg, var(--sage-mid), var(--sage-deep))",
-  gold: "linear-gradient(135deg, var(--gold-500), var(--gold-700))",
-};
 
 /**
  * The Showcase "mix" feed card: one roomy horizontal row — cover thumbnail
@@ -37,7 +27,7 @@ export function ProjectRowCard({
   const featured = !!project.featured;
   const owner = project.owner;
   const initial = project.name.slice(0, 1).toUpperCase();
-  const cover = COVER[accentFor(project.name)];
+  const cover = ACCENT_HERO[accentFor(project.name)];
 
   return (
     <div
@@ -80,7 +70,7 @@ export function ProjectRowCard({
             {project.name}
           </Link>
           {featured && (
-            <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold-deep/20 bg-gold-tint px-2 py-0.5 text-[10px] font-semibold text-gold-deep">
+            <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold-deep/20 bg-gold-tint px-2 py-0.5 text-[10px] font-semibold text-amber-900">
               <Sparkles size={10} /> Featured
             </span>
           )}

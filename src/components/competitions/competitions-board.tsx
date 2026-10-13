@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { Trophy } from "lucide-react";
+import { BUDGET_BANDS as PRIZE_BANDS } from "@/lib/domain/money";
+import { competitionMatchesStatus, type CompetitionFilterItem } from "@/lib/domain/competition";
 import { EmptyState } from "@/components/brand/empty-state";
 import {
   FilterShell,
@@ -9,60 +11,30 @@ import {
   type ActiveChip,
 } from "@/components/filters/filter-shell";
 
-/** Plain shape the board filters on — keeps this client component free of the
- *  server-only competitions lib. */
-export type CompetitionFilterItem = {
-  id: string;
-  title: string;
-  description: string;
-  prize_amount: number;
-  deadline: string;
-  hasWinner: boolean;
-  tags: string[];
-};
+export type { CompetitionFilterItem } from "@/lib/domain/competition";
 
-const WEEK_MS = 7 * 86_400_000;
-
-/** Practical "where is this competition" facet — blends deadline + winner
- *  state, which is what people actually filter on. */
+/** Entry availability, deadline and winner filters. */
 const STATUS_OPTIONS: {
   value: string;
   label: string;
-  match: (c: CompetitionFilterItem, now: number) => boolean;
 }[] = [
   {
     value: "open",
     label: "Open",
-    match: (c, now) => !c.hasWinner && new Date(c.deadline).getTime() > now,
   },
   {
     value: "ending",
     label: "Ending soon",
-    match: (c, now) => {
-      const diff = new Date(c.deadline).getTime() - now;
-      return !c.hasWinner && diff > 0 && diff <= WEEK_MS;
-    },
   },
   {
     value: "ended",
     label: "Ended",
-    match: (c, now) => !c.hasWinner && new Date(c.deadline).getTime() <= now,
   },
   {
     value: "winner",
     label: "Winner picked",
-    match: (c) => c.hasWinner,
   },
 ];
-
-/** Preset prize bands (USD). A competition matches if its prize sits in the band. */
-const PRIZE_BANDS: { value: string; label: string; min: number; max: number }[] =
-  [
-    { value: "0-250", label: "Under $250", min: 0, max: 250 },
-    { value: "250-1000", label: "$250 – $1k", min: 250, max: 1000 },
-    { value: "1000-5000", label: "$1k – $5k", min: 1000, max: 5000 },
-    { value: "5000-inf", label: "$5k+", min: 5000, max: Infinity },
-  ];
 
 export function CompetitionsBoard({
   items,
@@ -98,7 +70,7 @@ export function CompetitionsBoard({
         )
       )
         return false;
-      if (statusDef && !statusDef.match(c, now)) return false;
+      if (statusDef && !competitionMatchesStatus(c, statusDef.value, now)) return false;
       if (bandDef && !(c.prize_amount >= bandDef.min && c.prize_amount <= bandDef.max))
         return false;
       if (tag && !c.tags.includes(tag)) return false;

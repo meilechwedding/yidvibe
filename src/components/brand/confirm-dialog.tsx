@@ -1,5 +1,7 @@
 "use client";
 
+import { COMMON_COPY } from "@/content/common";
+import { interactionCopy } from "@/content/interactions";
 import * as Dialog from "@radix-ui/react-dialog";
 
 /**
@@ -12,8 +14,8 @@ export function ConfirmDialog({
   onConfirm,
   title,
   description,
-  confirmLabel = "Confirm",
-  cancelLabel = "Cancel",
+  confirmLabel = interactionCopy.confirm,
+  cancelLabel = COMMON_COPY.actions.cancel,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;

@@ -2,8 +2,9 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { MessageSquarePlus, X, ThumbsUp, ThumbsDown, Lightbulb, CheckCircle2, Heart } from "lucide-react";
+import { MessageSquarePlus, ThumbsUp, ThumbsDown, Lightbulb, CheckCircle2, Heart } from "lucide-react";
 import { createFeedback, type FeedbackState } from "@/lib/actions/feedback";
+import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
 const SENTIMENTS = [
@@ -18,33 +19,6 @@ const inputClass =
 export function FeedbackWidget() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [sentiment, setSentiment] = useState<string>("");
-  const [anonymous, setAnonymous] = useState(false);
-  const [state, action, pending] = useActionState<FeedbackState, FormData>(
-    createFeedback,
-    {},
-  );
-
-  // Lock body scroll while the dialog is open so the page behind doesn't shift
-  // or scroll under the fixed overlay ("goes odd"). Restore on close/unmount.
-  useEffect(() => {
-    if (!open) return;
-    const { overflow } = document.body.style;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = overflow;
-    };
-  }, [open]);
-
-  // Close on Escape for keyboard users.
-  useEffect(() => {
-    if (!open) return;
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
 
   // Open on demand from elsewhere (e.g. the mobile Explore sheet, which has no
   // room for the side tab). Decoupled via a window event.
@@ -60,40 +34,39 @@ export function FeedbackWidget() {
   if (pathname.startsWith("/admin")) return null;
 
   return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          aria-label="Send feedback"
+          className="fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-1.5 rounded-l-xl bg-teal-600 px-2 py-3 text-xs font-semibold text-white shadow-float [writing-mode:vertical-rl] hover:bg-teal-700 sm:inline-flex"
+        >
+          <MessageSquarePlus size={15} className="rotate-90" />
+          Feedback
+        </button>
+      </DialogTrigger>
+      <DialogContent aria-describedby={undefined} className="inset-x-0 bottom-0 left-0 top-auto z-[70] max-w-none translate-x-0 translate-y-0 rounded-t-3xl border-t border-border bg-surface p-5 pb-8 shadow-float sm:inset-x-auto sm:bottom-6 sm:left-auto sm:right-6 sm:w-[400px] sm:max-w-[92vw] sm:rounded-3xl sm:border">
+        <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border sm:hidden" />
+        <DialogTitle className="mb-3 font-display text-lg font-semibold text-ink">
+          Send feedback
+        </DialogTitle>
+        <FeedbackSession pathname={pathname} />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+
+function FeedbackSession({ pathname }: { pathname: string }) {
+  const [sentiment, setSentiment] = useState<string>("");
+  const [anonymous, setAnonymous] = useState(false);
+  const [state, action, pending] = useActionState<FeedbackState, FormData>(
+    createFeedback,
+    {},
+  );
+
+  return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label="Send feedback"
-        className="fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-1.5 rounded-l-xl bg-teal-600 px-2 py-3 text-xs font-semibold text-white shadow-float [writing-mode:vertical-rl] hover:bg-teal-700 sm:inline-flex"
-      >
-        <MessageSquarePlus size={15} className="rotate-90" />
-        Feedback
-      </button>
-
-      {open && (
-        <div className="fixed inset-0 z-[70]" role="dialog" aria-modal="true">
-          <button
-            aria-label="Close feedback"
-            onClick={() => setOpen(false)}
-            className="absolute inset-0 bg-black/30"
-          />
-          <div className="absolute inset-x-0 bottom-0 rounded-t-3xl border-t border-border bg-surface p-5 pb-8 shadow-float sm:inset-x-auto sm:bottom-6 sm:right-6 sm:w-[400px] sm:max-w-[92vw] sm:rounded-3xl sm:border">
-            <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border sm:hidden" />
-            <div className="mb-3 flex items-center justify-between">
-              <span className="font-display text-lg font-semibold text-ink">
-                Send feedback
-              </span>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="icon-btn"
-                aria-label="Close"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
             {state.ok ? (
               <div className="flex items-start gap-3 rounded-2xl border border-sage-mid bg-sage-tint p-4 text-sage-deep">
                 <CheckCircle2 size={20} className="mt-0.5 shrink-0" />
@@ -132,6 +105,7 @@ export function FeedbackWidget() {
                 </div>
 
                 <textarea
+                  aria-label="Feedback message"
                   name="body"
                   rows={4}
                   maxLength={2000}
@@ -153,6 +127,7 @@ export function FeedbackWidget() {
 
                 {anonymous && (
                   <input
+                    aria-label="Email to reply to"
                     name="contact"
                     className={inputClass}
                     placeholder="Email to reply to (optional)"
@@ -168,9 +143,6 @@ export function FeedbackWidget() {
                 </button>
               </form>
             )}
-          </div>
-        </div>
-      )}
     </>
   );
 }

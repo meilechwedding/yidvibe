@@ -41,6 +41,7 @@ export async function generateMetadata({
   const { handle } = await params;
   const profile = await getProfileByHandle(handle);
   if (!profile) return { title: "Profile not found" };
+  if (!profile.is_public) return { title: "Builder profile", description: "This builder has not made their profile public yet." };
   const shown = displayName(profile);
   return {
     title: shown,

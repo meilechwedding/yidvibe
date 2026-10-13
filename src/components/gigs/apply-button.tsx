@@ -1,5 +1,7 @@
 "use client";
 
+import { gigFormCopy } from "@/content/forms/gigs";
+
 import { useFormStatus } from "react-dom";
 
 export function ApplyButton() {
@@ -10,7 +12,7 @@ export function ApplyButton() {
       disabled={pending}
       className="btn btn-orange disabled:opacity-70"
     >
-      {pending ? "Applying…" : "Apply to this gig"}
+      {pending ? gigFormCopy.applying : gigFormCopy.apply}
     </button>
   );
 }

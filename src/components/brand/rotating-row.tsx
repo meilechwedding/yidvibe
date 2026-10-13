@@ -35,6 +35,7 @@ export function RotatingRow({ children }: { children: React.ReactNode[] }) {
 
   const [page, setPage] = useState(0);
   const [hoverPaused, setHoverPaused] = useState(false);
+  const [focusPaused, setFocusPaused] = useState(false);
   const [holdPaused, setHoldPaused] = useState(false);
   const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -44,14 +45,14 @@ export function RotatingRow({ children }: { children: React.ReactNode[] }) {
   }, [pageCount]);
 
   useEffect(() => {
-    if (hoverPaused || holdPaused || pageCount <= 1) return;
+    if (hoverPaused || focusPaused || holdPaused || pageCount <= 1) return;
     const reduce =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
     const t = setInterval(() => setPage((p) => (p + 1) % pageCount), 4500);
     return () => clearInterval(t);
-  }, [hoverPaused, holdPaused, pageCount]);
+  }, [hoverPaused, focusPaused, holdPaused, pageCount]);
 
   // Clear the hold timer on unmount.
   useEffect(
@@ -73,16 +74,18 @@ export function RotatingRow({ children }: { children: React.ReactNode[] }) {
     <div
       onMouseEnter={() => setHoverPaused(true)}
       onMouseLeave={() => setHoverPaused(false)}
-      onFocusCapture={() => setHoverPaused(true)}
-      onBlurCapture={() => setHoverPaused(false)}
+      onFocusCapture={() => setFocusPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocusPaused(false);
+      }}
     >
       <div className="overflow-hidden">
         <div
-          className="flex transition-transform duration-700 ease-out"
+          className="flex transition-transform duration-700 ease-out motion-reduce:transition-none"
           style={{ transform: `translateX(-${page * 100}%)` }}
         >
           {pages.map((group, pi) => (
-            <div key={pi} className="w-full shrink-0 px-0.5">
+            <div key={pi} inert={pi !== page} aria-hidden={pi !== page} className="w-full shrink-0 px-0.5">
               <div
                 className="grid gap-5"
                 style={{

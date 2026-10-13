@@ -142,6 +142,7 @@ export default async function GigDetailPage({
                   <form key={s.value} action={set}>
                     <button
                       type="submit"
+                      aria-pressed={active}
                       className={cn(
                         "rounded-full px-3 py-1 text-xs transition-colors",
                         active

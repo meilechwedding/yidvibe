@@ -1,5 +1,9 @@
 "use client";
 
+import { profileFormCopy } from "@/content/forms/profile";
+
+import { COMMON_COPY } from "@/content/common";
+
 import { useRef, useState } from "react";
 import { Camera, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
@@ -15,10 +19,14 @@ export function CoverAvatarInput({
   defaultCover,
   defaultAvatar,
   fallbackInitial,
+  onUploadingChange,
+  onValueChange,
 }: {
   defaultCover?: string | null;
   defaultAvatar?: string | null;
   fallbackInitial: string;
+  onUploadingChange?: (uploading: boolean) => void;
+  onValueChange?: () => void;
 }) {
   const [cover, setCover] = useState(defaultCover ?? "");
   const [avatar, setAvatar] = useState(defaultAvatar ?? "");
@@ -33,18 +41,23 @@ export function CoverAvatarInput({
     which: "cover" | "avatar",
   ) {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || busy) return;
     setBusy(which);
+    onUploadingChange?.(true);
     try {
       const { url, error } = await uploadImage(file, "avatars");
       if (error || !url) {
-        toast.error(error ?? "Upload failed.");
+        toast.error(error ?? COMMON_COPY.errors.uploadFailed);
         return;
       }
+      onValueChange?.();
       if (which === "cover") setCover(url);
       else setAvatar(url);
+    } catch {
+      toast.error(COMMON_COPY.errors.uploadFailed);
     } finally {
       setBusy(null);
+      onUploadingChange?.(false);
       e.target.value = "";
     }
   }
@@ -66,17 +79,18 @@ export function CoverAvatarInput({
         <button
           type="button"
           onClick={() => coverFile.current?.click()}
-          disabled={busy === "cover"}
+          disabled={busy !== null}
           className="absolute right-3 top-3 inline-flex h-8 items-center gap-1.5 rounded-[10px] border border-border bg-surface/95 px-3 text-xs font-medium text-ink shadow-[var(--shadow-xs)] backdrop-blur transition-colors hover:bg-secondary disabled:opacity-60"
         >
           {busy === "cover" ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} />}
-          {cover ? "Change cover" : "Add cover"}
+          {cover ? profileFormCopy.actionChangeCover : profileFormCopy.actionAddCover}
         </button>
         {cover && (
           <button
             type="button"
-            onClick={() => setCover("")}
-            aria-label="Remove cover"
+            disabled={busy !== null}
+            onClick={() => { setCover(""); onValueChange?.(); }}
+            aria-label={profileFormCopy.accessibleRemoveCover}
             className="absolute left-3 top-3 grid h-7 w-7 place-items-center rounded-full bg-ink/70 text-white"
           >
             <X size={13} />
@@ -96,8 +110,8 @@ export function CoverAvatarInput({
           <button
             type="button"
             onClick={() => avatarFile.current?.click()}
-            disabled={busy === "avatar"}
-            aria-label="Change photo"
+            disabled={busy !== null}
+            aria-label={profileFormCopy.accessibleChangePhoto}
             className="absolute -right-1 bottom-0 grid h-8 w-8 place-items-center rounded-full border border-border bg-surface text-ink shadow-[var(--shadow-sm)] transition-colors hover:bg-secondary disabled:opacity-60"
           >
             {busy === "avatar" ? <Loader2 size={13} className="animate-spin" /> : <Camera size={14} />}
@@ -108,18 +122,18 @@ export function CoverAvatarInput({
 
       <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-muted-foreground">Cover image URL — optional</span>
+          <span className="mb-1.5 block text-xs font-medium text-muted-foreground">{profileFormCopy.coverUrlLabel}</span>
           <input
-            type="url" inputMode="url" value={cover} onChange={(e) => setCover(e.target.value)}
-            placeholder="…upload above, or paste an image URL"
+            type="url" inputMode="url" value={cover} disabled={busy !== null} onChange={(e) => { setCover(e.target.value); onValueChange?.(); }}
+            placeholder={profileFormCopy.imageUrlPlaceholder}
             className="h-9 w-full rounded-[10px] border border-border bg-surface px-3 text-sm text-ink outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-muted-foreground">Profile photo URL</span>
+          <span className="mb-1.5 block text-xs font-medium text-muted-foreground">{profileFormCopy.photoUrlLabel}</span>
           <input
-            type="url" inputMode="url" value={avatar} onChange={(e) => setAvatar(e.target.value)}
-            placeholder="…upload above, or paste an image URL"
+            type="url" inputMode="url" value={avatar} disabled={busy !== null} onChange={(e) => { setAvatar(e.target.value); onValueChange?.(); }}
+            placeholder={profileFormCopy.imageUrlPlaceholder}
             className="h-9 w-full rounded-[10px] border border-border bg-surface px-3 text-sm text-ink outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
           />
         </label>

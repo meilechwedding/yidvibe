@@ -1,3 +1,5 @@
+import { SITE_NAME } from "@/config/site";
+import { IMAGE_THEME } from "@/lib/design/image-theme";
 import { ImageResponse } from "next/og";
 
 export const OG_SIZE = { width: 1200, height: 630 };
@@ -25,8 +27,8 @@ export function ogImage({
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 64,
-          color: "white",
-          backgroundImage: "linear-gradient(135deg, #2f8079 0%, #16504a 100%)",
+          color: IMAGE_THEME.white,
+          backgroundImage: IMAGE_THEME.shareGradient,
           fontFamily: "sans-serif",
         }}
       >
@@ -45,10 +47,10 @@ export function ogImage({
                 width: 44,
                 height: 44,
                 borderRadius: 12,
-                background: "#E0A12E",
+                background: IMAGE_THEME.gold,
               }}
             />
-            YidVibe
+            {SITE_NAME}
           </div>
           {kind ? (
             <div style={{ fontSize: 24, fontWeight: 600, opacity: 0.85 }}>

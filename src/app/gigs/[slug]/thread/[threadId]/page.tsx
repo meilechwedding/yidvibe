@@ -81,7 +81,7 @@ export default async function ThreadPage({
                   )}
                 >
                   <p
-                    className="whitespace-pre-line text-sm leading-relaxed"
+                    className="whitespace-pre-line break-words text-sm leading-relaxed"
                     dir="auto"
                   >
                     {m.body}

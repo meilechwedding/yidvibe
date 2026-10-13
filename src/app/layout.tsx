@@ -1,3 +1,4 @@
+import { IMAGE_THEME } from "@/lib/design/image-theme";
 import type { Metadata, Viewport } from "next";
 import { Comfortaa, Nunito_Sans } from "next/font/google";
 import Script from "next/script";
@@ -6,7 +7,7 @@ import { SiteNav } from "@/components/site/site-nav";
 import { SiteFooter } from "@/components/site/site-footer";
 import { ContextBar } from "@/components/site/context-bar";
 import { FeedbackWidget } from "@/components/site/feedback-widget";
-import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SITE_TAGLINE } from "@/lib/site";
+import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SITE_TAGLINE } from "@/config/site";
 import "./globals.css";
 
 // Brand type: Comfortaa (rounded display) + Nunito Sans (body).
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#1f6e66",
+  themeColor: IMAGE_THEME.primary,
 };
 
 export default function RootLayout({

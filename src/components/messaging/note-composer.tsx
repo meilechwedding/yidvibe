@@ -32,7 +32,7 @@ export function NoteComposer({ conversationId }: { conversationId: string }) {
 
   /** Enter sends; Shift+Enter inserts a newline (familiar chat behaviour). */
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
       e.preventDefault();
       if (!pending) formRef.current?.requestSubmit();
     }
@@ -44,6 +44,8 @@ export function NoteComposer({ conversationId }: { conversationId: string }) {
         <textarea
           ref={taRef}
           name="body"
+          aria-label="Message"
+          required
           rows={1}
           maxLength={4000}
           dir="auto"
@@ -63,7 +65,7 @@ export function NoteComposer({ conversationId }: { conversationId: string }) {
         </button>
       </div>
       {state.error ? (
-        <p className="px-1 text-xs text-destructive">{state.error}</p>
+        <p role="alert" className="px-1 text-xs text-destructive">{state.error}</p>
       ) : (
         <p className="px-1 text-[11px] text-muted-foreground">
           <kbd className="font-sans font-semibold">Enter</kbd> to send ·{" "}
