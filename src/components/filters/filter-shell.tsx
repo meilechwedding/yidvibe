@@ -64,7 +64,7 @@ export function SearchField({
           type="button"
           onClick={() => onChange("")}
           aria-label={COMMON_COPY.actions.clearSearch}
-          className="absolute right-2.5 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-ink"
+          className="absolute right-2.5 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-input text-muted-foreground transition-colors hover:bg-secondary hover:text-ink"
         >
           <X size={15} />
         </button>
@@ -207,7 +207,7 @@ export function Chip({
         type="button"
         onClick={onClear}
         aria-label={COMMON_COPY.actions.removeFilter}
-        className="-mr-0.5 rounded-full text-teal-700 hover:text-teal-900"
+        className="-mr-0.5 rounded-input text-teal-700 hover:text-teal-900"
       >
         <X size={13} />
       </button>

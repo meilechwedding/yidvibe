@@ -1,5 +1,6 @@
 import { SITE_NAME } from "@/config/site";
 import { IMAGE_THEME } from "@/lib/design/image-theme";
+import { SOCIAL_FONTS } from "@/lib/design/social-fonts";
 import { ImageResponse } from "next/og";
 
 export const OG_SIZE = { width: 1200, height: 630 };
@@ -28,8 +29,8 @@ export function ogImage({
           justifyContent: "space-between",
           padding: 64,
           color: IMAGE_THEME.white,
-          backgroundImage: IMAGE_THEME.shareGradient,
-          fontFamily: "sans-serif",
+          background: IMAGE_THEME.primary,
+          fontFamily: "Space Grotesk",
         }}
       >
         <div
@@ -37,8 +38,8 @@ export function ogImage({
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            fontSize: 30,
-            fontWeight: 700,
+            fontSize: 28,
+            fontWeight: 600,
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -46,14 +47,14 @@ export function ogImage({
               style={{
                 width: 44,
                 height: 44,
-                borderRadius: 12,
+                borderRadius: 10,
                 background: IMAGE_THEME.gold,
               }}
             />
             {SITE_NAME}
           </div>
           {kind ? (
-            <div style={{ fontSize: 24, fontWeight: 600, opacity: 0.85 }}>
+            <div style={{ fontSize: 20, fontWeight: 500, opacity: 0.85 }}>
               {kind}
             </div>
           ) : null}
@@ -64,8 +65,8 @@ export function ogImage({
             style={{
               display: "flex",
               flex: 1,
-              margin: "28px 0",
-              borderRadius: 24,
+              margin: "32px 0",
+              borderRadius: 20,
               overflow: "hidden",
               border: "1px solid rgba(255,255,255,0.18)",
             }}
@@ -81,8 +82,8 @@ export function ogImage({
           </div>
         ) : null}
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          <div style={{ fontSize: 66, fontWeight: 800, lineHeight: 1.1 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div style={{ fontSize: 72, fontWeight: 600, lineHeight: 1.1 }}>
             {title}
           </div>
           {description ? (
@@ -93,6 +94,6 @@ export function ogImage({
         </div>
       </div>
     ),
-    OG_SIZE,
+    { ...OG_SIZE, fonts: SOCIAL_FONTS },
   );
 }

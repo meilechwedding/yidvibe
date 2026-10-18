@@ -66,7 +66,7 @@ export default async function AdminUsersPage({
               key={f.value}
               href={qs ? `/admin/users?${qs}` : "/admin/users"}
               className={cn(
-                "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                "rounded-input border px-4 py-2 text-sm font-medium transition-colors",
                 isActive
                   ? "border-transparent bg-teal-50 text-teal-800"
                   : "border-border bg-surface text-muted-foreground hover:border-border-hover hover:text-ink",

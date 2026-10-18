@@ -91,7 +91,7 @@ export function CoverAvatarInput({
             disabled={busy !== null}
             onClick={() => { setCover(""); onValueChange?.(); }}
             aria-label={profileFormCopy.accessibleRemoveCover}
-            className="absolute left-3 top-3 grid h-7 w-7 place-items-center rounded-full bg-ink/70 text-white"
+            className="absolute left-3 top-3 grid h-7 w-7 place-items-center rounded-input bg-ink/70 text-white"
           >
             <X size={13} />
           </button>
@@ -112,7 +112,7 @@ export function CoverAvatarInput({
             onClick={() => avatarFile.current?.click()}
             disabled={busy !== null}
             aria-label={profileFormCopy.accessibleChangePhoto}
-            className="absolute -right-1 bottom-0 grid h-8 w-8 place-items-center rounded-full border border-border bg-surface text-ink shadow-[var(--shadow-sm)] transition-colors hover:bg-secondary disabled:opacity-60"
+            className="absolute -right-1 bottom-0 grid h-8 w-8 place-items-center rounded-input border border-border bg-surface text-ink shadow-[var(--shadow-sm)] transition-colors hover:bg-secondary disabled:opacity-60"
           >
             {busy === "avatar" ? <Loader2 size={13} className="animate-spin" /> : <Camera size={14} />}
           </button>

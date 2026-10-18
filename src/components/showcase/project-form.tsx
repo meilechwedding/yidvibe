@@ -67,7 +67,7 @@ function ChipField({
               onClick={() => toggle(t)}
               aria-pressed={on}
               className={cn(
-                "rounded-full border px-3 py-1 text-sm transition-colors",
+                "rounded-input border px-3 py-1 text-sm font-medium transition-colors",
                 on
                   ? activeClass
                   : "border-border bg-surface text-muted-foreground hover:border-border-hover",

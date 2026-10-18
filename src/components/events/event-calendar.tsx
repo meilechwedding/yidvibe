@@ -54,7 +54,7 @@ export function EventCalendar({
           <button
             type="button"
             onClick={() => onMonthChange(new Date(today.getFullYear(), today.getMonth(), 1))}
-            className="rounded-full border border-border bg-canvas px-3 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:border-border-hover hover:text-ink"
+            className="rounded-input border border-border bg-canvas px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:border-border-hover hover:text-ink"
           >
             Today
           </button>

@@ -1,7 +1,7 @@
 {
   "scope": "Source review only; no rendered-browser or backend coverage claim.",
   "summary": {
-    "reviewed": 194,
+    "reviewed": 195,
     "excluded": 66,
     "uncovered": 0
   },
@@ -971,6 +971,10 @@
     },
     {
       "path": "src/lib/design/logo.ts",
+      "status": "reviewed"
+    },
+    {
+      "path": "src/lib/design/social-fonts.ts",
       "status": "reviewed"
     },
     {

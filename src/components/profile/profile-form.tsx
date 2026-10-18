@@ -152,7 +152,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
                   onClick={() => toggleTool(t)}
                   aria-pressed={active}
                   className={cn(
-                    "rounded-full border px-3 py-1 text-sm transition-colors",
+                    "rounded-input border px-3 py-1 text-sm font-medium transition-colors",
                     active
                       ? "border-blue-mid bg-blue-tint text-blue-deep"
                       : "border-border bg-surface text-muted-foreground hover:border-border-hover",

@@ -4,13 +4,14 @@ import palette from "@/styles/palette.json";
 export const IMAGE_THEME = {
   canvas: palette.colors.canvas,
   white: palette.colors.surface,
-  primary: palette.colors["teal-600"],
-  tealDark: palette.colors["teal-900"],
-  tealStrong: palette.colors["teal-700"],
-  tealSoft: palette.colors["teal-100"],
-  gold: palette.colors["amber-500"],
-  mutedText: palette.images.mutedText,
-  shareGradient: `linear-gradient(135deg, ${palette.images.shareStart} 0%, ${palette.images.shareEnd} 100%)`,
-  socialGradient: `linear-gradient(135deg, ${palette.colors["teal-900"]} 0%, ${palette.colors["teal-700"]} 100%)`,
-  iconGradient: `linear-gradient(135deg, ${palette.colors["teal-700"]} 0%, ${palette.colors["teal-900"]} 100%)`,
+  primary: palette.colors.petrol,
+  tealDark: palette.colors.petrol,
+  tealStrong: palette.colors.petrol,
+  tealSoft: palette.colors.mist,
+  gold: palette.colors.citron,
+  mutedText: palette.colors.mist,
+  // Compatibility names for image renderers; v8 uses a solid petrol surface.
+  shareGradient: palette.colors.petrol,
+  socialGradient: palette.colors.petrol,
+  iconGradient: palette.colors.petrol,
 } as const;

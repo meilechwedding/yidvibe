@@ -35,7 +35,7 @@ function Row({
         <button
           type="button"
           onClick={() => setExpanded(true)}
-          className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-ink"
+          className="rounded-input bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-ink"
         >
           +{extra} more
         </button>

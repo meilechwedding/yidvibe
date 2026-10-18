@@ -16,7 +16,7 @@ vi.mock("next/link", () => ({ default: ({ children, ...props }: React.AnchorHTML
 afterEach(cleanup);
 
 test("serialized metadata colors and generated CSS share one palette source", () => {
-  expect(IMAGE_THEME.primary).toBe(palette.colors["teal-600"]);
+  expect(IMAGE_THEME.primary).toBe(palette.colors.petrol);
   expect(IMAGE_THEME.canvas).toBe(palette.colors.canvas);
   const result = spawnSync(process.execPath, ["scripts/sync-theme.mjs", "--check"], { encoding: "utf8" });
   expect(result.status, result.stderr).toBe(0);

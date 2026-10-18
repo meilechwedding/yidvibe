@@ -1,4 +1,5 @@
 import { IMAGE_THEME } from "@/lib/design/image-theme";
+import { SOCIAL_FONTS } from "@/lib/design/social-fonts";
 import { BRAND_STAR_PATH as STAR_PATH } from "@/lib/design/logo";
 import { ImageResponse } from "next/og";
 import { SITE_NAME, SITE_TAGLINE, SITE_DESCRIPTION } from "@/config/site";
@@ -23,9 +24,9 @@ export default function OpengraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: IMAGE_THEME.socialGradient,
+          background: IMAGE_THEME.primary,
           color: IMAGE_THEME.white,
-          fontFamily: "sans-serif",
+          fontFamily: "Space Grotesk",
           padding: "0 80px",
           textAlign: "center",
         }}
@@ -36,10 +37,10 @@ export default function OpengraphImage() {
         <div
           style={{
             display: "flex",
-            fontSize: 132,
-            fontWeight: 700,
+            fontSize: 72,
+            fontWeight: 600,
             letterSpacing: "-0.02em",
-            marginTop: 28,
+            marginTop: 32,
           }}
         >
           {SITE_NAME}
@@ -47,7 +48,7 @@ export default function OpengraphImage() {
         <div
           style={{
             display: "flex",
-            fontSize: 44,
+            fontSize: 36,
             color: IMAGE_THEME.tealSoft,
             marginTop: 8,
           }}
@@ -59,7 +60,7 @@ export default function OpengraphImage() {
             display: "flex",
             fontSize: 28,
             color: IMAGE_THEME.mutedText,
-            marginTop: 28,
+            marginTop: 32,
             maxWidth: 760,
           }}
         >
@@ -67,6 +68,6 @@ export default function OpengraphImage() {
         </div>
       </div>
     ),
-    { ...size },
+    { ...size, fonts: SOCIAL_FONTS },
   );
 }

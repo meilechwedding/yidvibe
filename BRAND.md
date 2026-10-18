@@ -10,9 +10,9 @@ Source: the user-supplied ten-page Brand System v8, October 2026, Library file `
 - Whitespace steps: 4, 8, 12, 16, 24, 32, 48, 64 and 96px. Controls use a 10px radius; cards use 20px. Avatars, switches and status dots keep their functional circular shapes.
 - Error/destructive states retain a separate red semantic palette. Third-party Google artwork keeps its official colors. User images are not recolored.
 
-`src/styles/palette.json` owns numeric colors. Run `npm run theme:sync` after changing it; commit generated `palette.css`. `theme.css` owns semantic aliases, type/radius/spacing tokens. Existing teal, gold, blue, orange and sage keys map into v8 to preserve component contracts. Clay keys support existing destructive/error states. Feature accent helpers use the green family for ordinary presentation.
+`src/styles/palette.json` owns numeric colors and direct compatibility aliases. Run `npm run theme:sync` after changing it; commit generated `palette.css`. Alias targets must name a canonical color, so changing petrol once updates existing teal consumers too. Serialized image/manifest colors read those same canonical values. `theme.css` owns semantic aliases, type/radius/spacing tokens. Existing teal, gold, blue, orange and sage keys map into v8 to preserve component contracts. Clay keys support existing destructive/error states. Feature accent helpers use the green family for ordinary presentation.
 
-Space Grotesk is self-hosted from the [typeface author's repository](https://github.com/floriankarsten/space-grotesk), with the complete upstream variable WOFF2 and its SIL Open Font License in `public/fonts`. It is not the embedded PDF subset. Code blocks may use a system monospace fallback.
+Space Grotesk is self-hosted from the [typeface author's repository](https://github.com/floriankarsten/space-grotesk), with the complete upstream variable WOFF2 and its SIL Open Font License in `public/fonts`. It is not the embedded PDF subset. Static 400/500/600 faces supply the social-image renderer; the 600 face comes from the official Google Fonts API. See `public/fonts/README.md` for provenance. Code blocks may use a system monospace fallback.
 
 ## Approved artwork dependency
 

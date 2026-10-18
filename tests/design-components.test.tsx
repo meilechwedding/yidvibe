@@ -14,8 +14,9 @@ it("keeps the avatar name consistent when a photo is supplied", () => {
   expect(screen.getAllByRole("img")).toHaveLength(1);
   expect(screen.getByRole("img", { name: "Mendy Cohen" }).querySelector("img")?.alt).toBe("");
 });
-it("keeps long detail titles readable with decorative gradient support", () => {
+it("keeps long detail titles readable on the solid brand cover", () => {
   const { container } = render(<DetailHero accent="gold" title="Averylongprojectnamewithoutspaces" />);
   expect(screen.getByRole("heading", { level: 1 }).className).toContain("break-words");
-  expect(container.querySelector('[aria-hidden="true"]')?.className).toContain("from-ink/60");
+  expect(container.firstElementChild?.getAttribute("style")).toContain("background: var(--color-petrol)");
+  expect(screen.getByRole("heading", { level: 1 }).className).toContain("text-white");
 });

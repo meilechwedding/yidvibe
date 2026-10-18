@@ -288,7 +288,7 @@ function Chip({
         type="button"
         onClick={onClear}
         aria-label="Remove filter"
-        className="-mr-0.5 rounded-full text-teal-700 hover:text-teal-900"
+        className="-mr-0.5 rounded-input text-teal-700 hover:text-teal-900"
       >
         <X size={13} />
       </button>
