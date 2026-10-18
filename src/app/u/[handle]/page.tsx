@@ -151,7 +151,7 @@ export default async function ProfilePage({
           // eslint-disable-next-line @next/next/no-img-element
           <img src={profile.cover_url} alt="" className="h-28 w-full object-cover sm:h-36" />
         ) : (
-          <div className="h-28 sm:h-36" style={{ backgroundImage: BANNER[accent] }} />
+          <div className="h-28 sm:h-36" style={{ background: BANNER[accent] }} />
         )}
         <div className="px-6 pb-6 sm:px-8">
           <div className="flex flex-wrap items-end gap-4">

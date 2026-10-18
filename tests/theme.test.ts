@@ -21,6 +21,10 @@ function contrast(foreground: string, background: string): number {
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 }
 describe("shared brand theme", () => {
+  it("keeps interactive corners at 10px and card corners at 20px", () => {
+    expect(tokens["--radius-input"]).toBe("10px");
+    expect(tokens["--radius-card"]).toBe("20px");
+  });
   it("keeps v8 palette aliases tied to canonical theme tokens", () => {
     expect(color("--canvas")).toBe("#F3F5EE");
     expect(color("--teal-600")).toBe("#103D39");

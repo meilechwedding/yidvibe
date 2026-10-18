@@ -64,7 +64,7 @@ export function SaveButton({
       className={cn(
         "transition-colors",
         variant === "overlay"
-          ? "grid h-9 w-9 place-items-center rounded-full bg-surface/90 text-muted-foreground shadow-[var(--shadow-sm)] backdrop-blur hover:text-petrol"
+          ? "grid h-9 w-9 place-items-center rounded-input bg-surface/90 text-muted-foreground shadow-[var(--shadow-sm)] backdrop-blur hover:text-petrol"
           : "icon-btn hover:text-petrol",
         saved && "text-petrol",
         className,

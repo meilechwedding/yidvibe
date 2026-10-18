@@ -144,7 +144,7 @@ export default async function GigDetailPage({
                       type="submit"
                       aria-pressed={active}
                       className={cn(
-                        "rounded-full px-3 py-1 text-xs transition-colors",
+                        "rounded-input px-3 py-1 text-xs font-medium transition-colors",
                         active
                           ? "bg-teal-600 text-white"
                           : "border border-border text-muted-foreground hover:bg-secondary",

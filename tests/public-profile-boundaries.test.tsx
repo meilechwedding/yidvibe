@@ -3,10 +3,10 @@ import React from "react";
 import { afterEach, expect, test, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 
-const fixture = vi.hoisted(() => ({ isPublic: false, viewer: null as null | { id: string } }));
+const fixture = vi.hoisted(() => ({ isPublic: false, viewer: null as null | { id: string }, coverUrl: null as string | null }));
 vi.mock("@/lib/queries", () => ({
   getProjectById: async () => ({ id: "p", name: "Example", description: "Project", owner_id: "owner", owner: { handle: "maker", name: "Maker" }, created_at: "2026-01-01", tools: [], tags: [], upvote_count: 0 }),
-  getProfileByHandle: async () => ({ id: "owner", handle: "maker", name: "Private name", bio: "Private biography", is_public: fixture.isPublic, links: { email: "private@example.test" } }),
+  getProfileByHandle: async () => ({ id: "owner", handle: "maker", name: "Private name", bio: "Private biography", is_public: fixture.isPublic, cover_url: fixture.coverUrl, avatar_url: null, tools: [], skills: [], created_at: "2026-01-01", show_real_name: true, links: { email: "private@example.test" } }),
   getComments: async () => [],
   getMyUpvotedProjectIds: async () => new Set(),
   getMySavedProjectIds: async () => new Set(),
@@ -28,9 +28,9 @@ vi.mock("@/components/showcase/claim-button", () => ({ ClaimButton: () => null }
 vi.mock("@/components/brand/posted-share-card", () => ({ PostedShareCard: () => null }));
 vi.mock("@/components/admin/feature-toggle", () => ({ FeatureToggle: () => null }));
 import ProjectDetailPage from "@/app/showcase/[id]/page";
-import { generateMetadata } from "@/app/u/[handle]/page";
+import ProfilePage, { generateMetadata } from "@/app/u/[handle]/page";
 
-afterEach(() => { cleanup(); fixture.isPublic = false; fixture.viewer = null; });
+afterEach(() => { cleanup(); fixture.isPublic = false; fixture.viewer = null; fixture.coverUrl = null; });
 
 test("a guest sees truthful private-builder messaging without contact or profile CTA", async () => {
   render(await ProjectDetailPage({ params: Promise.resolve({ id: "p" }) }));
@@ -58,4 +58,21 @@ test("public profile metadata keeps its public identity", async () => {
   fixture.isPublic = true;
   const metadata = await generateMetadata({ params: Promise.resolve({ handle: "maker" }) });
   expect(metadata.description).toBe("Private biography");
+});
+
+test("a public profile without a cover paints the solid mist fallback as a background", async () => {
+  fixture.isPublic = true;
+  const { container } = render(await ProfilePage({ params: Promise.resolve({ handle: "maker" }) }));
+  const cover = container.querySelector<HTMLDivElement>("div.h-28");
+  expect(cover).not.toBeNull();
+  expect(cover!.style.background).toBe("var(--color-mist)");
+  expect(cover!.style.backgroundImage).toBe("");
+});
+
+test("a supplied profile cover keeps its image instead of the solid fallback", async () => {
+  fixture.isPublic = true;
+  fixture.coverUrl = "/example-cover.png";
+  const { container } = render(await ProfilePage({ params: Promise.resolve({ handle: "maker" }) }));
+  expect(container.querySelector('img[src="/example-cover.png"]')).not.toBeNull();
+  expect(container.querySelector("div.h-28")).toBeNull();
 });
