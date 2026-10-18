@@ -28,9 +28,9 @@ export function CommentsCard({
   const total = countAll(comments);
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-[var(--shadow-sm)]">
+    <div className="flex flex-col overflow-hidden rounded-card border border-border bg-surface shadow-[var(--shadow-sm)]">
       <div className="border-b border-border px-4 py-3">
-        <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
+        <p className="text-sm font-semibold uppercase tracking-[0.1em] text-muted-foreground">
           Comments{total > 0 && ` · ${total}`}
         </p>
       </div>

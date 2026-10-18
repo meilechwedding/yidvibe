@@ -38,7 +38,7 @@ export default async function AdminFeedbackPage() {
   return (
     <div>
       <h1 className="font-display text-2xl text-ink">Feedback</h1>
-      <p className="mt-1.5 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm text-muted-foreground">
         {items.length} open {items.length === 1 ? "note" : "notes"}.
       </p>
 

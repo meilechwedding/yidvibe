@@ -109,7 +109,7 @@ export function ProjectCard({
         <p className="pc-desc">{project.description}</p>
 
         {project.tags.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1.5">
+          <div className="mt-3 flex flex-wrap gap-2">
             {project.tags.slice(0, 3).map((t) => (
               <TagPill key={t} href={`/showcase?tag=${encodeURIComponent(t)}`}>
                 {t}

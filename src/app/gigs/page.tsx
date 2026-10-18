@@ -35,7 +35,7 @@ export default async function GigsPage() {
   );
 
   return (
-    <Container className="py-10 md:py-14">
+    <Container className="py-12 md:py-16">
       <PageHeader
         accent="gold"
         eyebrow={GIGS_COPY.eyebrow}

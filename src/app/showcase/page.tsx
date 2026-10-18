@@ -57,7 +57,7 @@ export default async function ShowcasePage({
   const totalPages = Math.ceil(total / PER_PAGE);
 
   return (
-    <Container className="py-10 md:py-14">
+    <Container className="py-12 md:py-16">
       <PageHeader
         accent="teal"
         eyebrow={SHOWCASE_COPY.eyebrow}

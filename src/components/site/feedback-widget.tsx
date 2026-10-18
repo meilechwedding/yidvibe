@@ -14,7 +14,7 @@ const SENTIMENTS = [
 ] as const;
 
 const inputClass =
-  "h-10 w-full rounded-xl border border-border bg-surface px-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
+  "h-10 w-full rounded-input border border-border bg-surface px-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
 
 export function FeedbackWidget() {
   const pathname = usePathname();
@@ -39,13 +39,13 @@ export function FeedbackWidget() {
         <button
           type="button"
           aria-label="Send feedback"
-          className="fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-1.5 rounded-l-xl bg-teal-600 px-2 py-3 text-xs font-semibold text-white shadow-float [writing-mode:vertical-rl] hover:bg-teal-700 sm:inline-flex"
+          className="fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-2 rounded-l-xl bg-teal-600 px-2 py-3 text-xs font-medium text-white shadow-float [writing-mode:vertical-rl] hover:bg-teal-700 sm:inline-flex"
         >
           <MessageSquarePlus size={15} className="rotate-90" />
           Feedback
         </button>
       </DialogTrigger>
-      <DialogContent aria-describedby={undefined} className="inset-x-0 bottom-0 left-0 top-auto z-[70] max-w-none translate-x-0 translate-y-0 rounded-t-3xl border-t border-border bg-surface p-5 pb-8 shadow-float sm:inset-x-auto sm:bottom-6 sm:left-auto sm:right-6 sm:w-[400px] sm:max-w-[92vw] sm:rounded-3xl sm:border">
+      <DialogContent aria-describedby={undefined} className="inset-x-0 bottom-0 left-0 top-auto z-[70] max-w-none translate-x-0 translate-y-0 rounded-t-card border-t border-border bg-surface p-6 pb-8 shadow-float sm:inset-x-auto sm:bottom-6 sm:left-auto sm:right-6 sm:w-[400px] sm:max-w-[92vw] sm:rounded-card sm:border">
         <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border sm:hidden" />
         <DialogTitle className="mb-3 font-display text-lg font-semibold text-ink">
           Send feedback
@@ -68,9 +68,9 @@ function FeedbackSession({ pathname }: { pathname: string }) {
   return (
     <>
             {state.ok ? (
-              <div className="flex items-start gap-3 rounded-2xl border border-sage-mid bg-sage-tint p-4 text-sage-deep">
-                <CheckCircle2 size={20} className="mt-0.5 shrink-0" />
-                <p className="inline-flex flex-wrap items-center gap-1.5 text-sm">
+              <div className="flex items-start gap-3 rounded-card border border-sage-mid bg-sage-tint p-4 text-sage-deep">
+                <CheckCircle2 size={20} className="mt-1 shrink-0" />
+                <p className="inline-flex flex-wrap items-center gap-2 text-sm">
                   Thanks — we read every note.
                   <Heart size={14} className="shrink-0 fill-current" />
                 </p>
@@ -93,7 +93,7 @@ function FeedbackSession({ pathname }: { pathname: string }) {
                       type="button"
                       onClick={() => setSentiment(sentiment === s.value ? "" : s.value)}
                       className={cn(
-                        "inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl border px-2 py-2 text-sm transition-colors",
+                        "inline-flex flex-1 items-center justify-center gap-2 rounded-input border px-2 py-2 text-sm transition-colors",
                         sentiment === s.value
                           ? "border-teal-600 bg-teal-50 text-teal-800"
                           : "border-border text-muted-foreground hover:border-border-hover",
@@ -111,7 +111,7 @@ function FeedbackSession({ pathname }: { pathname: string }) {
                   maxLength={2000}
                   dir="auto"
                   required
-                  className="w-full resize-y rounded-xl border border-border bg-surface px-3 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
+                  className="w-full resize-y rounded-input border border-border bg-surface px-3 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
                   placeholder="What do you like, dislike, or wish existed? Which page?"
                 />
 

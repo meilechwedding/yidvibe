@@ -47,38 +47,18 @@ export default async function Home() {
     <>
       {/* ───── Hero ───── */}
       <section className="relative isolate overflow-hidden">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-          style={{
-            maskImage:
-              "linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%)",
-          }}
-        >
-          <div
-            className="absolute -top-28 left-1/2 h-[460px] w-[760px] -translate-x-1/2 rounded-full opacity-60 blur-3xl"
-            style={{ background: "radial-gradient(closest-side, var(--teal-100), transparent 72%)" }}
-          />
-          <div
-            className="absolute -top-10 right-[10%] h-[320px] w-[320px] rounded-full opacity-50 blur-3xl"
-            style={{ background: "radial-gradient(closest-side, var(--gold-100), transparent 72%)" }}
-          />
-        </div>
-
-        <Container className="flex flex-col items-center py-20 text-center md:py-28">
+        <Container className="flex flex-col items-center py-16 text-center md:py-24">
           <span className="badge-pill">
             <Sparkle size={14} />
             {HOME_COPY.tagline}
           </span>
 
-          <h1 className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.5vw,4.5rem)] font-bold leading-[1.06] tracking-tight text-ink">
+          <h1 className="mt-6 max-w-[16ch] font-display text-[clamp(2.25rem,6.5vw,4.5rem)] font-semibold leading-[1.06] tracking-tight text-ink">
             Discover what frum builders are making with{" "}
             <span className="text-teal-600">AI</span>
           </h1>
 
-          <p className="mt-6 max-w-[52ch] text-[clamp(1.05rem,2.2vw,1.25rem)] leading-relaxed text-muted-foreground">
+          <p className="mt-6 max-w-[52ch] text-base md:text-lg leading-relaxed text-muted-foreground">
             Torah apps, community tools, business, productivity — built by frum
             builders, from first-time vibe coders to seasoned pros. Post yours,
             browse the rest, get discovered.
@@ -87,7 +67,7 @@ export default async function Home() {
           <form
             action="/showcase"
             method="get"
-            className="mt-8 flex w-full max-w-[560px] items-center gap-2 rounded-full border border-border bg-surface p-2 pl-5 shadow-[var(--shadow-md)]"
+            className="mt-8 flex w-full max-w-[560px] items-center gap-2 rounded-input border border-border bg-surface p-2 pl-4"
           >
             <Search size={18} className="shrink-0 text-muted-foreground" />
             <input
@@ -95,14 +75,14 @@ export default async function Home() {
               dir="auto"
               placeholder="Search projects or tools…"
               aria-label="Search"
-              className="min-w-0 flex-1 bg-transparent text-[15px] text-ink outline-none placeholder:text-muted-foreground"
+              className="min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-muted-foreground"
             />
             <button type="submit" className="btn btn-primary btn-sm">
               Search
             </button>
           </form>
 
-          <div className="mt-7 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+          <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <Link href="/showcase" className="btn btn-primary btn-lg">
               Explore the showcase <ArrowRight size={18} />
             </Link>
@@ -134,7 +114,7 @@ export default async function Home() {
           <Container>
             <Reveal>
               <Eyebrow>★ Featured</Eyebrow>
-              <div className="mt-5">
+              <div className="mt-6">
                 <ProjectRowCard project={spotlight} isAuthed={isAuthed} upvoted={upvoted.has(spotlight.id)} saved={saved.has(spotlight.id)} />
               </div>
             </Reveal>
@@ -148,7 +128,7 @@ export default async function Home() {
           <Reveal className="flex items-end justify-between gap-6">
             <div>
               <Eyebrow>Fresh from the community</Eyebrow>
-              <h2 className="mt-3.5 font-display text-[clamp(1.9rem,4vw,2.75rem)] font-bold tracking-tight text-ink">
+              <h2 className="mt-4 font-display text-[clamp(1.75rem,4vw,3rem)] font-semibold tracking-tight text-ink">
                 Just shipped
               </h2>
             </div>
@@ -158,7 +138,7 @@ export default async function Home() {
           </Reveal>
 
           {recent.length > 0 ? (
-            <Reveal className="mt-10">
+            <Reveal className="mt-12">
               <RotatingRow>
                 {recent.map((p) => {
                   const external = !!p.url;
@@ -166,7 +146,7 @@ export default async function Home() {
                   return (
                     <div
                       key={p.id}
-                      className="h-full overflow-hidden rounded-2xl border border-border bg-surface"
+                      className="h-full overflow-hidden rounded-card border border-border bg-surface"
                     >
                       {p.image_url ? (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -179,8 +159,8 @@ export default async function Home() {
                         />
                       ) : (
                         <div
-                          className="flex h-32 w-full items-center justify-center font-display text-4xl font-bold text-teal-700"
-                          style={{ background: "linear-gradient(135deg, var(--teal-50), var(--gold-50))" }}
+                          className="flex h-32 w-full items-center justify-center font-display text-4xl font-semibold text-teal-700"
+                          style={{ background: "var(--color-mist)" }}
                         >
                           {p.name.slice(0, 1).toUpperCase()}
                         </div>
@@ -190,11 +170,11 @@ export default async function Home() {
                           href={href}
                           target={external ? "_blank" : undefined}
                           rel={external ? "noopener noreferrer" : undefined}
-                          className="truncate font-display font-bold text-ink hover:text-teal-700"
+                          className="truncate font-display font-semibold text-ink hover:text-teal-700"
                         >
                           {p.name}
                         </Link>
-                        <span className="inline-flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-[10px] border border-teal-100 bg-teal-50 text-xs font-bold leading-none text-teal-800">
+                        <span className="inline-flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-input border border-teal-100 bg-teal-50 text-xs font-medium leading-none text-teal-800">
                           <ChevronUp size={12} />
                           {p.upvote_count}
                         </span>
@@ -205,11 +185,11 @@ export default async function Home() {
               </RotatingRow>
             </Reveal>
           ) : (
-            <Reveal className="mt-10">
-              <div className="flex flex-col items-center rounded-3xl border border-dashed border-border bg-surface px-6 py-16 text-center">
+            <Reveal className="mt-12">
+              <div className="flex flex-col items-center rounded-card border border-dashed border-border bg-surface px-6 py-16 text-center">
                 <Sparkle size={26} color="var(--teal-400)" />
-                <h3 className="mt-4 font-display text-xl font-bold text-ink">No projects yet</h3>
-                <p className="mt-1.5 max-w-sm text-[15px] text-muted-foreground">
+                <h3 className="mt-4 font-display text-xl font-semibold text-ink">No projects yet</h3>
+                <p className="mt-2 max-w-sm text-sm text-muted-foreground">
                   Be the first to post — your project lands here and on the Showcase.
                 </p>
                 <Link href="/showcase/submit" className="btn btn-primary mt-6">
@@ -228,7 +208,7 @@ export default async function Home() {
             <Reveal className="flex items-end justify-between gap-6">
               <div>
                 <Eyebrow>The people behind it</Eyebrow>
-                <h2 className="mt-3.5 font-display text-[clamp(1.9rem,4vw,2.75rem)] font-bold tracking-tight text-ink">
+                <h2 className="mt-4 font-display text-[clamp(1.75rem,4vw,3rem)] font-semibold tracking-tight text-ink">
                   Meet the builders
                 </h2>
               </div>
@@ -236,7 +216,7 @@ export default async function Home() {
                 Browse all builders <ArrowRight size={16} />
               </Link>
             </Reveal>
-            <Reveal className="mt-10">
+            <Reveal className="mt-12">
               <RotatingRow>
                 {builders.map((b) => (
                   <BuilderCard key={b.id} builder={b} />
@@ -252,29 +232,29 @@ export default async function Home() {
         <Container>
           <Reveal>
             <Eyebrow>However you show up</Eyebrow>
-            <h2 className="mt-3.5 font-display text-[clamp(1.9rem,4vw,2.75rem)] font-bold tracking-tight text-ink">
+            <h2 className="mt-4 font-display text-[clamp(1.75rem,4vw,3rem)] font-semibold tracking-tight text-ink">
               Who it&apos;s for
             </h2>
           </Reveal>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
             {HOME_COPY.audiences.map((a, i) => {
               const { Icon, tint } = AUDIENCE_PRESENTATION[i]!;
               return (
                 <Reveal key={a.tag} delay={i * 80}>
-                  <div className="group flex h-full flex-col rounded-3xl border border-border bg-surface p-7 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]">
+                  <div className="group flex h-full flex-col rounded-card border border-border bg-surface p-8 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]">
                     <span className={`grid h-12 w-12 place-items-center rounded-[14px] ${tint}`}>
                       <Icon size={22} />
                     </span>
-                    <span className="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                    <span className="mt-6 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                       {a.tag}
                     </span>
-                    <h3 className="mt-1.5 font-display text-xl font-bold text-ink">
+                    <h3 className="mt-2 font-display text-xl font-semibold text-ink">
                       {a.title}
                     </h3>
-                    <p className="mt-2.5 flex-1 text-[15px] leading-relaxed text-muted-foreground">
+                    <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
                       {a.body}
                     </p>
-                    <Link href={a.href} className="link-arrow mt-5">
+                    <Link href={a.href} className="link-arrow mt-6">
                       {a.cta} <ArrowRight size={16} />
                     </Link>
                   </div>
@@ -289,23 +269,15 @@ export default async function Home() {
       <Section className="pb-4">
         <Container>
           <Reveal>
-            <div className="relative overflow-hidden rounded-[28px] bg-teal-700 px-6 py-16 text-center md:py-20">
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "radial-gradient(120% 90% at 50% -30%, rgba(255,255,255,.08), transparent 60%)",
-                }}
-              />
-              <h2 className="relative font-display text-[clamp(2rem,5vw,3.25rem)] font-bold text-white">
+            <div className="relative overflow-hidden rounded-card bg-teal-700 px-6 py-16 text-center md:py-16">
+              <h2 className="relative font-display text-[clamp(1.75rem,5vw,3rem)] font-semibold text-white">
                 Ready to vibe?
               </h2>
-              <p className="relative mx-auto mt-4 max-w-md text-[17px] text-white/80">
+              <p className="relative mx-auto mt-4 max-w-md text-base text-white/80">
                 Show what you built, or see what the community&apos;s making.
                 Always free.
               </p>
-              <div className="relative mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+              <div className="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <Link
                   href="/showcase/submit"
                   className="btn btn-lg bg-white text-teal-800 hover:bg-white/90"

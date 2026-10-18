@@ -11,7 +11,7 @@ export default async function AdminClaimsPage() {
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="font-display text-2xl font-bold text-ink">Claims</h1>
+        <h1 className="font-display text-2xl font-semibold text-ink">Claims</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           People asking to be credited as the maker of a community submission.
           Approving attaches the project to their profile.
@@ -19,14 +19,14 @@ export default async function AdminClaimsPage() {
       </header>
 
       {claims.length === 0 ? (
-        <div className="flex flex-col items-center gap-2 rounded-card border border-border bg-surface py-14 text-center">
+        <div className="flex flex-col items-center gap-2 rounded-card border border-border bg-surface py-16 text-center">
           <Hand size={22} className="text-muted-foreground" />
           <p className="text-sm text-muted-foreground">No claims waiting for review.</p>
         </div>
       ) : (
         <ul className="divide-y divide-border rounded-card border border-border bg-surface">
           {claims.map((c) => (
-            <li key={c.id} className="flex flex-wrap items-center gap-4 px-4 py-3.5">
+            <li key={c.id} className="flex flex-wrap items-center gap-4 px-4 py-4">
               <div className="min-w-0 flex-1">
                 <Link
                   href={`/showcase/${c.project_id}`}

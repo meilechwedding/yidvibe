@@ -9,7 +9,7 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div className={cn("mx-auto w-full max-w-[1160px] px-5 md:px-6", className)}>
+    <div className={cn("mx-auto w-full max-w-[1160px] px-4 md:px-6", className)}>
       {children}
     </div>
   );
@@ -32,7 +32,7 @@ export function Section({
   );
 }
 
-/** Small uppercase label that sits above a section heading. */
+/** Small section label that sits above a section heading. */
 export function Eyebrow({
   children,
   className,

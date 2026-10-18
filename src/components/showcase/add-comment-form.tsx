@@ -33,7 +33,7 @@ export function AddCommentForm({
     <form
       ref={ref}
       action={formAction}
-      className={compact ? "" : "rounded-2xl border border-border bg-surface p-4"}
+      className={compact ? "" : "rounded-card border border-border bg-surface p-4"}
     >
       {parentId && <input type="hidden" name="parent_id" value={parentId} />}
       <textarea
@@ -43,7 +43,7 @@ export function AddCommentForm({
         dir="auto"
         maxLength={2000}
         placeholder={parentId ? "Write a reply…" : "Add a comment…"}
-        className="w-full resize-y rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition-shadow placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
+        className="w-full resize-y rounded-input border border-border bg-surface px-4 py-3 text-sm text-ink outline-none transition-shadow placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
       />
       {state.error && <p className="mt-1 text-xs text-clay-deep">{state.error}</p>}
       <div className="mt-2 flex justify-end">

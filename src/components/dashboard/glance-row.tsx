@@ -10,10 +10,10 @@ export function GlanceRow({ stats }: { stats: GlanceStat[] }) {
         <Link
           key={s.label}
           href={s.href}
-          className="yv-glance-tile rounded-xl px-2 py-3.5 text-center"
+          className="yv-glance-tile rounded-input px-2 py-4 text-center"
         >
-          <div className="font-display text-2xl font-bold leading-none">{s.value}</div>
-          <div className="mt-1.5 text-[9px] font-semibold uppercase tracking-[0.06em] opacity-90">
+          <div className="font-display text-2xl font-semibold leading-none">{s.value}</div>
+          <div className="mt-2 text-[9px] font-semibold uppercase tracking-[0.06em] opacity-90">
             {s.label}
           </div>
         </Link>

@@ -17,7 +17,7 @@ import { Search, SlidersHorizontal, X } from "lucide-react";
  */
 
 export const fieldClass =
-  "h-11 w-full rounded-xl border border-border bg-canvas px-3 text-sm font-medium text-ink outline-none transition-colors hover:border-border-hover focus:border-teal-600 focus:bg-surface";
+  "h-11 w-full rounded-input border border-border bg-canvas px-3 text-sm font-medium text-ink outline-none transition-colors hover:border-border-hover focus:border-teal-600 focus:bg-surface";
 
 /**
  * Shared search-input treatment used by every board's keyword box so the three
@@ -25,7 +25,7 @@ export const fieldClass =
  * glyph on the left, generous height, and a teal focus ring.
  */
 export const searchInputClass =
-  "h-12 w-full rounded-xl border border-border bg-canvas pl-11 pr-10 text-[15px] text-ink outline-none transition-colors placeholder:text-muted-foreground hover:border-border-hover focus:border-teal-600 focus:bg-surface focus:ring-2 focus:ring-teal-600/15";
+  "h-12 w-full rounded-input border border-border bg-canvas pl-11 pr-12 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground hover:border-border-hover focus:border-teal-600 focus:bg-surface focus:ring-2 focus:ring-teal-600/15";
 
 export type ActiveChip = { key: string; label: string; onClear: () => void };
 
@@ -100,8 +100,8 @@ export function FilterShell({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="mt-7">
-      <div className="flex items-center gap-2.5 rounded-2xl border border-border bg-surface p-3 shadow-[var(--shadow-sm)]">
+    <div className="mt-8">
+      <div className="flex items-center gap-3 rounded-card border border-border bg-surface p-3 shadow-[var(--shadow-sm)]">
         <SearchField
           value={searchValue}
           onChange={onSearchChange}
@@ -109,18 +109,18 @@ export function FilterShell({
           ariaLabel={searchAriaLabel}
         />
 
-        <div className="hidden flex-wrap items-center gap-2.5 lg:flex">
+        <div className="hidden flex-wrap items-center gap-3 lg:flex">
           {controls(false)}
         </div>
 
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="inline-flex h-12 shrink-0 items-center gap-2 rounded-xl border border-border bg-canvas px-3.5 text-sm font-medium text-ink hover:border-border-hover lg:hidden"
+          className="inline-flex h-12 shrink-0 items-center gap-2 rounded-input border border-border bg-canvas px-4 text-sm font-medium text-ink hover:border-border-hover lg:hidden"
         >
           <SlidersHorizontal size={15} /> Filters
           {activeCount > 0 && (
-            <span className="grid h-5 min-w-5 place-items-center rounded-full bg-teal-600 px-1 text-[11px] font-semibold text-white">
+            <span className="grid h-5 min-w-5 place-items-center rounded-full bg-teal-600 px-1 text-sm font-semibold text-white">
               {activeCount}
             </span>
           )}
@@ -150,7 +150,7 @@ export function FilterShell({
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 z-50 bg-black/30 lg:hidden" />
-          <Dialog.Content aria-describedby={undefined} className="fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] overflow-y-auto lg:hidden rounded-t-3xl border-t border-border bg-surface p-5 pb-8 shadow-float">
+          <Dialog.Content aria-describedby={undefined} className="fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] overflow-y-auto lg:hidden rounded-t-card border-t border-border bg-surface p-6 pb-8 shadow-float">
             <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border" />
             <div className="mb-4 flex items-center justify-between">
               <Dialog.Title className="font-display text-lg font-semibold text-ink">
@@ -166,7 +166,7 @@ export function FilterShell({
               </button>
             </div>
             <div className="flex flex-col gap-3">{controls(true)}</div>
-            <div className="mt-5 flex gap-2.5">
+            <div className="mt-6 flex gap-3">
               <button
                 type="button"
                 onClick={() => {
@@ -201,7 +201,7 @@ export function Chip({
   onClear: () => void;
 }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-3 py-1 text-sm text-teal-800">
+    <span className="inline-flex items-center gap-2 rounded-input bg-teal-50 px-3 py-1 text-sm text-teal-800">
       {children}
       <button
         type="button"

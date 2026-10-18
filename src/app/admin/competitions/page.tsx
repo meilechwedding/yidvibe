@@ -28,7 +28,7 @@ export default async function AdminCompetitionsPage() {
   return (
     <div>
       <h1 className="font-display text-2xl text-ink">Competition review</h1>
-      <p className="mt-1.5 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm text-muted-foreground">
         {pending.length} awaiting approval.
       </p>
 
@@ -48,7 +48,7 @@ export default async function AdminCompetitionsPage() {
                   <div className="min-w-0">
                     <Link
                       href={`/competitions/${c.slug}`}
-                      className="font-display font-bold text-ink hover:underline"
+                      className="font-display font-semibold text-ink hover:underline"
                     >
                       {c.title}
                     </Link>

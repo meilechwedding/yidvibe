@@ -18,7 +18,7 @@ export function GigCard({
   return (
     <Link
       href={`/gigs/${gig.slug}`}
-      className="group flex flex-col rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 motion-reduce:transition-none motion-reduce:hover:translate-y-0 border border-border bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]"
+      className="group flex flex-col rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 motion-reduce:transition-none motion-reduce:hover:translate-y-0 border border-border bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]"
     >
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
@@ -35,10 +35,10 @@ export function GigCard({
           </Pill>
         )}
       </div>
-      <h3 className="mt-3 line-clamp-2 font-display text-lg font-bold text-ink" dir="auto">
+      <h3 className="mt-3 line-clamp-2 font-display text-lg font-semibold text-ink" dir="auto">
         {gig.title}
       </h3>
-      <p className="mt-1.5 line-clamp-2 text-sm text-muted-foreground" dir="auto">
+      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground" dir="auto">
         {gig.description}
       </p>
       {budget && <p className="mt-3 text-sm font-medium text-ink">{budget}</p>}

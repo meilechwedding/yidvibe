@@ -50,12 +50,12 @@ export async function generateMetadata({
 }
 
 const BANNER: Record<Accent, string> = {
-  teal: "linear-gradient(135deg, var(--teal-50) 0%, var(--teal-400) 100%)",
-  blue: "linear-gradient(135deg, var(--blue-bg) 0%, var(--blue-mid) 100%)",
-  orange: "linear-gradient(135deg, var(--orange-bg) 0%, var(--orange-mid) 100%)",
-  clay: "linear-gradient(135deg, var(--clay-bg) 0%, var(--clay-mid) 100%)",
-  sage: "linear-gradient(135deg, var(--sage-bg) 0%, var(--sage-mid) 100%)",
-  gold: "linear-gradient(135deg, var(--gold-50) 0%, var(--gold-500) 100%)",
+  teal: "var(--color-mist)",
+  blue: "var(--color-mist)",
+  orange: "var(--color-mist)",
+  clay: "var(--color-mist)",
+  sage: "var(--color-mist)",
+  gold: "var(--color-mist)",
 };
 
 function LinkButton({
@@ -97,10 +97,10 @@ export default async function ProfilePage({
 
   if (!profile.is_public && !isOwner) {
     return (
-      <Container className="py-8 md:py-10">
+      <Container className="py-8 md:py-12">
         <div className="flex min-h-[40vh] flex-col items-center justify-center text-center">
-          <h1 className="font-display text-2xl font-bold text-ink">Profile not public yet</h1>
-          <p className="mt-3 text-[15px] text-muted-foreground">
+          <h1 className="font-display text-2xl font-semibold text-ink">Profile not public yet</h1>
+          <p className="mt-3 text-sm text-muted-foreground">
             This builder hasn&apos;t made their profile public yet.
           </p>
           <Link href="/builders" className="btn btn-ghost mt-6">
@@ -144,16 +144,16 @@ export default async function ProfilePage({
     links.linkedin;
 
   return (
-    <Container className="max-w-3xl py-8 md:py-10">
+    <Container className="max-w-3xl py-8 md:py-12">
       {/* Profile header card */}
-      <div className="overflow-hidden rounded-3xl border border-border bg-surface shadow-[var(--shadow-sm)]">
+      <div className="overflow-hidden rounded-card border border-border bg-surface shadow-[var(--shadow-sm)]">
         {profile.cover_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={profile.cover_url} alt="" className="h-28 w-full object-cover sm:h-36" />
         ) : (
           <div className="h-28 sm:h-36" style={{ backgroundImage: BANNER[accent] }} />
         )}
-        <div className="px-5 pb-5 sm:px-7">
+        <div className="px-6 pb-6 sm:px-8">
           <div className="flex flex-wrap items-end gap-4">
             <AvatarCircle
               name={displayName(profile)}
@@ -164,7 +164,7 @@ export default async function ProfilePage({
             />
             <div className="min-w-0 flex-1 pb-1">
               <div className="flex items-center gap-2">
-                <h1 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+                <h1 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
                   {displayName(profile)}
                 </h1>
                 {profile.is_verified && (
@@ -178,14 +178,14 @@ export default async function ProfilePage({
                   </span>
                 )}
               </div>
-              <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+              <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
                 {profile.show_real_name !== false && <span>@{profile.handle}</span>}
                 {profile.location && (
                   <span className="inline-flex items-center gap-1">
                     <MapPin size={13} /> {profile.location}
                   </span>
                 )}
-                <span className="inline-flex items-center gap-1.5">
+                <span className="inline-flex items-center gap-2">
                   <CalendarDays size={13} /> Joined {joined}
                 </span>
               </p>
@@ -202,7 +202,7 @@ export default async function ProfilePage({
           </div>
 
           {profile.bio && (
-            <p className="mt-4 max-w-xl whitespace-pre-line text-[15px] leading-relaxed text-ink/90">
+            <p className="mt-4 max-w-xl whitespace-pre-line text-sm leading-relaxed text-ink/90">
               {profile.bio}
             </p>
           )}
@@ -254,14 +254,14 @@ export default async function ProfilePage({
 
           {profile.tools.length > 0 && (
             <div className="mt-4">
-              <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
+              <p className="text-sm font-semibold uppercase tracking-[0.1em] text-muted-foreground">
                 Builds with
               </p>
-              <div className="mt-2 flex flex-wrap gap-1.5">
+              <div className="mt-2 flex flex-wrap gap-2">
                 {profile.tools.map((t) => (
                   <span
                     key={t}
-                    className="rounded-full border border-blue-tint bg-blue-tint px-2.5 py-0.5 text-xs font-medium text-blue-deep"
+                    className="rounded-full border border-blue-tint bg-blue-tint px-3 py-1 text-xs font-medium text-blue-deep"
                   >
                     {t}
                   </span>
@@ -275,7 +275,7 @@ export default async function ProfilePage({
       {/* Projects */}
       <section className="mt-8">
         <div className="flex items-end justify-between gap-3">
-          <h2 className="font-display text-xl font-bold text-ink">
+          <h2 className="font-display text-xl font-semibold text-ink">
             {isOwner ? "Your projects" : "Projects"}
             {withOwner.length > 0 && (
               <span className="ml-2 text-sm font-medium text-muted-foreground">
@@ -297,7 +297,7 @@ export default async function ProfilePage({
             actionLabel={isOwner ? "Post your project" : undefined}
           />
         ) : (
-          <div className="mt-5 flex flex-col gap-3">
+          <div className="mt-6 flex flex-col gap-3">
             {withOwner.map((p) => (
               <ProjectRowCard
                 key={p.id}

@@ -20,19 +20,19 @@ export default async function DashboardLayout({
       <div className="sticky top-0 z-30 border-b border-border/70 bg-canvas/85 backdrop-blur supports-[backdrop-filter]:bg-canvas/70">
         <Container className="max-w-5xl">
           {/* Desktop: greeting + tab rail */}
-          <div className="hidden flex-col gap-4 pb-4 pt-7 lg:flex">
+          <div className="hidden flex-col gap-4 pb-4 pt-8 lg:flex">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal-700">
+              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal-700">
                 Your dashboard
               </p>
-              <h1 className="mt-1 font-display text-[26px] font-bold tracking-tight text-ink">
+              <h1 className="mt-1 font-display text-[26px] font-semibold tracking-tight text-ink">
                 Hi, {firstName}
               </h1>
             </div>
             <DashboardTabs />
           </div>
           {/* Mobile: greeting on hub root / back link on sub-pages */}
-          <div className="flex items-center py-3.5 lg:hidden">
+          <div className="flex items-center py-4 lg:hidden">
             <DashboardMobileBar firstName={firstName} />
           </div>
         </Container>

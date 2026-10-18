@@ -32,7 +32,7 @@ function pageItems(current: number, total: number): (number | "ellipsis")[] {
 }
 
 const cell =
-  "inline-flex h-10 min-w-10 items-center justify-center rounded-xl border px-3 text-sm font-medium transition-colors";
+  "inline-flex h-10 min-w-10 items-center justify-center rounded-input border px-3 text-sm font-medium transition-colors";
 
 export function Pagination({
   pathname,
@@ -49,7 +49,7 @@ export function Pagination({
 
   return (
     <nav
-      className="mt-10 flex items-center justify-center gap-1.5"
+      className="mt-12 flex items-center justify-center gap-2"
       aria-label="Pagination"
     >
       {page > 1 ? (
@@ -69,7 +69,7 @@ export function Pagination({
 
       {pageItems(page, totalPages).map((it, i) =>
         it === "ellipsis" ? (
-          <span key={`e${i}`} className="px-1.5 text-sm text-muted-foreground">
+          <span key={`e${i}`} className="px-2 text-sm text-muted-foreground">
             …
           </span>
         ) : (

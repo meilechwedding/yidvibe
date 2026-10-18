@@ -62,11 +62,11 @@ export function MobileBottomNav({
         <DialogTrigger asChild>
           <button
             type="button"
-            className="flex flex-col items-center justify-center gap-0.5 py-2 text-muted-foreground"
+            className="flex flex-col items-center justify-center gap-1 py-2 text-muted-foreground"
             aria-label="Explore"
           >
             <Compass size={20} />
-            <span className="text-[11px] font-medium">Explore</span>
+            <span className="text-sm font-medium">Explore</span>
           </button>
         </DialogTrigger>
 
@@ -105,7 +105,7 @@ export function MobileBottomNav({
         )}
       </nav>
 
-      <DialogContent aria-describedby={undefined} className="inset-x-0 bottom-0 left-0 top-auto max-w-none translate-x-0 translate-y-0 rounded-t-3xl border-t border-border bg-surface p-5 pb-8 shadow-float lg:hidden">
+      <DialogContent aria-describedby={undefined} className="inset-x-0 bottom-0 left-0 top-auto max-w-none translate-x-0 translate-y-0 rounded-t-card border-t border-border bg-surface p-6 pb-8 shadow-float lg:hidden">
         <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border" />
         <DialogTitle className="mb-3 font-display text-lg font-semibold text-ink">Explore</DialogTitle>
         <div className="grid grid-cols-2 gap-2">
@@ -118,7 +118,7 @@ export function MobileBottomNav({
                 aria-current={isActive(l.href) ? "page" : undefined}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  "flex items-center gap-3 rounded-2xl border px-4 py-3 text-[15px]",
+                  "flex items-center gap-3 rounded-card border px-4 py-3 text-sm",
                   isActive(l.href)
                     ? "border-teal-100 bg-teal-50 text-teal-800"
                     : "border-border text-ink hover:bg-secondary",
@@ -136,7 +136,7 @@ export function MobileBottomNav({
             setOpen(false);
             window.dispatchEvent(new Event("yv:open-feedback"));
           }}
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl border border-border px-4 py-3 text-[15px] text-ink hover:bg-secondary"
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-card border border-border px-4 py-3 text-sm text-ink hover:bg-secondary"
         >
           <MessageSquarePlus size={18} className="opacity-80" /> Send feedback
         </button>
@@ -161,12 +161,12 @@ function Tab({
       href={href}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "flex flex-col items-center justify-center gap-0.5 py-2",
+        "flex flex-col items-center justify-center gap-1 py-2",
         active ? "text-teal-700" : "text-muted-foreground",
       )}
     >
       <Icon size={20} />
-      <span className="text-[11px] font-medium">{label}</span>
+      <span className="text-sm font-medium">{label}</span>
     </Link>
   );
 }

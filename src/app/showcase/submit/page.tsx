@@ -15,7 +15,7 @@ export default async function SubmitProjectPage() {
     <Container className="max-w-2xl py-12 md:py-16">
       <div className="text-center">
         <Eyebrow>Share your work</Eyebrow>
-        <h1 className="mt-3 font-display text-[clamp(2rem,5vw,2.75rem)] font-bold tracking-tight text-ink">
+        <h1 className="mt-3 font-display text-[clamp(2rem,5vw,2.75rem)] font-semibold tracking-tight text-ink">
           Post your project
         </h1>
         <p className="mx-auto mt-3 max-w-md text-[17px] text-muted-foreground">
@@ -26,7 +26,7 @@ export default async function SubmitProjectPage() {
           <FormHelpLink>New here? See how posting a project works →</FormHelpLink>
         </div>
       </div>
-      <div className="mt-9">
+      <div className="mt-8">
         <ProjectForm action={createProject} isLoggedIn />
       </div>
     </Container>

@@ -37,9 +37,9 @@ export function DashboardTabs() {
   return (
     <nav
       aria-label="Dashboard sections"
-      className="hidden -mx-5 overflow-x-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:px-0 lg:block"
+      className="hidden -mx-5 overflow-x-auto px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:px-0 lg:block"
     >
-      <div className="flex min-w-max items-center gap-1.5 rounded-full border border-border bg-surface p-1.5 shadow-[var(--shadow-xs)]">
+      <div className="flex min-w-max items-center gap-2 rounded-full border border-border bg-surface p-2 shadow-[var(--shadow-xs)]">
         {TABS.map((t) => {
           const active = t.exact
             ? pathname === t.href
@@ -51,7 +51,7 @@ export function DashboardTabs() {
               href={t.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "group relative inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-sm font-semibold transition-colors",
+                "group relative inline-flex items-center gap-2 rounded-input px-4 py-2 text-sm font-medium transition-colors",
                 active
                   ? "bg-teal-700 text-white shadow-[0_1px_2px_rgba(16,32,43,0.12)]"
                   : "text-muted-foreground hover:bg-teal-50 hover:text-teal-800",

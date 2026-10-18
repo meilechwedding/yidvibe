@@ -31,7 +31,7 @@ export function AdminReportActions({
           type="button"
           disabled={pending}
           onClick={() => run("hide", "Content hidden")}
-          className="inline-flex h-8 items-center rounded-[10px] border border-border bg-surface px-3 text-xs font-medium text-ink hover:bg-secondary disabled:opacity-60"
+          className="inline-flex h-8 items-center rounded-input border border-border bg-surface px-3 text-xs font-medium text-ink hover:bg-secondary disabled:opacity-60"
         >
           Hide
         </button>
@@ -40,7 +40,7 @@ export function AdminReportActions({
         type="button"
         disabled={pending}
         onClick={() => run("delete", "Content deleted")}
-        className="inline-flex h-8 items-center rounded-[10px] bg-clay-mid px-3 text-xs font-medium text-white hover:bg-clay-deep disabled:opacity-60"
+        className="inline-flex h-8 items-center rounded-input bg-clay-mid px-3 text-xs font-medium text-white hover:bg-clay-deep disabled:opacity-60"
       >
         Delete
       </button>
@@ -48,7 +48,7 @@ export function AdminReportActions({
         type="button"
         disabled={pending}
         onClick={() => run("dismiss", "Report dismissed")}
-        className="inline-flex h-8 items-center rounded-[10px] border border-border bg-surface px-3 text-xs font-medium text-muted-foreground hover:bg-secondary disabled:opacity-60"
+        className="inline-flex h-8 items-center rounded-input border border-border bg-surface px-3 text-xs font-medium text-muted-foreground hover:bg-secondary disabled:opacity-60"
       >
         Dismiss
       </button>

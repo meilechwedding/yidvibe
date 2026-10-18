@@ -18,7 +18,7 @@ export function DeleteProjectButton({
     >
       <button
         type="submit"
-        className="inline-flex h-9 items-center gap-1.5 rounded-[10px] border border-border bg-surface px-3 text-sm text-clay-deep transition-colors hover:bg-clay-tint"
+        className="inline-flex h-9 items-center gap-2 rounded-input border border-border bg-surface px-3 text-sm text-clay-deep transition-colors hover:bg-clay-tint"
       >
         <Trash2 size={15} /> Delete
       </button>

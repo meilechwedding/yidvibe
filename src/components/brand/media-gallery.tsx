@@ -32,10 +32,10 @@ export function MediaGallery({
 
   const GradientFallback = (
     <div
-      className="relative flex aspect-[16/10] items-center justify-center overflow-hidden rounded-2xl border border-border"
-      style={{ backgroundImage: ACCENT_HERO[accent] }}
+      className="relative flex aspect-[16/10] items-center justify-center overflow-hidden rounded-card border border-border"
+      style={{ background: ACCENT_HERO[accent] }}
     >
-      <span className="select-none font-display text-[7rem] font-bold leading-none text-white/15">
+      <span className="select-none font-display text-[7rem] font-semibold leading-none text-white/15">
         {name.slice(0, 1).toUpperCase()}
       </span>
     </div>
@@ -47,8 +47,8 @@ export function MediaGallery({
     const shot = siteScreenshotUrl(liveUrl);
     if (failed.has(shot)) return GradientFallback;
     return (
-      <div className="rounded-2xl border border-border bg-secondary/60 p-2 shadow-[0_10px_30px_-14px_rgba(16,32,43,0.28)]">
-        <div className="overflow-hidden rounded-[10px] border border-teal-600/60 bg-white">
+      <div className="rounded-card border border-border bg-secondary/60 p-2 shadow-[0_10px_30px_-14px_rgba(16,32,43,0.28)]">
+        <div className="overflow-hidden rounded-input border border-teal-600/60 bg-white">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={shot}
@@ -69,9 +69,9 @@ export function MediaGallery({
   const current = all[activeIndex];
 
   return (
-    <div className="rounded-2xl border border-border bg-secondary/60 p-2 shadow-[0_10px_30px_-14px_rgba(16,32,43,0.28)]">
+    <div className="rounded-card border border-border bg-secondary/60 p-2 shadow-[0_10px_30px_-14px_rgba(16,32,43,0.28)]">
       {failed.has(current) ? GradientFallback : (
-        <div className="overflow-hidden rounded-[10px] border border-teal-600/60 bg-white">
+        <div className="overflow-hidden rounded-input border border-teal-600/60 bg-white">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={current}

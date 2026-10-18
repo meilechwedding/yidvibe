@@ -30,11 +30,11 @@ export default async function AdminUsersPage({
         <h1 className="font-display text-2xl text-ink">Users</h1>
         <InviteUser />
       </div>
-      <p className="mt-1.5 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm text-muted-foreground">
         Verify, feature, or grant admin. Search and filter the directory.
       </p>
 
-      <form method="get" className="mt-5 flex items-center gap-2">
+      <form method="get" className="mt-6 flex items-center gap-2">
         {sp.filter && <input type="hidden" name="filter" value={sp.filter} />}
         <div className="relative flex-1 sm:max-w-sm">
           <Search
@@ -46,7 +46,7 @@ export default async function AdminUsersPage({
             name="q"
             defaultValue={sp.q ?? ""}
             placeholder="Search name, handle, or email…"
-            className="h-10 w-full rounded-xl border border-border bg-surface pl-9 pr-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
+            className="h-10 w-full rounded-input border border-border bg-surface pl-8 pr-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
           />
         </div>
         <button type="submit" className="btn btn-ghost btn-sm">
@@ -66,7 +66,7 @@ export default async function AdminUsersPage({
               key={f.value}
               href={qs ? `/admin/users?${qs}` : "/admin/users"}
               className={cn(
-                "rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
+                "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
                 isActive
                   ? "border-transparent bg-teal-50 text-teal-800"
                   : "border-border bg-surface text-muted-foreground hover:border-border-hover hover:text-ink",

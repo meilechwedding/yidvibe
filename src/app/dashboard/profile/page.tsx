@@ -11,10 +11,10 @@ export default async function DashboardProfile() {
   return (
     <div className="mx-auto max-w-2xl">
       <div>
-        <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
+        <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
           Profile
         </h2>
-        <p className="mt-0.5 text-sm text-muted-foreground">
+        <p className="mt-1 text-sm text-muted-foreground">
           How you appear to the community.
         </p>
       </div>

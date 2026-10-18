@@ -21,14 +21,14 @@ export default async function DashboardSaved() {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
             Saved
           </h2>
-          <p className="mt-0.5 text-sm text-muted-foreground">
+          <p className="mt-1 text-sm text-muted-foreground">
             Projects you starred — private to you.
           </p>
         </div>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-semibold text-muted-foreground shadow-[var(--shadow-xs)]">
+        <span className="inline-flex items-center gap-2 rounded-input border border-border bg-surface px-3 py-2 text-xs font-medium text-muted-foreground shadow-[var(--shadow-xs)]">
           <Lock size={13} />
           {count === 0 ? "Only you" : `${count} saved · only you`}
         </span>
@@ -44,7 +44,7 @@ export default async function DashboardSaved() {
           actionLabel="Browse the Showcase"
         />
       ) : (
-        <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((p) => (
             <ProjectCard
               key={p.id}

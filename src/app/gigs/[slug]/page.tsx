@@ -57,15 +57,15 @@ export default async function GigDetailPage({
   const apply = applyToGig.bind(null, gig.id, slug);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 md:px-6">
+    <div className="mx-auto max-w-3xl px-4 py-12 md:px-6">
       <SectionCrumb section="Gigs" href="/gigs" name={gig.title} accent="gold" />
-      <div className="mt-5">
+      <div className="mt-6">
         <DetailHero
           accent="clay"
           title={gig.title}
           watermarkIcon={<Briefcase strokeWidth={1.5} />}
           badge={
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-2">
               <Briefcase size={14} /> {GIG_TYPE_LABEL[gig.type]}
               {budget ? ` · ${budget}` : ""}
               {gig.status !== "open"
@@ -80,7 +80,7 @@ export default async function GigDetailPage({
       </div>
 
       <p
-        className="mt-6 whitespace-pre-line text-[15px] leading-relaxed text-ink/90"
+        className="mt-6 whitespace-pre-line text-sm leading-relaxed text-ink/90"
         dir="auto"
       >
         {gig.description}
@@ -103,7 +103,7 @@ export default async function GigDetailPage({
             <p className="text-xs uppercase tracking-wide text-muted-foreground">
               Posted by
             </p>
-            <OfficialAuthor size="md" className="mt-0.5" />
+            <OfficialAuthor size="md" className="mt-1" />
           </div>
         </div>
       ) : (
@@ -157,7 +157,7 @@ export default async function GigDetailPage({
               })}
             </div>
 
-            <h2 className="mt-7 font-display text-xl font-bold text-ink">
+            <h2 className="mt-8 font-display text-xl font-semibold text-ink">
               Applicants{threads.length > 0 ? ` (${threads.length})` : ""}
             </h2>
             {threads.length === 0 ? (

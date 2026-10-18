@@ -73,7 +73,7 @@ export async function SiteNav() {
       <NavShell className="lg:hidden">
         <Container className="flex h-16 items-center gap-4">
           <Logo />
-          <div className="ml-auto flex items-center gap-1.5 sm:gap-2 lg:gap-3">
+          <div className="ml-auto flex items-center gap-2 sm:gap-2 lg:gap-3">
             {profile && <NotificationBell items={bellItems} unread={unread} />}
             {profile ? (
               <UserMenu

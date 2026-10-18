@@ -47,7 +47,7 @@ export type ContentItem = {
 };
 
 const pillBase =
-  "inline-flex h-8 items-center gap-1.5 rounded-[10px] px-3 text-xs font-medium transition-colors disabled:opacity-60";
+  "inline-flex h-8 items-center gap-2 rounded-input px-3 text-xs font-medium transition-colors disabled:opacity-60";
 const ghostPill = cn(
   pillBase,
   "border border-border bg-surface text-ink hover:bg-secondary",
@@ -64,13 +64,13 @@ export function ContentManager({
 }) {
   if (items.length === 0) {
     return (
-      <p className="rounded-card border border-dashed border-border bg-surface/60 px-4 py-10 text-center text-sm text-muted-foreground">
+      <p className="rounded-card border border-dashed border-border bg-surface/60 px-4 py-12 text-center text-sm text-muted-foreground">
         Nothing here yet.
       </p>
     );
   }
   return (
-    <ul className="space-y-2.5">
+    <ul className="space-y-3">
       {items.map((item) => (
         <Row key={item.id} type={type} item={item} />
       ))}
@@ -96,7 +96,7 @@ function Row({ type, item }: { type: ContentType; item: ContentItem }) {
 
   return (
     <li className="flex items-center gap-3 rounded-card border border-border bg-surface p-3">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[10px] bg-secondary text-sm font-bold text-muted-foreground">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-input bg-secondary text-sm font-semibold text-muted-foreground">
         {item.image ? (
           <Image
             src={item.image}
@@ -126,7 +126,7 @@ function Row({ type, item }: { type: ContentType; item: ContentItem }) {
             </span>
           )}
           {item.hidden && (
-            <span className="shrink-0 rounded-full bg-clay-tint px-2 py-0.5 text-[11px] font-medium text-clay-deep">
+            <span className="shrink-0 rounded-full bg-clay-tint px-2 py-1 text-sm font-medium text-clay-deep">
               Hidden
             </span>
           )}
@@ -136,7 +136,7 @@ function Row({ type, item }: { type: ContentType; item: ContentItem }) {
         </p>
       </div>
 
-      <div className="flex shrink-0 flex-wrap items-center justify-end gap-1.5">
+      <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
         {/* Projects */}
         {type === "projects" && (
           <>
@@ -250,7 +250,7 @@ function Row({ type, item }: { type: ContentType; item: ContentItem }) {
         {/* Delete (inline two-click confirm) — projects, gigs, competitions, events */}
         {type !== "directory" && (
           confirming ? (
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-2">
               <button
                 type="button"
                 disabled={pending}

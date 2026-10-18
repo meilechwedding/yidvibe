@@ -19,16 +19,16 @@ export function UserMenu({
 }) {
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger aria-label="Account menu" className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
+      <DropdownMenu.Trigger aria-label="Account menu" className="rounded-input outline-none focus-visible:ring-2 focus-visible:ring-ring">
         <AvatarCircle name={profile.name} src={profile.avatar_url} size={36} />
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           align="end"
           sideOffset={8}
-          className="z-50 min-w-56 rounded-xl border border-border bg-surface p-1.5 shadow-lg shadow-black/[0.06]"
+          className="z-50 min-w-56 rounded-input border border-border bg-surface p-2 shadow-lg shadow-black/[0.06]"
         >
-          <div className="px-2.5 py-2">
+          <div className="px-3 py-2">
             <p className="truncate text-sm font-medium text-ink">{profile.name}</p>
             <p className="truncate text-xs text-muted-foreground">@{profile.handle}</p>
           </div>
@@ -52,7 +52,7 @@ export function UserMenu({
             <DropdownMenu.Item asChild>
               <button
                 type="submit"
-                className="w-full cursor-pointer rounded-lg px-2.5 py-2 text-left text-sm text-ink outline-none hover:bg-secondary focus:bg-secondary"
+                className="w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm text-ink outline-none hover:bg-secondary focus:bg-secondary"
               >
                 Sign out
               </button>
@@ -69,7 +69,7 @@ function Item({ href, children }: { href: string; children: React.ReactNode }) {
     <DropdownMenu.Item asChild>
       <Link
         href={href}
-        className="block rounded-lg px-2.5 py-2 text-sm text-ink outline-none hover:bg-secondary focus:bg-secondary"
+        className="block rounded-lg px-3 py-2 text-sm text-ink outline-none hover:bg-secondary focus:bg-secondary"
       >
         {children}
       </Link>

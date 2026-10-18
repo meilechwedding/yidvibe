@@ -64,7 +64,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
       onChange={() => setDirty(true)}
       onSubmit={(event) => { if (uploading) event.preventDefault(); }}
       noValidate
-      className="space-y-5"
+      className="space-y-6"
     >
       {state.error && (
         <div className="rounded-lg bg-clay-tint px-3 py-2 text-sm text-clay-deep">
@@ -196,7 +196,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
                   key={s}
                   type="button"
                   onClick={() => removeSkill(s)}
-                  className="inline-flex items-center gap-1 rounded-full border border-sage-mid bg-sage-tint px-3 py-1 text-sm text-sage-deep transition-colors hover:border-clay-mid hover:text-clay-deep"
+                  className="inline-flex items-center gap-1 rounded-input border border-sage-mid bg-sage-tint px-3 py-1 text-sm text-sage-deep transition-colors hover:border-clay-mid hover:text-clay-deep"
                   title={profileFormCopy.titleRemove}
                 >
                   {s}
@@ -312,7 +312,7 @@ export function ProfileForm({ profile }: { profile: Profile }) {
         <button
           type="submit"
           disabled={pending || uploading}
-          className="btn-sweep inline-flex h-12 flex-1 items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-transform active:scale-[0.99] disabled:opacity-70"
+          className="btn-sweep inline-flex h-12 flex-1 items-center justify-center rounded-input px-4 text-sm font-medium transition-transform active:scale-[0.99] disabled:opacity-70"
         >
           {pending ? profileFormCopy.savingLabel : profileFormCopy.saveLabel}
         </button>

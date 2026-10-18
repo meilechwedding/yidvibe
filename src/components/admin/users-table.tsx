@@ -70,7 +70,7 @@ function TogglePill({
       disabled={pending}
       aria-pressed={active}
       className={cn(
-        "inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium transition-colors disabled:opacity-60",
+        "inline-flex items-center rounded-input border px-3 py-1 text-xs font-medium transition-colors disabled:opacity-60",
         active
           ? activeTone
           : "border-border bg-surface text-muted-foreground hover:border-border-hover hover:text-ink",
@@ -124,7 +124,7 @@ function UserRow({ user }: { user: AdminUser }) {
         <div className="flex items-center gap-3">
           <AvatarCircle name={user.name} src={user.avatar_url} size={32} />
           <div className="min-w-0">
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <span className="truncate font-medium text-ink">{user.name}</span>
               {verified && (
                 <BadgeCheck
@@ -170,7 +170,7 @@ function UserRow({ user }: { user: AdminUser }) {
         {shortDate(user.created_at)}
       </td>
       <td className="px-3 py-3">
-        <div className="flex items-center justify-end gap-1.5">
+        <div className="flex items-center justify-end gap-2">
           <TogglePill
             active={verified}
             pending={pending}
@@ -196,7 +196,7 @@ function UserRow({ user }: { user: AdminUser }) {
           <DropdownMenu.Root>
             <DropdownMenu.Trigger
               aria-label="More actions"
-              className="inline-flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground/70 outline-none transition-colors hover:bg-secondary hover:text-ink focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex h-7 w-7 items-center justify-center rounded-input text-muted-foreground/70 outline-none transition-colors hover:bg-secondary hover:text-ink focus-visible:ring-2 focus-visible:ring-ring"
             >
               <MoreHorizontal size={16} />
             </DropdownMenu.Trigger>
@@ -204,12 +204,12 @@ function UserRow({ user }: { user: AdminUser }) {
               <DropdownMenu.Content
                 align="end"
                 sideOffset={6}
-                className="z-50 min-w-48 rounded-xl border border-border bg-surface p-1.5 shadow-float"
+                className="z-50 min-w-48 rounded-input border border-border bg-surface p-2 shadow-float"
               >
                 <DropdownMenu.Item asChild>
                   <Link
                     href={`/u/${user.handle}`}
-                    className="flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-sm text-ink outline-none transition-colors hover:bg-secondary focus:bg-secondary"
+                    className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm text-ink outline-none transition-colors hover:bg-secondary focus:bg-secondary"
                   >
                     <ExternalLink size={15} /> View profile
                   </Link>
@@ -217,7 +217,7 @@ function UserRow({ user }: { user: AdminUser }) {
                 <DropdownMenu.Item asChild>
                   <Link
                     href={`/u/${user.handle}`}
-                    className="flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-sm text-ink outline-none transition-colors hover:bg-secondary focus:bg-secondary"
+                    className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm text-ink outline-none transition-colors hover:bg-secondary focus:bg-secondary"
                   >
                     <FileText size={15} /> View posts
                   </Link>
@@ -227,7 +227,7 @@ function UserRow({ user }: { user: AdminUser }) {
                     e.preventDefault();
                     togglePublic();
                   }}
-                  className="flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-sm text-ink outline-none transition-colors hover:bg-secondary focus:bg-secondary"
+                  className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm text-ink outline-none transition-colors hover:bg-secondary focus:bg-secondary"
                 >
                   {isPublic ? (
                     <>
@@ -243,7 +243,7 @@ function UserRow({ user }: { user: AdminUser }) {
                 <DropdownMenu.Item
                   disabled
                   title="Needs service-role key"
-                  className="flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm text-muted-foreground/60 outline-none data-[disabled]:cursor-not-allowed"
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground/60 outline-none data-[disabled]:cursor-not-allowed"
                 >
                   <Trash2 size={15} /> Remove user
                 </DropdownMenu.Item>
@@ -259,23 +259,23 @@ function UserRow({ user }: { user: AdminUser }) {
 export function UsersTable({ users }: { users: AdminUser[] }) {
   if (users.length === 0) {
     return (
-      <p className="mt-6 rounded-card border border-border bg-surface px-4 py-10 text-center text-sm text-muted-foreground">
+      <p className="mt-6 rounded-card border border-border bg-surface px-4 py-12 text-center text-sm text-muted-foreground">
         No users match this view.
       </p>
     );
   }
 
   return (
-    <div className="mt-5 overflow-x-auto rounded-card border border-border bg-surface">
+    <div className="mt-6 overflow-x-auto rounded-card border border-border bg-surface">
       <table className="w-full min-w-[760px] text-left">
         <thead>
           <tr className="text-xs uppercase tracking-wide text-muted-foreground">
-            <th className="px-3 py-2.5 font-medium">User</th>
-            <th className="px-3 py-2.5 font-medium">Email</th>
-            <th className="px-3 py-2.5 font-medium">Followers</th>
-            <th className="px-3 py-2.5 font-medium">Projects</th>
-            <th className="px-3 py-2.5 font-medium">Joined</th>
-            <th className="px-3 py-2.5 text-right font-medium">Actions</th>
+            <th className="px-3 py-3 font-medium">User</th>
+            <th className="px-3 py-3 font-medium">Email</th>
+            <th className="px-3 py-3 font-medium">Followers</th>
+            <th className="px-3 py-3 font-medium">Projects</th>
+            <th className="px-3 py-3 font-medium">Joined</th>
+            <th className="px-3 py-3 text-right font-medium">Actions</th>
           </tr>
         </thead>
         <tbody>

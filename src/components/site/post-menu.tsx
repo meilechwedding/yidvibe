@@ -65,19 +65,19 @@ export function PostMenu({
           <button
             type="button"
             aria-label="Post"
-            className="flex flex-col items-center justify-center pt-1.5"
+            className="flex flex-col items-center justify-center pt-2"
           >
-            <span className="-mt-5 grid h-12 w-12 place-items-center rounded-full bg-teal-600 text-white shadow-[0_4px_14px_rgba(31,110,102,0.4)] ring-4 ring-canvas">
+            <span className="-mt-5 grid h-12 w-12 place-items-center rounded-full bg-teal-600 text-white shadow-sm ring-4 ring-canvas">
               <Plus size={22} />
             </span>
-            <span className="mt-0.5 text-[11px] font-medium text-muted-foreground">
+            <span className="mt-1 text-sm font-medium text-muted-foreground">
               Post
             </span>
           </button>
         )}
 
       </DialogTrigger>
-      <DialogContent aria-describedby={undefined} className="inset-x-0 bottom-0 left-0 top-auto max-w-none translate-x-0 translate-y-0 rounded-t-3xl border-t border-border bg-surface p-5 pb-8 shadow-float sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:w-[440px] sm:max-w-[92vw] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-3xl sm:border">
+      <DialogContent aria-describedby={undefined} className="inset-x-0 bottom-0 left-0 top-auto max-w-none translate-x-0 translate-y-0 rounded-t-card border-t border-border bg-surface p-6 pb-8 shadow-float sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:w-[440px] sm:max-w-[92vw] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-card sm:border">
         <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border sm:hidden" />
         <DialogTitle className="mb-4 font-display text-lg font-semibold text-ink">
           What do you want to post?
@@ -88,11 +88,11 @@ export function PostMenu({
               key={o.href}
               href={o.href}
               onClick={() => setOpen(false)}
-              className="flex items-center gap-3 rounded-2xl border border-border p-3.5 transition-colors hover:border-border-hover hover:bg-secondary"
+              className="flex items-center gap-3 rounded-card border border-border p-4 transition-colors hover:border-border-hover hover:bg-secondary"
             >
               <span
                 className={cn(
-                  "grid h-10 w-10 shrink-0 place-items-center rounded-xl",
+                  "grid h-10 w-10 shrink-0 place-items-center rounded-input",
                   o.tint,
                 )}
               >

@@ -95,7 +95,7 @@ function ChipField({
         <button
           type="button"
           onClick={addCustom}
-          className="inline-flex h-9 items-center gap-1 rounded-[10px] border border-border bg-surface px-3 text-sm text-ink hover:bg-secondary"
+          className="inline-flex h-9 items-center gap-1 rounded-input border border-border bg-surface px-3 text-sm text-ink hover:bg-secondary"
         >
           <Plus size={15} />{projectFormCopy.addLabel}</button>
       </div>
@@ -150,7 +150,7 @@ export function ProjectForm({
       onChange={() => setDirty(true)}
       onSubmit={(event) => { if (uploading) event.preventDefault(); }}
       noValidate
-      className="space-y-5"
+      className="space-y-6"
     >
       {state.error && (
         <div className="rounded-lg bg-clay-tint px-3 py-2 text-sm text-clay-deep">
@@ -164,7 +164,7 @@ export function ProjectForm({
         description={projectFormCopy.basicsDescription}
       >
         <div className="rounded-card border border-border bg-secondary/40 p-3">
-          <label htmlFor="project-live-url" className="mb-1.5 block text-sm font-medium text-ink">{projectFormCopy.linkLabel}<span className="ml-2 font-normal text-xs text-muted-foreground">{projectFormCopy.linkHint}</span>
+          <label htmlFor="project-live-url" className="mb-2 block text-sm font-medium text-ink">{projectFormCopy.linkLabel}<span className="ml-2 font-normal text-xs text-muted-foreground">{projectFormCopy.linkHint}</span>
           </label>
           <input
             id="project-live-url"
@@ -289,13 +289,13 @@ export function ProjectForm({
               onClick={() => { setOwnership("mine"); setDirty(true); }}
               aria-pressed={ownership === "mine"}
               className={cn(
-                "flex items-start gap-3 rounded-[12px] border px-4 py-3 text-left transition-colors",
+                "flex items-start gap-3 rounded-input border px-4 py-3 text-left transition-colors",
                 ownership === "mine"
                   ? "border-teal-600 bg-teal-50"
                   : "border-border bg-surface hover:border-border-hover",
               )}
             >
-              <UserCheck size={18} className="mt-0.5 shrink-0 text-teal-700" />
+              <UserCheck size={18} className="mt-1 shrink-0 text-teal-700" />
               <span>
                 <span className="block text-sm font-semibold text-ink">{projectFormCopy.builtOwnershipLabel}</span>
                 <span className="block text-xs text-muted-foreground">
@@ -308,13 +308,13 @@ export function ProjectForm({
               onClick={() => { setOwnership("found"); setDirty(true); }}
               aria-pressed={ownership === "found"}
               className={cn(
-                "flex items-start gap-3 rounded-[12px] border px-4 py-3 text-left transition-colors",
+                "flex items-start gap-3 rounded-input border px-4 py-3 text-left transition-colors",
                 ownership === "found"
                   ? "border-teal-600 bg-teal-50"
                   : "border-border bg-surface hover:border-border-hover",
               )}
             >
-              <Globe size={18} className="mt-0.5 shrink-0 text-teal-700" />
+              <Globe size={18} className="mt-1 shrink-0 text-teal-700" />
               <span>
                 <span className="block text-sm font-semibold text-ink">{projectFormCopy.foundOwnershipLabel}</span>
                 <span className="block text-xs text-muted-foreground">{projectFormCopy.foundOwnershipHint}</span>
@@ -332,7 +332,7 @@ export function ProjectForm({
         <button
           type="submit"
           disabled={pending || uploading}
-          className="btn-sweep inline-flex h-12 flex-1 items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-transform active:scale-[0.99] disabled:opacity-70"
+          className="btn-sweep inline-flex h-12 flex-1 items-center justify-center rounded-input px-4 text-sm font-medium transition-transform active:scale-[0.99] disabled:opacity-70"
         >
           {pending ? projectFormCopy.savingLabel : submitLabel}
         </button>

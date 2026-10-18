@@ -56,7 +56,7 @@ export function PostAsControl({ users }: { users: PickableUser[] }) {
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
           aria-label="Post on behalf of"
-          className="mt-2 h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm text-ink outline-none transition-colors focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
+          className="mt-2 h-11 w-full rounded-input border border-border bg-surface px-3 text-sm text-ink outline-none transition-colors focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
         >
           {users.map((u) => (
             <option key={u.id} value={u.id}>

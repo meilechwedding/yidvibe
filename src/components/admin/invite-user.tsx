@@ -52,7 +52,7 @@ export function InviteUser() {
             name="email"
             autoComplete="off"
             placeholder="name@example.com"
-            className="h-10 w-full rounded-xl border border-border bg-surface px-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
+            className="h-10 w-full rounded-input border border-border bg-surface px-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
           />
           <button
             type="submit"

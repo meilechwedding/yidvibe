@@ -79,7 +79,7 @@ export function ImageInput({
               disabled={uploading}
               onClick={() => { setUrl(""); onValueChange?.(); }}
               aria-label="Remove image"
-              className="absolute right-1 top-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-ink/70 text-white"
+              className="absolute right-1 top-1 inline-flex h-5 w-5 items-center justify-center rounded-input bg-ink/70 text-white"
             >
               <X size={12} />
             </button>
@@ -91,7 +91,7 @@ export function ImageInput({
             type="button"
             onClick={() => fileRef.current?.click()}
             disabled={uploading}
-            className="inline-flex h-9 items-center gap-1.5 rounded-[10px] border border-border bg-surface px-3 text-sm font-medium text-ink transition-colors hover:bg-secondary disabled:opacity-60"
+            className="inline-flex h-9 items-center gap-2 rounded-input border border-border bg-surface px-3 text-sm font-medium text-ink transition-colors hover:bg-secondary disabled:opacity-60"
           >
             {uploading ? (
               <Loader2 size={15} className="animate-spin" />
@@ -115,7 +115,7 @@ export function ImageInput({
             disabled={uploading}
             onChange={(e) => { setUrl(e.target.value); onValueChange?.(); }}
             placeholder="…or paste an image URL"
-            className="h-9 w-64 max-w-full rounded-[10px] border border-border bg-surface px-3 text-sm text-ink outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
+            className="h-9 w-64 max-w-full rounded-input border border-border bg-surface px-3 text-sm text-ink outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
           />
         </div>
       </div>

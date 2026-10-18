@@ -35,7 +35,7 @@ export function MessageComposer({
           dir="auto"
           maxLength={4000}
           placeholder={gigFormCopy.messagePlaceholder}
-          className="flex-1 resize-none rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
+          className="flex-1 resize-none rounded-input border border-border bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15"
         />
         <button
           type="submit"

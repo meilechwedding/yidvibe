@@ -39,8 +39,8 @@ export function NoteComposer({ conversationId }: { conversationId: string }) {
   }
 
   return (
-    <form ref={formRef} action={formAction} className="space-y-1.5">
-      <div className="flex items-end gap-2 rounded-2xl border border-border bg-canvas/60 p-1.5 pl-3.5 transition-colors focus-within:border-teal-600 focus-within:bg-surface focus-within:ring-2 focus-within:ring-teal-600/15">
+    <form ref={formRef} action={formAction} className="space-y-2">
+      <div className="flex items-end gap-2 rounded-card border border-border bg-canvas/60 p-2 pl-4 transition-colors focus-within:border-teal-600 focus-within:bg-surface focus-within:ring-2 focus-within:ring-teal-600/15">
         <textarea
           ref={taRef}
           name="body"
@@ -52,7 +52,7 @@ export function NoteComposer({ conversationId }: { conversationId: string }) {
           placeholder="Write a message…"
           onInput={(e) => autoGrow(e.currentTarget)}
           onKeyDown={onKeyDown}
-          className="max-h-40 min-h-[28px] w-full resize-none self-center bg-transparent py-1.5 text-[14.5px] leading-relaxed text-ink outline-none placeholder:text-muted-foreground"
+          className="max-h-40 min-h-[28px] w-full resize-none self-center bg-transparent py-2 text-sm leading-relaxed text-ink outline-none placeholder:text-muted-foreground"
         />
         <button
           type="submit"
@@ -67,7 +67,7 @@ export function NoteComposer({ conversationId }: { conversationId: string }) {
       {state.error ? (
         <p role="alert" className="px-1 text-xs text-destructive">{state.error}</p>
       ) : (
-        <p className="px-1 text-[11px] text-muted-foreground">
+        <p className="px-1 text-sm text-muted-foreground">
           <kbd className="font-sans font-semibold">Enter</kbd> to send ·{" "}
           <kbd className="font-sans font-semibold">Shift + Enter</kbd> for a new
           line

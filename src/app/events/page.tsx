@@ -13,7 +13,7 @@ export default async function EventsPage() {
   const events = await listAllEvents();
 
   return (
-    <Container className="max-w-4xl py-10 md:py-14">
+    <Container className="max-w-4xl py-12 md:py-16">
       <PageHeader
         accent="sage"
         eyebrow={EVENTS_COPY.eyebrow}
@@ -34,7 +34,7 @@ export default async function EventsPage() {
         <EventsBoard events={events} />
       )}
 
-      <div className="mt-10 rounded-2xl border border-border bg-surface p-5 text-center">
+      <div className="mt-12 rounded-card border border-border bg-surface p-6 text-center">
         <p className="text-sm text-muted-foreground">
           Hosting a workshop or meetup?
         </p>

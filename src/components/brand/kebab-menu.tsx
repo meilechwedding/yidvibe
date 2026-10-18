@@ -25,7 +25,7 @@ export function KebabMenu({
       <DropdownMenu.Trigger
         aria-label={label}
         className={cn(
-          "inline-flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground/70 outline-none transition-colors hover:bg-secondary hover:text-ink focus-visible:ring-2 focus-visible:ring-ring",
+          "inline-flex h-7 w-7 items-center justify-center rounded-input text-muted-foreground/70 outline-none transition-colors hover:bg-secondary hover:text-ink focus-visible:ring-2 focus-visible:ring-ring",
           className,
         )}
       >
@@ -35,7 +35,7 @@ export function KebabMenu({
         <DropdownMenu.Content
           align={align}
           sideOffset={6}
-          className="z-50 min-w-44 rounded-xl border border-border bg-surface p-1.5 shadow-float"
+          className="z-50 min-w-44 rounded-input border border-border bg-surface p-2 shadow-float"
         >
           {children}
         </DropdownMenu.Content>
@@ -61,7 +61,7 @@ export function KebabItem({
         onSelect?.();
       }}
       className={cn(
-        "flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-sm outline-none transition-colors hover:bg-secondary focus:bg-secondary",
+        "flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm outline-none transition-colors hover:bg-secondary focus:bg-secondary",
         destructive ? "text-clay-deep" : "text-ink",
       )}
     >

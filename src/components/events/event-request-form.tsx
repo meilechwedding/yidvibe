@@ -18,8 +18,8 @@ export function EventRequestForm() {
 
   if (state.ok) {
     return (
-      <div className="flex items-start gap-3 rounded-2xl border border-sage-mid bg-sage-tint p-5 text-sage-deep">
-        <CheckCircle2 size={20} className="mt-0.5 shrink-0" />
+      <div className="flex items-start gap-3 rounded-card border border-sage-mid bg-sage-tint p-6 text-sage-deep">
+        <CheckCircle2 size={20} className="mt-1 shrink-0" />
         <p className="text-sm">
           {eventFormCopy.requestSuccess}
         </p>
@@ -35,14 +35,14 @@ export function EventRequestForm() {
         </div>
       )}
       <div>
-        <label htmlFor="event-request-title" className="mb-1.5 block text-sm font-medium text-ink">{eventFormCopy.requestTitleLabel}</label>
+        <label htmlFor="event-request-title" className="mb-2 block text-sm font-medium text-ink">{eventFormCopy.requestTitleLabel}</label>
         <input id="event-request-title" name="title" aria-invalid={!!state.fieldErrors?.title} aria-describedby={state.fieldErrors?.title ? "event-request-title-error" : undefined} maxLength={200} dir="auto" className={FORM_INPUT_CLASS} placeholder={eventFormCopy.requestTitlePlaceholder} />
         {state.fieldErrors?.title && (
           <p id="event-request-title-error" className="mt-1 text-xs text-clay-deep">{state.fieldErrors.title}</p>
         )}
       </div>
       <div>
-        <label htmlFor="event-request-details" className="mb-1.5 block text-sm font-medium text-ink">{eventFormCopy.requestDetailsLabel}<span className="ml-2 font-normal text-xs text-muted-foreground">
+        <label htmlFor="event-request-details" className="mb-2 block text-sm font-medium text-ink">{eventFormCopy.requestDetailsLabel}<span className="ml-2 font-normal text-xs text-muted-foreground">
             {eventFormCopy.requestDetailsHint}
           </span>
         </label>
@@ -60,7 +60,7 @@ export function EventRequestForm() {
         )}
       </div>
       <div>
-        <label htmlFor="event-request-contact" className="mb-1.5 block text-sm font-medium text-ink">{eventFormCopy.requestContactLabel}<span className="ml-2 font-normal text-xs text-muted-foreground">{eventFormCopy.requestContactHint}</span>
+        <label htmlFor="event-request-contact" className="mb-2 block text-sm font-medium text-ink">{eventFormCopy.requestContactLabel}<span className="ml-2 font-normal text-xs text-muted-foreground">{eventFormCopy.requestContactHint}</span>
         </label>
         <input id="event-request-contact" name="contact" aria-invalid={!!state.fieldErrors?.contact} aria-describedby={state.fieldErrors?.contact ? "event-request-contact-error" : undefined} maxLength={200} className={FORM_INPUT_CLASS} placeholder={eventFormCopy.requestContactPlaceholder} />
         {state.fieldErrors?.contact && (
@@ -70,7 +70,7 @@ export function EventRequestForm() {
       <button
         type="submit"
         disabled={pending}
-        className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-transform active:scale-[0.99] disabled:opacity-70"
+        className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-input px-4 text-sm font-medium transition-transform active:scale-[0.99] disabled:opacity-70"
       >
         {pending ? eventFormCopy.sendingLabel : eventFormCopy.sendRequestLabel}
       </button>

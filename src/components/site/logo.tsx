@@ -3,17 +3,14 @@ import { SITE_NAME } from "@/lib/site";
 import { LogoMark } from "@/components/brand/sparkle";
 import { cn } from "@/lib/utils";
 
-/**
- * Brand lockup: the crossing-strokes + sparkle figure mark next to the
- * Comfortaa wordmark. Links home.
- */
+/** Home link. Legacy artwork is preserved until the approved v8 assets are available locally. */
 export function Logo({ className }: { className?: string }) {
   return (
     <Link
       href="/"
       aria-label={`${SITE_NAME} home`}
       className={cn(
-        "inline-flex items-center gap-2.5 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "inline-flex items-center gap-3 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className,
       )}
     >

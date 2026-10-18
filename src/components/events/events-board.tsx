@@ -99,7 +99,7 @@ export function EventsBoard({ events }: { events: EventRow[] }) {
     <div className="mt-8">
       {/* Controls: search + location + view toggle — same family as the
           Gigs/Competitions FilterShell so all three boards read as one. */}
-      <div className="flex flex-col gap-2.5 rounded-2xl border border-border bg-surface p-3 shadow-[var(--shadow-sm)] sm:flex-row sm:items-center">
+      <div className="flex flex-col gap-3 rounded-card border border-border bg-surface p-3 shadow-[var(--shadow-sm)] sm:flex-row sm:items-center">
         <SearchField
           value={query}
           onChange={setQuery}
@@ -117,7 +117,7 @@ export function EventsBoard({ events }: { events: EventRow[] }) {
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               aria-label="Filter by location"
-              className="h-12 w-full appearance-none rounded-xl border border-border bg-canvas pl-10 pr-3 text-sm font-medium text-ink outline-none transition-colors hover:border-border-hover focus:border-teal-600 focus:bg-surface"
+              className="h-12 w-full appearance-none rounded-input border border-border bg-canvas pl-12 pr-3 text-sm font-medium text-ink outline-none transition-colors hover:border-border-hover focus:border-teal-600 focus:bg-surface"
             >
               <option value="">All locations</option>
               {locations.map((loc) => (
@@ -129,7 +129,7 @@ export function EventsBoard({ events }: { events: EventRow[] }) {
           </div>
         )}
 
-        <div className="inline-flex h-12 shrink-0 items-center rounded-xl border border-border bg-canvas p-1">
+        <div className="inline-flex h-12 shrink-0 items-center rounded-input border border-border bg-canvas p-1">
           <ViewButton
             active={view === "calendar"}
             onClick={() => setView("calendar")}
@@ -169,7 +169,7 @@ export function EventsBoard({ events }: { events: EventRow[] }) {
 
       {/* ── Calendar view ─────────────────────────────────────────────── */}
       {view === "calendar" && (
-        <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <EventCalendar
             month={month}
             onMonthChange={setMonth}
@@ -181,9 +181,9 @@ export function EventsBoard({ events }: { events: EventRow[] }) {
 
           <div>
             {selected ? (
-              <div className="rounded-2xl border border-border bg-surface p-4 shadow-[var(--shadow-sm)] sm:p-5">
+              <div className="rounded-card border border-border bg-surface p-4 shadow-[var(--shadow-sm)] sm:p-6">
                 <div className="mb-3 flex items-center justify-between gap-3">
-                  <h3 className="font-display text-base font-bold text-ink">
+                  <h3 className="font-display text-base font-semibold text-ink">
                     {formatDayHeading(selected)}
                   </h3>
                   <button
@@ -202,17 +202,17 @@ export function EventsBoard({ events }: { events: EventRow[] }) {
                     ))}
                   </ul>
                 ) : (
-                  <p className="rounded-xl border border-dashed border-border bg-canvas px-4 py-8 text-center text-sm text-muted-foreground">
+                  <p className="rounded-input border border-dashed border-border bg-canvas px-4 py-8 text-center text-sm text-muted-foreground">
                     No events on this day.
                   </p>
                 )}
               </div>
             ) : (
-              <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-surface/60 px-6 py-12 text-center">
-                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-50 text-teal-600">
+              <div className="flex h-full flex-col items-center justify-center rounded-card border border-dashed border-border bg-surface/60 px-6 py-12 text-center">
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-card bg-teal-50 text-teal-600">
                   <CalendarDays size={22} />
                 </div>
-                <p className="font-display text-base font-bold text-ink">
+                <p className="font-display text-base font-semibold text-ink">
                   Pick a day
                 </p>
                 <p className="mt-1 max-w-xs text-sm text-muted-foreground">
@@ -223,8 +223,8 @@ export function EventsBoard({ events }: { events: EventRow[] }) {
 
             {/* Undated / upcoming list — events without a set date. */}
             {undated.length > 0 && (
-              <div className="mt-5">
-                <p className="mb-2 inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
+              <div className="mt-6">
+                <p className="mb-2 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.1em] text-muted-foreground">
                   <CalendarClock size={13} /> Date to be announced
                 </p>
                 <ul className="space-y-3">
@@ -240,7 +240,7 @@ export function EventsBoard({ events }: { events: EventRow[] }) {
 
       {/* ── Agenda view ───────────────────────────────────────────────── */}
       {view === "agenda" && (
-        <div className="mt-5">
+        <div className="mt-6">
           {agendaGroups.length === 0 && undated.length === 0 ? (
             <EmptyState
               icon={<CalendarDays size={22} />}
@@ -258,10 +258,10 @@ export function EventsBoard({ events }: { events: EventRow[] }) {
                   })}
             />
           ) : (
-            <div className="space-y-7">
+            <div className="space-y-8">
               {agendaGroups.map((g) => (
                 <section key={g.key}>
-                  <h3 className="mb-2.5 font-display text-sm font-bold text-ink">
+                  <h3 className="mb-3 font-display text-sm font-semibold text-ink">
                     {formatDayHeading(g.date)}
                   </h3>
                   <ul className="space-y-3">
@@ -274,7 +274,7 @@ export function EventsBoard({ events }: { events: EventRow[] }) {
 
               {undated.length > 0 && (
                 <section>
-                  <h3 className="mb-2.5 inline-flex items-center gap-1.5 font-display text-sm font-bold text-ink">
+                  <h3 className="mb-3 inline-flex items-center gap-2 font-display text-sm font-medium text-ink">
                     <CalendarClock size={14} /> Date to be announced
                   </h3>
                   <ul className="space-y-3">
@@ -291,7 +291,7 @@ export function EventsBoard({ events }: { events: EventRow[] }) {
 
       {/* When filters hide everything in calendar view, say so. */}
       {view === "calendar" && hasFilters && filtered.length === 0 && (
-        <p className="mt-5 rounded-2xl border border-dashed border-border bg-surface/60 px-4 py-6 text-center text-sm text-muted-foreground">
+        <p className="mt-6 rounded-card border border-dashed border-border bg-surface/60 px-4 py-6 text-center text-sm text-muted-foreground">
           No events match your filters.{" "}
           <button
             type="button"
@@ -323,7 +323,7 @@ function ViewButton({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
+        "inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
         active
           ? "bg-teal-600 text-white"
           : "text-muted-foreground hover:text-ink",

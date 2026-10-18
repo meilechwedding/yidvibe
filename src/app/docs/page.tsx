@@ -27,11 +27,11 @@ function Section({
 }) {
   return (
     <section id={id} className="scroll-mt-20 border-t border-border pt-8">
-      <h2 className="flex items-center gap-2.5 font-display text-2xl font-bold text-ink">
+      <h2 className="flex items-center gap-3 font-display text-2xl font-semibold text-ink">
         {Icon && <Icon size={22} className="shrink-0 text-teal-600" />}
         {title}
       </h2>
-      <div className="mt-3 space-y-3 text-[15px] leading-relaxed text-ink/90">
+      <div className="mt-3 space-y-3 text-sm leading-relaxed text-ink/90">
         {children}
       </div>
     </section>
@@ -40,7 +40,7 @@ function Section({
 
 function Sub({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mt-5 font-display text-lg font-semibold text-ink">{children}</h3>
+    <h3 className="mt-6 font-display text-lg font-semibold text-ink">{children}</h3>
   );
 }
 
@@ -48,14 +48,14 @@ export default function DocsPage() {
   return (
     <Container className="max-w-2xl py-12 md:py-16">
       <Eyebrow>{DOCS_COPY.eyebrow}</Eyebrow>
-      <h1 className="mt-3 font-display text-[clamp(2.2rem,5vw,3rem)] font-bold leading-tight tracking-tight text-ink">
+      <h1 className="mt-3 font-display text-[clamp(2.2rem,5vw,3rem)] font-semibold leading-tight tracking-tight text-ink">
         {DOCS_COPY.title}
       </h1>
       <p className="mt-4 text-lg text-muted-foreground">
         {DOCS_COPY.intro}
       </p>
 
-      <div className="mt-10 space-y-8">
+      <div className="mt-12 space-y-8">
         <Section id="post" title={DOCS_COPY.sections.post} icon={Rocket}>
           <p>
             Sign in, hit <strong>Post your project</strong>, and add a link,
@@ -136,7 +136,7 @@ export default function DocsPage() {
             team, who can hide or remove content.
           </p>
           <p>Keep it useful and respectful:</p>
-          <ul className="ml-5 list-disc space-y-1.5">
+          <ul className="ml-6 list-disc space-y-2">
             <li>Post real work and honest information.</li>
             <li>No spam, scams, or misleading offers.</li>
             <li>Be respectful — no harassment or offensive content.</li>
@@ -167,7 +167,7 @@ export default function DocsPage() {
           <div className="pt-2">
             <Link
               href="/showcase"
-              className="btn-sweep inline-flex h-12 items-center justify-center rounded-full px-6 text-[15px] font-semibold"
+              className="btn-sweep inline-flex h-12 items-center justify-center rounded-input px-6 text-sm font-medium"
             >
               Explore the showcase
             </Link>

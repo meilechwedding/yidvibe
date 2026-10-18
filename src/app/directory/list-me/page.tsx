@@ -17,7 +17,7 @@ export default async function ListMePage() {
 
   const links = (profile.links ?? {}) as Record<string, string | undefined>;
   return (
-    <Container className="max-w-2xl py-8 md:py-10">
+    <Container className="max-w-2xl py-8 md:py-12">
       <PageHeader
         accent="blue"
         eyebrow="Connect"

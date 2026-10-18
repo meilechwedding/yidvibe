@@ -1,6 +1,6 @@
 import { IMAGE_THEME } from "@/lib/design/image-theme";
 import type { Metadata, Viewport } from "next";
-import { Comfortaa, Nunito_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import Script from "next/script";
 import { Toaster } from "sonner";
 import { SiteNav } from "@/components/site/site-nav";
@@ -10,16 +10,11 @@ import { FeedbackWidget } from "@/components/site/feedback-widget";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SITE_TAGLINE } from "@/config/site";
 import "./globals.css";
 
-// Brand type: Comfortaa (rounded display) + Nunito Sans (body).
-// Monospace (tool chips) uses a system stack — no extra webfont download.
-const nunito = Nunito_Sans({
-  subsets: ["latin"],
-  variable: "--font-nunito",
-  display: "swap",
-});
-const comfortaa = Comfortaa({
-  subsets: ["latin"],
-  variable: "--font-comfortaa",
+// Complete upstream webfont, self-hosted with its SIL Open Font License.
+const spaceGrotesk = localFont({
+  src: "../../public/fonts/space-grotesk-variable.woff2",
+  weight: "400 600",
+  variable: "--font-space-grotesk",
   display: "swap",
 });
 
@@ -57,7 +52,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${nunito.variable} ${comfortaa.variable}`}
+      className={spaceGrotesk.variable}
     >
       <body className="flex min-h-dvh flex-col overflow-x-clip bg-canvas pb-16 text-ink lg:pb-0 lg:pl-64">
         <SiteNav />

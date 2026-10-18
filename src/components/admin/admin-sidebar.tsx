@@ -50,11 +50,11 @@ function NavLink({ item, active }: { item: NavItem; active: boolean }) {
     <Link
       href={item.href}
       aria-current={active ? "page" : undefined}
-      className="flex shrink-0 items-center gap-2.5 rounded-[10px] px-3 py-2 text-sm font-medium transition-colors"
+      className="flex shrink-0 items-center gap-3 rounded-input px-3 py-2 text-sm font-medium transition-colors"
       style={
         active
-          ? { backgroundColor: "#1c332e", color: "#ffffff" }
-          : { color: "#aebbb6" }
+          ? { backgroundColor: "var(--color-mist)", color: "var(--color-petrol)" }
+          : { color: "var(--color-mist)" }
       }
     >
       <Icon size={16} className="shrink-0" />
@@ -70,10 +70,10 @@ export function AdminSidebar() {
     <nav
       aria-label="Admin"
       className="flex w-full shrink-0 flex-row items-center gap-1 overflow-x-auto px-3 py-3 md:w-[210px] md:flex-col md:items-stretch md:gap-1 md:overflow-x-visible md:px-4 md:py-6"
-      style={{ backgroundColor: "#0f1f1c" }}
+      style={{ backgroundColor: "var(--color-petrol)" }}
     >
-      <div className="flex shrink-0 items-center gap-2 pr-3 md:mb-5 md:px-1 md:pr-0">
-        <ShieldCheck size={18} style={{ color: "#7fd1bd" }} className="shrink-0" />
+      <div className="flex shrink-0 items-center gap-2 pr-3 md:mb-6 md:px-1 md:pr-0">
+        <ShieldCheck size={18} style={{ color: "var(--color-citron)" }} className="shrink-0" />
         <span
           className="font-display whitespace-nowrap text-base text-white"
         >
@@ -86,8 +86,8 @@ export function AdminSidebar() {
       ))}
 
       <div
-        className="mt-1 shrink-0 px-3 pt-1 text-[11px] font-semibold uppercase tracking-[0.1em] md:mt-4 md:px-1"
-        style={{ color: "#5f7a72" }}
+        className="mt-1 shrink-0 px-3 pt-1 text-sm font-semibold uppercase tracking-[0.1em] md:mt-4 md:px-1"
+        style={{ color: "var(--color-mist)" }}
       >
         Moderation
       </div>
@@ -99,8 +99,8 @@ export function AdminSidebar() {
       <form action={lockAdmin} className="shrink-0 md:mt-auto md:pt-4">
         <button
           type="submit"
-          className="flex w-full items-center gap-2.5 rounded-[10px] px-3 py-2 text-sm font-medium transition-colors"
-          style={{ color: "#aebbb6" }}
+          className="flex w-full items-center gap-3 rounded-input px-3 py-2 text-sm font-medium transition-colors"
+          style={{ color: "var(--color-mist)" }}
         >
           <Lock size={16} className="shrink-0" />
           <span className="whitespace-nowrap">Lock</span>

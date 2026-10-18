@@ -22,26 +22,26 @@ export function FormSection({
   return (
     <section
       className={cn(
-        "rounded-2xl border border-border bg-surface p-5 shadow-[var(--shadow-sm)] md:p-6",
+        "rounded-card border border-border bg-surface p-6 shadow-[var(--shadow-sm)] md:p-6",
         className,
       )}
     >
       <div className="flex items-start gap-3">
         {step != null && (
-          <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal-50 font-display text-xs font-bold text-teal-800">
+          <span className="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-input bg-teal-50 font-display text-xs font-medium text-teal-800">
             {step}
           </span>
         )}
         <div className="min-w-0">
-          <h2 className="font-display text-base font-bold tracking-tight text-ink">
+          <h2 className="font-display text-base font-semibold tracking-tight text-ink">
             {title}
           </h2>
           {description && (
-            <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{description}</p>
           )}
         </div>
       </div>
-      <div className="mt-5 space-y-5">{children}</div>
+      <div className="mt-6 space-y-6">{children}</div>
     </section>
   );
 }

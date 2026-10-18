@@ -50,7 +50,7 @@ export default async function DashboardOverview() {
         {!profile.is_public && (
           <Panel className="flex flex-wrap items-center gap-3">
             <span
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-xl"
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-input"
               style={{ background: "var(--teal-50)", color: "var(--teal-700)" }}
             >
               <Rocket size={18} />
@@ -70,11 +70,11 @@ export default async function DashboardOverview() {
         {/* Primary action — post a project */}
         <section>
           <Panel className="flex flex-wrap items-center gap-4">
-            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-teal-50 text-teal-700">
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-card bg-teal-50 text-teal-700">
               <Rocket size={22} />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="font-display text-lg font-bold text-ink">
+              <p className="font-display text-lg font-semibold text-ink">
                 Post a project
               </p>
               <p className="text-sm text-muted-foreground">
@@ -94,19 +94,19 @@ export default async function DashboardOverview() {
             {recent.length > 0 && (
               <Link
                 href="/dashboard/posts"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-teal-800 hover:underline"
+                className="inline-flex items-center gap-1 text-xs font-medium text-teal-800 hover:underline"
               >
                 View all <ArrowUpRight size={13} />
               </Link>
             )}
           </div>
           {recent.length === 0 ? (
-            <div className="mt-4 flex flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-border bg-canvas/50 px-4 py-8 text-center">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-teal-50 text-teal-700">
+            <div className="mt-4 flex flex-1 flex-col items-center justify-center rounded-input border border-dashed border-border bg-canvas/50 px-4 py-8 text-center">
+              <span className="grid h-10 w-10 place-items-center rounded-input bg-teal-50 text-teal-700">
                 <FolderOpen size={18} />
               </span>
               <p className="mt-3 text-sm font-medium text-ink">No projects yet</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Your projects will show up here.
               </p>
               <Link href="/showcase/submit" className="btn btn-primary btn-sm mt-4">
@@ -114,12 +114,12 @@ export default async function DashboardOverview() {
               </Link>
             </div>
           ) : (
-            <ul className="mt-3 -mx-1 space-y-0.5">
+            <ul className="mt-3 -mx-1 space-y-1">
               {recent.map((p) => (
                 <li key={p.id}>
                   <Link
                     href={`/showcase/${p.id}`}
-                    className="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-teal-50/60"
+                    className="flex items-center justify-between gap-3 rounded-input px-3 py-3 transition-colors hover:bg-teal-50/60"
                   >
                     <span className="truncate text-sm font-medium text-ink">
                       {p.name}

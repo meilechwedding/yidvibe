@@ -42,7 +42,7 @@ export function BackLink({
       type="button"
       onClick={onClick}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-teal-800 outline-none transition-colors hover:bg-teal-50 focus-visible:ring-2 focus-visible:ring-ring",
+        "inline-flex items-center gap-2 rounded-input px-3 py-2 text-sm font-medium text-teal-800 outline-none transition-colors hover:bg-teal-50 focus-visible:ring-2 focus-visible:ring-ring",
         className,
       )}
     >

@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export function NavLinks() {
   const pathname = usePathname();
   return (
-    <nav className="flex items-center justify-center gap-0.5">
+    <nav className="flex items-center justify-center gap-1">
       {NAV_LINKS.map((l) => {
         const active =
           pathname === l.href || pathname.startsWith(l.href + "/");

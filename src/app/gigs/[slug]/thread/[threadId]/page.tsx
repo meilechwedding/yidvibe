@@ -35,7 +35,7 @@ export default async function ThreadPage({
     <div className="mx-auto flex min-h-[70vh] max-w-2xl flex-col px-4 py-8 md:px-6">
       <Link
         href={`/gigs/${slug}`}
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-ink"
+        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-ink"
       >
         <ArrowLeft size={15} /> Back to gig
       </Link>
@@ -74,7 +74,7 @@ export default async function ThreadPage({
               >
                 <div
                   className={cn(
-                    "max-w-[80%] rounded-card px-3.5 py-2",
+                    "max-w-[80%] rounded-card px-4 py-2",
                     mine
                       ? "bg-teal-600 text-white"
                       : "border border-border bg-surface text-ink",
@@ -88,7 +88,7 @@ export default async function ThreadPage({
                   </p>
                   <p
                     className={cn(
-                      "mt-1 text-[11px]",
+                      "mt-1 text-sm",
                       mine ? "text-white/70" : "text-muted-foreground",
                     )}
                   >

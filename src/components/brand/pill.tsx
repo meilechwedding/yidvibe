@@ -21,7 +21,7 @@ export function Pill({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+        "inline-flex items-center rounded-input px-3 py-1 text-xs font-medium",
         styles,
         className,
       )}
@@ -45,7 +45,7 @@ export function ToolPill({
   href?: string;
 }) {
   const classes = cn(
-    "inline-flex items-center rounded-full bg-blue-tint px-2.5 py-0.5 font-mono text-[11px] text-blue-deep",
+    "inline-flex items-center rounded-input bg-blue-tint px-3 py-1 font-sans text-sm text-blue-deep",
     href && "transition-colors hover:bg-blue-mid hover:text-white",
     className,
   );
@@ -72,7 +72,7 @@ export function TagPill({
   href?: string;
 }) {
   const classes = cn(
-    "inline-flex items-center rounded-full bg-teal-50 px-2.5 py-0.5 text-xs font-medium text-teal-800",
+    "inline-flex items-center rounded-input bg-teal-50 px-3 py-1 text-xs font-medium text-teal-800",
     href && "transition-colors hover:bg-teal-100",
     className,
   );

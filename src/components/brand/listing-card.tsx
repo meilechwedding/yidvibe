@@ -7,7 +7,7 @@ import type { DirectoryListing } from "@/lib/directory";
 export function ListingCard({ listing }: { listing: DirectoryListing }) {
   const c = (listing.contact ?? {}) as Record<string, string | undefined>;
   return (
-    <div className="flex flex-col rounded-2xl border border-border bg-surface p-5 transition-all hover:border-border-hover hover:shadow-[var(--shadow-sm)]">
+    <div className="flex flex-col rounded-card border border-border bg-surface p-6 transition-all hover:border-border-hover hover:shadow-[var(--shadow-sm)]">
       <div className="flex items-center gap-3">
         <AvatarCircle
           name={listing.name}
@@ -16,7 +16,7 @@ export function ListingCard({ listing }: { listing: DirectoryListing }) {
           accent="sage"
         />
         <div className="min-w-0">
-          <p className="truncate font-display font-bold text-ink">{listing.name}</p>
+          <p className="truncate font-display font-semibold text-ink">{listing.name}</p>
           <Pill accent="sage">{listing.category}</Pill>
         </div>
       </div>

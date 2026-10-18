@@ -18,14 +18,14 @@ export default async function NotificationsPage() {
   const hasUnread = items.some((n) => n.read_at == null);
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10 md:px-6">
+    <div className="mx-auto max-w-2xl px-4 py-12 md:px-6">
       <MarkReadOnView hasUnread={hasUnread} />
 
       <div className="flex items-center justify-between">
         <h1 className="font-display text-2xl text-ink">Notifications</h1>
         <Link
           href="/settings/notifications"
-          className="inline-flex h-9 items-center gap-1.5 rounded-[10px] border border-border bg-surface px-3 text-sm text-ink transition-colors hover:bg-secondary"
+          className="inline-flex h-9 items-center gap-2 rounded-input border border-border bg-surface px-3 text-sm text-ink transition-colors hover:bg-secondary"
         >
           <Settings size={15} /> Settings
         </Link>
@@ -56,12 +56,12 @@ export default async function NotificationsPage() {
                   />
                   <div className="min-w-0 flex-1">
                     <p className="text-sm leading-snug text-ink">{text}</p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
+                    <p className="mt-1 text-xs text-muted-foreground">
                       {formatRelativeTime(n.created_at)}
                     </p>
                   </div>
                   {n.read_at == null && (
-                    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-teal-600" />
+                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-teal-600" />
                   )}
                 </Link>
               </li>

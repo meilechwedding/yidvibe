@@ -101,14 +101,14 @@ export default async function ThreadPage({
     <div className="space-y-3">
       <Link
         href="/dashboard/inbox"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-teal-800"
+        className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-teal-800"
       >
         <ArrowLeft size={16} /> Back to inbox
       </Link>
 
-      <div className="flex max-h-[calc(100dvh-13rem)] min-h-[420px] flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-[var(--shadow-sm)]">
+      <div className="flex max-h-[calc(100dvh-13rem)] min-h-[420px] flex-col overflow-hidden rounded-card border border-border bg-surface shadow-[var(--shadow-sm)]">
         {/* Header — avatar + name + @handle + View profile. Pinned to the card top. */}
-        <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-border bg-surface/95 px-4 py-3 backdrop-blur sm:px-5">
+        <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-border bg-surface/95 px-4 py-3 backdrop-blur sm:px-6">
           <AvatarCircle
             name={other.name}
             src={other.avatar_url}
@@ -118,7 +118,7 @@ export default async function ThreadPage({
           <div className="min-w-0 flex-1">
             <Link
               href={`/u/${other.handle}`}
-              className="block truncate font-display text-[15px] font-bold leading-tight text-ink hover:text-teal-800"
+              className="block truncate font-display text-sm font-semibold leading-tight text-ink hover:text-teal-800"
             >
               {other.name}
             </Link>
@@ -137,13 +137,13 @@ export default async function ThreadPage({
         </div>
 
         {/* Messages — scrolls under the pinned header + composer. */}
-        <div className="flex flex-1 flex-col gap-1 overflow-y-auto bg-canvas/40 px-3 py-5 sm:px-5">
+        <div className="flex flex-1 flex-col gap-1 overflow-y-auto bg-canvas/40 px-3 py-6 sm:px-6">
           {messages.length === 0 ? (
-            <div className="flex flex-1 flex-col items-center justify-center px-6 py-10 text-center">
-              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-teal-50 text-teal-700">
+            <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center">
+              <span className="grid h-14 w-14 place-items-center rounded-card bg-teal-50 text-teal-700">
                 <MessageCircle size={24} />
               </span>
-              <p className="mt-4 font-display text-lg font-bold text-ink">
+              <p className="mt-4 font-display text-lg font-semibold text-ink">
                 Start the conversation
               </p>
               <p className="mt-1 max-w-xs text-sm text-muted-foreground">
@@ -160,7 +160,7 @@ export default async function ThreadPage({
                     className="my-3 flex items-center gap-3"
                   >
                     <span className="h-px flex-1 bg-border" />
-                    <span className="rounded-full bg-surface px-3 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground shadow-[var(--shadow-xs)]">
+                    <span className="rounded-full bg-surface px-3 py-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground shadow-[var(--shadow-xs)]">
                       {row.label}
                     </span>
                     <span className="h-px flex-1 bg-border" />
@@ -175,7 +175,7 @@ export default async function ThreadPage({
                   className={cn(
                     "flex items-end gap-2",
                     mine ? "justify-end" : "justify-start",
-                    showMeta ? "mt-2.5 first:mt-0" : "mt-0.5",
+                    showMeta ? "mt-3 first:mt-0" : "mt-1",
                   )}
                 >
                   {/* Avatar gutter for incoming messages (only on run start) */}
@@ -200,7 +200,7 @@ export default async function ThreadPage({
                   >
                     <div
                       className={cn(
-                        "rounded-2xl px-3.5 py-2 text-[14.5px] leading-relaxed shadow-[var(--shadow-xs)]",
+                        "rounded-card px-4 py-2 text-sm leading-relaxed shadow-[var(--shadow-xs)]",
                         mine
                           ? "bg-teal-600 text-white"
                           : "border border-border bg-surface text-ink",
@@ -216,7 +216,7 @@ export default async function ThreadPage({
                     {isLastOfRun && (
                       <p
                         className={cn(
-                          "mt-1 px-1 text-[11px] text-muted-foreground",
+                          "mt-1 px-1 text-sm text-muted-foreground",
                           mine ? "text-right" : "text-left",
                         )}
                       >
@@ -231,7 +231,7 @@ export default async function ThreadPage({
         </div>
 
         {/* Composer — pinned to the card bottom. */}
-        <div className="sticky bottom-0 border-t border-border bg-surface px-3 py-3 sm:px-5">
+        <div className="sticky bottom-0 border-t border-border bg-surface px-3 py-3 sm:px-6">
           <NoteComposer conversationId={conversationId} />
         </div>
       </div>

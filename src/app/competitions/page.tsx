@@ -32,7 +32,7 @@ export default async function CompetitionsPage() {
   );
 
   return (
-    <Container className="py-10 md:py-14">
+    <Container className="py-12 md:py-16">
       <PageHeader
         accent="clay"
         eyebrow={COMPETITIONS_COPY.eyebrow}

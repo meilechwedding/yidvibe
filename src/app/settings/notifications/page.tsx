@@ -15,20 +15,20 @@ export default async function NotificationSettingsPage() {
   const prefs = (profile.notification_prefs ?? {}) as Record<string, boolean>;
 
   return (
-    <div className="mx-auto max-w-2xl px-5 py-8 md:px-6 md:py-12">
+    <div className="mx-auto max-w-2xl px-6 py-8 md:px-6 md:py-12">
       <Link
         href="/dashboard/account"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-teal-800"
+        className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-teal-800"
       >
         <ArrowLeft size={16} /> Back to account
       </Link>
 
-      <div className="mt-5 flex items-start gap-4">
-        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-teal-50 text-teal-700">
+      <div className="mt-6 flex items-start gap-4">
+        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-card bg-teal-50 text-teal-700">
           <Bell size={22} />
         </span>
         <div>
-          <h1 className="font-display text-2xl font-bold tracking-tight text-ink">
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-ink">
             Notifications
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -38,14 +38,14 @@ export default async function NotificationSettingsPage() {
         </div>
       </div>
 
-      <form action={updateNotificationPrefs} className="mt-7 space-y-5">
+      <form action={updateNotificationPrefs} className="mt-8 space-y-6">
         <Panel className="p-2 sm:p-3">
           <PanelLabel className="px-3 pb-1 pt-2">Email & in-app</PanelLabel>
           <div className="divide-y divide-border/70">
             {NOTIFICATION_TYPES.map((t) => (
               <label
                 key={t.key}
-                className="flex cursor-pointer items-center justify-between gap-4 rounded-xl px-3 py-3.5 transition-colors hover:bg-teal-50/40"
+                className="flex cursor-pointer items-center justify-between gap-4 rounded-input px-3 py-4 transition-colors hover:bg-teal-50/40"
               >
                 <span className="min-w-0">
                   <span className="block text-sm font-semibold text-ink">

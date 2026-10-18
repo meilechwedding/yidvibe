@@ -26,14 +26,14 @@ export default async function EditProjectPage({
     <Container className="max-w-2xl py-12 md:py-16">
       <div className="text-center">
         <Eyebrow>Update your work</Eyebrow>
-        <h1 className="mt-3 font-display text-[clamp(2rem,5vw,2.75rem)] font-bold tracking-tight text-ink">
+        <h1 className="mt-3 font-display text-[clamp(2rem,5vw,2.75rem)] font-semibold tracking-tight text-ink">
           Edit project
         </h1>
         <p className="mx-auto mt-3 max-w-md text-[17px] text-muted-foreground">
           Update your project details.
         </p>
       </div>
-      <div className="mt-9">
+      <div className="mt-8">
         <ProjectForm
           action={updateAction}
           project={project}

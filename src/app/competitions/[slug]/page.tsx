@@ -55,15 +55,15 @@ export default async function CompetitionDetailPage({
   const canSubmit = !!me && !isCreator && acceptingEntries;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 md:px-6">
+    <div className="mx-auto max-w-3xl px-4 py-12 md:px-6">
       <SectionCrumb section="Competitions" href="/competitions" name={comp.title} accent="clay" />
-      <div className="mt-5">
+      <div className="mt-6">
         <DetailHero
           accent="gold"
           title={comp.title}
           watermarkIcon={<Trophy strokeWidth={1.5} />}
           badge={
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-2">
               <Trophy size={14} /> ${comp.prize_amount.toLocaleString()} ·{" "}
               {winnerId ? "Winner picked" : comp.status !== "open" ? "Closed" : dl.text}
             </span>
@@ -73,7 +73,7 @@ export default async function CompetitionDetailPage({
       </div>
 
       {comp.review_status !== "approved" && (
-        <div className="mt-4 rounded-2xl border border-gold-300 bg-gold-50 px-4 py-3 text-sm text-gold-700">
+        <div className="mt-4 rounded-card border border-gold-300 bg-gold-50 px-4 py-3 text-sm text-gold-700">
           {comp.review_status === "rejected"
             ? "This competition wasn't approved. Only you and admins can see it."
             : "Pending review — only you and admins can see this until an admin approves it."}
@@ -85,7 +85,7 @@ export default async function CompetitionDetailPage({
       </p>
 
       <p
-        className="mt-5 whitespace-pre-line text-[15px] leading-relaxed text-ink/90"
+        className="mt-6 whitespace-pre-line text-sm leading-relaxed text-ink/90"
         dir="auto"
       >
         {comp.description}
@@ -108,7 +108,7 @@ export default async function CompetitionDetailPage({
             <p className="text-xs uppercase tracking-wide text-muted-foreground">
               Hosted by
             </p>
-            <OfficialAuthor size="md" className="mt-0.5" />
+            <OfficialAuthor size="md" className="mt-1" />
           </div>
         </div>
       ) : (
@@ -141,8 +141,8 @@ export default async function CompetitionDetailPage({
             This competition is no longer accepting entries.
           </p>
         ) : canSubmit ? (
-          <div className="rounded-card border border-border bg-surface p-5">
-            <h2 className="font-display text-lg font-bold text-ink">Submit your entry</h2>
+          <div className="rounded-card border border-border bg-surface p-6">
+            <h2 className="font-display text-lg font-semibold text-ink">Submit your entry</h2>
             <div className="mt-3">
               <SubmitEntryForm competitionId={comp.id} slug={slug} />
             </div>
@@ -165,8 +165,8 @@ export default async function CompetitionDetailPage({
         )}
       </section>
 
-      <section className="mt-10">
-        <h2 className="font-display text-xl font-bold text-ink">
+      <section className="mt-12">
+        <h2 className="font-display text-xl font-semibold text-ink">
           Entries{submissions.length > 0 ? ` (${submissions.length})` : ""}
         </h2>
         {submissions.length === 0 ? (
@@ -227,7 +227,7 @@ export default async function CompetitionDetailPage({
                       href={s.submission_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex h-8 items-center gap-1.5 rounded-[10px] border border-border bg-surface px-3 text-xs text-ink transition-colors hover:bg-secondary"
+                      className="inline-flex h-8 items-center gap-2 rounded-input border border-border bg-surface px-3 text-xs text-ink transition-colors hover:bg-secondary"
                     >
                       <ExternalLink size={13} /> View entry
                     </a>
@@ -236,7 +236,7 @@ export default async function CompetitionDetailPage({
                         href={s.loom_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex h-8 items-center gap-1.5 rounded-[10px] border border-border bg-surface px-3 text-xs text-ink transition-colors hover:bg-secondary"
+                        className="inline-flex h-8 items-center gap-2 rounded-input border border-border bg-surface px-3 text-xs text-ink transition-colors hover:bg-secondary"
                       >
                         <Play size={13} /> Demo
                       </a>
@@ -245,7 +245,7 @@ export default async function CompetitionDetailPage({
                       <form action={pick}>
                         <button
                           type="submit"
-                          className="inline-flex h-8 items-center gap-1.5 rounded-[10px] bg-gold-deep px-3 text-xs font-medium text-white transition-transform active:scale-[0.98]"
+                          className="inline-flex h-8 items-center gap-2 rounded-input bg-gold-deep px-3 text-xs font-medium text-white transition-transform active:scale-[0.98]"
                         >
                           <Trophy size={13} /> Pick as winner
                         </button>

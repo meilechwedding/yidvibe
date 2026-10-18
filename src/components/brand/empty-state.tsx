@@ -28,12 +28,12 @@ export function EmptyState({
       )}
     >
       {icon && (
-        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-50 text-teal-600">
+        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-card bg-teal-50 text-teal-600">
           {icon}
         </div>
       )}
-      <h3 className="font-display text-xl font-bold text-ink">{title}</h3>
-      <p className="mt-1.5 max-w-sm text-[15px] text-muted-foreground">
+      <h3 className="font-display text-xl font-semibold text-ink">{title}</h3>
+      <p className="mt-2 max-w-sm text-sm text-muted-foreground">
         {description}
       </p>
       {actionHref && actionLabel && (

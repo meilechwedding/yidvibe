@@ -29,7 +29,7 @@ export default async function AdminReportsPage() {
   return (
     <div>
       <h1 className="font-display text-2xl text-ink">Open reports</h1>
-      <p className="mt-1.5 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm text-muted-foreground">
         Hide (reversible, projects/comments), delete (permanent), or dismiss.
       </p>
 
@@ -45,7 +45,7 @@ export default async function AdminReportsPage() {
               className="rounded-card border border-border bg-surface p-4"
             >
               <div className="flex flex-wrap items-center gap-2 text-sm">
-                <span className="rounded-full bg-clay-tint px-2.5 py-0.5 text-xs font-medium text-clay-deep">
+                <span className="rounded-full bg-clay-tint px-3 py-1 text-xs font-medium text-clay-deep">
                   {r.reason}
                 </span>
                 <span className="text-muted-foreground">
@@ -54,12 +54,12 @@ export default async function AdminReportsPage() {
                 {r.target_type === "project" ? (
                   <Link
                     href={`/showcase/${r.target_id}`}
-                    className="font-mono text-xs text-teal-700 hover:underline"
+                    className="font-sans text-xs text-teal-700 hover:underline"
                   >
                     {r.target_id.slice(0, 8)}…
                   </Link>
                 ) : (
-                  <span className="font-mono text-xs text-muted-foreground">
+                  <span className="font-sans text-xs text-muted-foreground">
                     {r.target_id.slice(0, 8)}…
                   </span>
                 )}

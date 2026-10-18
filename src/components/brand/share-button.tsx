@@ -65,7 +65,7 @@ export function ShareButton({
       aria-label={label || "Share"}
     >
       {copied ? <Check size={16} /> : <Share2 size={16} />}
-      {label ? <span className="ml-1.5">{label}</span> : null}
+      {label ? <span className="ml-2">{label}</span> : null}
     </button>
   );
 }

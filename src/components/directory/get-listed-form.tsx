@@ -24,8 +24,8 @@ export function GetListedForm() {
 
   if (state.ok) {
     return (
-      <div className="flex items-start gap-3 rounded-2xl border border-sage-mid bg-sage-tint p-5 text-sage-deep">
-        <CheckCircle2 size={20} className="mt-0.5 shrink-0" />
+      <div className="flex items-start gap-3 rounded-card border border-sage-mid bg-sage-tint p-6 text-sage-deep">
+        <CheckCircle2 size={20} className="mt-1 shrink-0" />
         <p className="text-sm">
           {directoryFormCopy.submitted}
         </p>
@@ -98,7 +98,7 @@ export function GetListedForm() {
       <button
         type="submit"
         disabled={pending}
-        className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-transform active:scale-[0.99] disabled:opacity-70"
+        className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-input px-4 text-sm font-medium transition-transform active:scale-[0.99] disabled:opacity-70"
       >
         {pending ? "Submitting…" : "Submit listing"}
       </button>

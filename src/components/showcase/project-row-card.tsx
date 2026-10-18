@@ -32,7 +32,7 @@ export function ProjectRowCard({
   return (
     <div
       className={cn(
-        "relative flex items-stretch gap-4 rounded-2xl border bg-surface p-3.5 shadow-sm transition-colors sm:gap-5",
+        "relative flex items-stretch gap-4 rounded-card border bg-surface p-4 shadow-sm transition-colors sm:gap-6",
         featured
           ? "border-gold-deep/30 ring-2 ring-gold-tint"
           : "border-border hover:border-border-hover",
@@ -40,7 +40,7 @@ export function ProjectRowCard({
     >
       <Link
         href={href}
-        className="relative block h-[72px] w-24 shrink-0 overflow-hidden rounded-xl sm:h-[92px] sm:w-[132px]"
+        className="relative block h-[72px] w-24 shrink-0 overflow-hidden rounded-input sm:h-[92px] sm:w-[132px]"
         style={{ background: cover }}
         aria-hidden
         tabIndex={-1}
@@ -55,7 +55,7 @@ export function ProjectRowCard({
             className="h-full w-full object-cover"
           />
         ) : (
-          <span className="flex h-full w-full items-center justify-center text-2xl font-bold text-white/90">
+          <span className="flex h-full w-full items-center justify-center text-2xl font-semibold text-white/90">
             {initial}
           </span>
         )}
@@ -65,18 +65,18 @@ export function ProjectRowCard({
         <div className="flex items-center gap-2">
           <Link
             href={href}
-            className="truncate font-display text-[15px] font-bold text-ink transition-colors hover:text-teal-700 sm:text-base"
+            className="truncate font-display text-sm font-semibold text-ink transition-colors hover:text-teal-700 sm:text-base"
           >
             {project.name}
           </Link>
           {featured && (
-            <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold-deep/20 bg-gold-tint px-2 py-0.5 text-[10px] font-semibold text-amber-900">
+            <span className="inline-flex shrink-0 items-center gap-1 rounded-input border border-gold-deep/20 bg-gold-tint px-2 py-1 text-sm font-medium text-amber-900">
               <Sparkles size={10} /> Featured
             </span>
           )}
         </div>
 
-        <div className="mt-0.5 truncate text-xs text-muted-foreground">
+        <div className="mt-1 truncate text-xs text-muted-foreground">
           {owner ? (
             <>
               by{" "}
@@ -92,15 +92,15 @@ export function ProjectRowCard({
           )}
         </div>
 
-        <p className="mt-1.5 line-clamp-2 text-[13px] leading-snug text-muted-foreground">
+        <p className="mt-2 line-clamp-2 text-sm leading-snug text-muted-foreground">
           {project.description}
         </p>
 
-        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+        <div className="mt-2 flex flex-wrap items-center gap-2">
           {project.tags.slice(0, 1).map((t) => (
             <span
               key={t}
-              className="rounded-full border border-teal-100 bg-teal-50 px-2.5 py-0.5 text-[11px] font-medium text-teal-800"
+              className="rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-sm font-medium text-teal-800"
             >
               {t}
             </span>
@@ -108,7 +108,7 @@ export function ProjectRowCard({
           {project.tools.slice(0, 2).map((t) => (
             <span
               key={t}
-              className="rounded-full border border-blue-tint bg-blue-tint px-2.5 py-0.5 text-[11px] font-medium text-blue-deep"
+              className="rounded-full border border-blue-tint bg-blue-tint px-3 py-1 text-sm font-medium text-blue-deep"
             >
               {t}
             </span>

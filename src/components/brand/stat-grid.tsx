@@ -6,10 +6,10 @@ export type StatItem = { value: React.ReactNode; label: string };
 export function Stat({ value, label }: StatItem) {
   return (
     <div>
-      <div className="font-display text-xl font-bold leading-none text-ink">
+      <div className="font-display text-xl font-semibold leading-none text-ink">
         {value}
       </div>
-      <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+      <div className="mt-1 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground">
         {label}
       </div>
     </div>

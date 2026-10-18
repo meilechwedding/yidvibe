@@ -181,7 +181,7 @@ export function CompetitionsBoard({
           description="Try a broader keyword or clear a filter to see more competitions."
         />
       ) : (
-        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((c) => (
             <div key={c.id}>{cards[c.id]}</div>
           ))}

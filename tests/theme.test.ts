@@ -21,15 +21,15 @@ function contrast(foreground: string, background: string): number {
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 }
 describe("shared brand theme", () => {
-  it("keeps legacy palette aliases tied to canonical theme tokens", () => {
-    expect(color("--canvas")).toBe("#fbfcfd");
-    expect(color("--teal-600")).toBe("#1f6e66");
-    expect(color("--gold-500")).toBe("#e0a12e");
-    expect(color("--orange-mid")).toBe("#d17f4a");
+  it("keeps v8 palette aliases tied to canonical theme tokens", () => {
+    expect(color("--canvas")).toBe("#F3F5EE");
+    expect(color("--teal-600")).toBe("#103D39");
+    expect(color("--gold-500")).toBe("#E5E86A");
+    expect(color("--orange-mid")).toBe("#103D39");
     expect(color("--color-gold-tint")).toBe(color("--color-amber-50"));
     expect(css).toContain('@import "../styles/theme.css"');
   });
-  it("provides every accent consistently without changing stable avatar colors", () => {
+  it("provides every accent consistently with stable feature keys", () => {
     for (const accent of Object.keys(ACCENT_HERO) as (keyof typeof ACCENT_HERO)[]) {
       expect(ACCENT_PILL[accent]).toBeTruthy();
       expect(ACCENT_AVATAR[accent]).toBeTruthy();
@@ -40,12 +40,17 @@ describe("shared brand theme", () => {
   });
   it("keeps small action and medal text at WCAG AA contrast", () => {
     for (const [foreground, background] of [
+      [color("--ink"), color("--canvas")],
+      [color("--color-muted-foreground"), color("--canvas")],
+      [color("--color-muted-foreground"), color("--color-mist")],
+      ["#ffffff", color("--color-petrol")],
+      ["#ffffff", color("--color-destructive")],
       ["#ffffff", color("--orange-deep")],
       ["#ffffff", color("--sage-deep")],
       [color("--ink"), color("--gold-500")],
       [color("--gold-900"), color("--gold-50")],
-      [color("--ink"), "#9aa3ab"],
-      [color("--ink"), "#c08457"],
+      [color("--ink"), color("--color-mist")],
+      [color("--ink"), color("--canvas")],
     ]) expect(contrast(foreground, background)).toBeGreaterThanOrEqual(4.5);
     expect(css).toContain('.btn-orange { background: var(--orange-deep)');
     expect(css).toContain('.pc-flag.is-live { background: var(--sage-deep)');

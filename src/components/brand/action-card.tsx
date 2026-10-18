@@ -27,25 +27,25 @@ export function ActionCard({
     <Link
       href={href}
       style={{ borderTopColor: ACCENT_BORDER[accent] }}
-      className="group flex flex-col gap-3 rounded-2xl border border-t-[3px] border-border bg-surface p-4 shadow-[var(--shadow-sm)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]"
+      className="group flex flex-col gap-3 rounded-card border border-t-[3px] border-border bg-surface p-4 shadow-[var(--shadow-sm)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]"
     >
       <span
         className={cn(
-          "grid h-11 w-11 place-items-center rounded-xl",
+          "grid h-11 w-11 place-items-center rounded-input",
           ACCENT_ICON[accent],
         )}
       >
         {icon}
       </span>
       <div>
-        <div className="flex items-center gap-1 font-display text-[15px] font-bold text-ink">
+        <div className="flex items-center gap-1 font-display text-sm font-semibold text-ink">
           {label}
           <ArrowRight
             size={15}
             className="opacity-0 transition-opacity group-hover:opacity-60"
           />
         </div>
-        <p className="mt-0.5 text-xs text-muted-foreground">{description}</p>
+        <p className="mt-1 text-xs text-muted-foreground">{description}</p>
       </div>
     </Link>
   );

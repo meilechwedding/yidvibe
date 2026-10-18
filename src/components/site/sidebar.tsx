@@ -59,7 +59,7 @@ export function Sidebar({
         <Logo />
       </div>
 
-      <nav className="mt-6 flex flex-1 flex-col gap-0.5 overflow-y-auto">
+      <nav className="mt-6 flex flex-1 flex-col gap-1 overflow-y-auto">
         {navLinks.map((l) => {
           const Icon = ICONS[l.href] ?? Compass;
           const active = isActive(l.href);
@@ -69,7 +69,7 @@ export function Sidebar({
               href={l.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-input px-3 py-2 text-sm font-medium transition-colors",
                 active
                   ? "bg-teal-50 text-teal-800"
                   : "text-muted-foreground hover:bg-secondary hover:text-ink",

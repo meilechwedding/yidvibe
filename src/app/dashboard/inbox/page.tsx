@@ -17,10 +17,10 @@ export default async function DashboardInbox() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
             Inbox
           </h2>
-          <p className="mt-0.5 text-sm text-muted-foreground">
+          <p className="mt-1 text-sm text-muted-foreground">
             {convos.length === 0
               ? "Private notes with other builders."
               : `${convos.length} conversation${convos.length === 1 ? "" : "s"}`}
@@ -43,7 +43,7 @@ export default async function DashboardInbox() {
               <li key={c.id}>
                 <Link
                   href={`/dashboard/inbox/${c.id}`}
-                  className="group flex items-center gap-3.5 px-4 py-3.5 transition-colors hover:bg-teal-50/40 sm:px-5"
+                  className="group flex items-center gap-4 px-4 py-4 transition-colors hover:bg-teal-50/40 sm:px-6"
                 >
                   <AvatarCircle
                     name={c.other.name}
@@ -52,7 +52,7 @@ export default async function DashboardInbox() {
                     accent={accentFor(c.other.handle)}
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-[15px] font-semibold text-ink">
+                    <p className="truncate text-sm font-semibold text-ink">
                       {c.other.name}
                     </p>
                     <p className="truncate text-xs text-muted-foreground">

@@ -16,7 +16,7 @@ export function AdminUnlockForm() {
         autoComplete="off"
         required
         placeholder="Admin passcode"
-        className="h-11 w-full rounded-[10px] border border-border bg-surface px-3 text-sm text-ink outline-none focus:ring-2 focus:ring-ring"
+        className="h-11 w-full rounded-input border border-border bg-surface px-3 text-sm text-ink outline-none focus:ring-2 focus:ring-ring"
       />
       {state.error && (
         <p className="rounded-lg bg-clay-tint px-3 py-2 text-sm text-clay-deep">
@@ -26,7 +26,7 @@ export function AdminUnlockForm() {
       <button
         type="submit"
         disabled={pending}
-        className="inline-flex h-11 w-full items-center justify-center rounded-[10px] bg-teal-600 px-4 text-[15px] font-medium text-white transition-transform active:scale-[0.99] disabled:opacity-70"
+        className="inline-flex h-11 w-full items-center justify-center rounded-input bg-teal-600 px-4 text-sm font-medium text-white transition-transform active:scale-[0.99] disabled:opacity-70"
       >
         {pending ? "Unlocking…" : "Unlock admin"}
       </button>

@@ -4,7 +4,7 @@ import { ACCENT_HERO, type Accent } from "@/lib/design/accents";
 export type HeroTag = { label: string; href?: string };
 
 /**
- * Shared detail-page cover: an accent gradient (or cover image) with the title,
+ * Shared detail-page cover: a petrol surface (or cover image) with the title,
  * an optional badge row, and tags overlaid in white — plus a faint watermark
  * glyph and a top-right slot (e.g. a save-star). Used by project / gig /
  * competition detail pages so every inside page leads with the same signature.
@@ -30,10 +30,9 @@ export function DetailHero({
 }) {
   return (
     <div
-      className="relative flex min-h-[210px] flex-col justify-end overflow-hidden rounded-3xl border border-border p-6 sm:min-h-[240px] sm:p-8"
-      style={{ backgroundImage: ACCENT_HERO[accent] }}
+      className="relative flex min-h-[210px] flex-col justify-end overflow-hidden rounded-card border border-border p-6 sm:min-h-[240px] sm:p-8"
+      style={{ background: ACCENT_HERO[accent] }}
     >
-      {!coverImage && <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/60 via-ink/40 to-ink/20" />}
       {coverImage ? (
         <>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -42,10 +41,10 @@ export function DetailHero({
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/25 to-ink/10" />
+          <div className="absolute inset-0 bg-petrol/80" />
         </>
       ) : watermark ? (
-        <span className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 select-none font-display text-[9rem] font-bold leading-none text-white/10 sm:text-[12rem]">
+        <span className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 select-none font-display text-[9rem] font-semibold leading-none text-white/10 sm:text-[12rem]">
           {watermark}
         </span>
       ) : watermarkIcon ? (
@@ -63,26 +62,26 @@ export function DetailHero({
           </div>
         )}
         <h1
-          className="font-display text-[clamp(1.8rem,4.5vw,2.75rem)] font-bold leading-tight tracking-tight text-white break-words"
+          className="font-display text-[clamp(1.75rem,4.5vw,3rem)] font-semibold leading-tight tracking-tight text-white break-words"
           dir="auto"
         >
           {title}
         </h1>
         {tags.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1.5">
+          <div className="mt-3 flex flex-wrap gap-2">
             {tags.map((t) =>
               t.href ? (
                 <Link
                   key={t.label}
                   href={t.href}
-                  className="rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-medium text-white backdrop-blur transition-colors hover:bg-white/25"
+                  className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur transition-colors hover:bg-white/25"
                 >
                   {t.label}
                 </Link>
               ) : (
                 <span
                   key={t.label}
-                  className="rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-medium text-white backdrop-blur"
+                  className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur"
                 >
                   {t.label}
                 </span>

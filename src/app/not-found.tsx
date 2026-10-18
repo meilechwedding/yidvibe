@@ -11,7 +11,7 @@ export default function NotFound() {
       </p>
       <Link
         href="/"
-        className="mt-6 inline-flex h-10 items-center rounded-[10px] bg-teal-600 px-5 text-sm font-medium text-white transition-transform active:scale-[0.98]"
+        className="mt-6 inline-flex h-10 items-center rounded-input bg-teal-600 px-6 text-sm font-medium text-white transition-transform active:scale-[0.98]"
       >
         {STATUS_COPY.notFound.home}
       </Link>

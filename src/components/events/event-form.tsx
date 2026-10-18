@@ -85,7 +85,7 @@ export function EventForm() {
         <button
           type="submit"
           disabled={pending}
-          className="btn btn-primary h-12 flex-1 text-[15px] disabled:opacity-70"
+          className="btn btn-primary h-12 flex-1 text-sm disabled:opacity-70"
         >
           {pending ? eventFormCopy.addingLabel : eventFormCopy.addLabel}
         </button>

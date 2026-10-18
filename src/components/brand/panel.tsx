@@ -14,7 +14,7 @@ export function Panel({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-border bg-surface p-4 shadow-[var(--shadow-sm)] sm:p-5",
+        "rounded-card border border-border bg-surface p-4 shadow-[var(--shadow-sm)] sm:p-6",
         className,
       )}
     >
@@ -34,7 +34,7 @@ export function PanelLabel({
   return (
     <p
       className={cn(
-        "text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground",
+        "text-sm font-semibold uppercase tracking-[0.1em] text-muted-foreground",
         className,
       )}
     >

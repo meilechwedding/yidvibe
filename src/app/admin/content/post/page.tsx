@@ -21,13 +21,13 @@ export default async function AdminPostContentPage() {
     <div className="max-w-2xl">
       <Link
         href="/admin/content"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-ink"
+        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-ink"
       >
         <ArrowLeft size={15} /> Back to content
       </Link>
 
       <h1 className="mt-3 font-display text-2xl text-ink">Post content</h1>
-      <p className="mt-1.5 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm text-muted-foreground">
         Publish a gig, competition, or event — as Official YidVibe or on behalf
         of a user.
       </p>

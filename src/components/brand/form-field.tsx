@@ -22,11 +22,11 @@ export function FormField({ label, children, required, hint, error, fromProfile 
   const controlId = single?.props.id ?? `${id}-control`;
   return (
     <div role={single ? undefined : "group"} aria-labelledby={single ? undefined : `${id}-label`}>
-      <label id={`${id}-label`} htmlFor={single ? controlId : undefined} className="mb-1.5 block text-sm font-medium text-ink">
+      <label id={`${id}-label`} htmlFor={single ? controlId : undefined} className="mb-2 block text-sm font-medium text-ink">
         {label}
-        {required && <span aria-hidden="true" className="ml-0.5 text-clay-mid">*</span>}
+        {required && <span aria-hidden="true" className="ml-1 text-clay-mid">*</span>}
         {hint && <span className="ml-2 text-xs font-normal text-muted-foreground">{hint}</span>}
-        {fromProfile && <span className="ml-2 inline-flex items-center gap-1 align-middle text-[11px] font-normal text-sage-deep"><Check size={12} /> from profile</span>}
+        {fromProfile && <span className="ml-2 inline-flex items-center gap-1 align-middle text-sm font-normal text-sage-deep"><Check size={12} /> from profile</span>}
       </label>
       {content.map((child) => single && child === single ? cloneElement(single, {
         id: controlId,

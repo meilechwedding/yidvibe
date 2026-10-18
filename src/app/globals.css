@@ -12,12 +12,12 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-sans);
-    /* Nunito Sans body weight */
+    /* v8 body: Space Grotesk 400. */
     font-weight: 400;
     line-height: 1.55;
     text-rendering: optimizeLegibility;
   }
-  /* Headlines use the rounded display face (Comfortaa), weight 600. */
+  /* v8 headings use Space Grotesk 600. */
   .font-display {
     font-family: var(--font-display);
     font-weight: 600;
@@ -39,25 +39,26 @@
 /* ── Eyebrow ─────────────────────────────────────────────────────────────── */
 .eyebrow {
   font-family: var(--font-sans);
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
   color: var(--accent);
 }
 
-/* ── Buttons (full-pill brand actions) ───────────────────────────────────── */
+/* Buttons (10px v8 controls) ───────────────────────────────────── */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 8px;
   font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 15px;
+  font-weight: 500;
+  font-size: 16px;
   line-height: 1;
-  border-radius: 999px;
-  padding: 13px 22px;
+  border-radius: var(--radius-input);
+  min-height: 44px;
+  padding: 12px 24px;
   border: 1px solid transparent;
   transition: transform 0.12s ease, box-shadow 0.2s ease, background 0.2s ease,
     border-color 0.2s ease, color 0.2s ease;
@@ -65,7 +66,7 @@
 }
 .btn:active { transform: translateY(1px); }
 .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 1px 2px rgba(16, 32, 43, 0.06); }
+.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 1px 2px rgba(16, 61, 57, 0.06); }
 .btn-primary:hover { background: var(--accent-strong); box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 22%, transparent); }
 .btn-ghost { background: var(--surface); color: var(--ink); border-color: var(--border); box-shadow: var(--shadow-xs); }
 .btn-ghost:hover { border-color: var(--border-hover); box-shadow: var(--shadow-sm); }
@@ -73,28 +74,28 @@
 .btn-gold:hover { background: var(--gold-300); }
 .btn-orange { background: var(--orange-deep); color: #fff; box-shadow: 0 1px 2px rgba(143, 78, 32, 0.1); }
 .btn-orange:hover { background: var(--orange-deep); filter: brightness(0.9); }
-.btn-sm { padding: 9px 16px; font-size: 13.5px; }
-.btn-lg { padding: 15px 26px; font-size: 16px; }
+.btn-sm { padding: 8px 16px; font-size: 14px; }
+.btn-lg { padding: 16px 24px; font-size: 16px; }
 .btn-block { width: 100%; }
 
 /* ── Inline arrow link ───────────────────────────────────────────────────── */
-.link-arrow { display: inline-flex; align-items: center; gap: 7px; font-weight: 600; font-size: 14.5px; color: var(--accent-strong); }
+.link-arrow { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; font-size: 14px; color: var(--accent-strong); }
 .link-arrow svg { transition: transform 0.18s ease; }
 .link-arrow:hover svg { transform: translateX(3px); }
 
 /* ── Chips / pills ───────────────────────────────────────────────────────── */
-.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 500; padding: 5px 11px; border-radius: 999px; background: var(--teal-50); color: var(--teal-800); border: 1px solid transparent; }
-.chip.mono { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: -0.01em; background: var(--canvas); border-color: var(--border); color: var(--muted); }
+.chip { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; padding: 4px 12px; border-radius: var(--radius-chip); background: var(--teal-50); color: var(--teal-800); border: 1px solid transparent; }
+.chip.mono { font-family: var(--font-sans); font-size: 14px; letter-spacing: -0.01em; background: var(--canvas); border-color: var(--border); color: var(--muted); }
 .chip.blue { background: var(--blue-bg); color: var(--blue-deep); }
 .chip.orange { background: var(--orange-bg); color: var(--orange-deep); }
 .chip.clay { background: var(--clay-bg); color: var(--clay-deep); }
 .chip.gold { background: var(--gold-50); color: var(--gold-900); }
 
-.badge-pill { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; padding: 7px 15px 7px 12px; border-radius: 999px; white-space: nowrap; background: var(--surface); border: 1px solid var(--border); color: var(--muted); box-shadow: var(--shadow-xs); }
+.badge-pill { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; padding: 8px 16px 8px 12px; border-radius: var(--radius-chip); white-space: nowrap; background: var(--surface); border: 1px solid var(--border); color: var(--muted); box-shadow: var(--shadow-xs); }
 .badge-pill .dot { width: 7px; height: 7px; border-radius: 999px; background: var(--sage-mid); box-shadow: 0 0 0 4px var(--sage-bg); }
 
 /* ── Icon button (nav bell, kebab, etc.) ─────────────────────────────────── */
-.icon-btn { width: 38px; height: 38px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); display: grid; place-items: center; color: var(--muted); transition: border-color 0.15s, color 0.15s, box-shadow 0.15s; }
+.icon-btn { width: 44px; height: 44px; border-radius: var(--radius-input); border: 1px solid var(--border); background: var(--surface); display: grid; place-items: center; color: var(--muted); transition: border-color 0.15s, color 0.15s, box-shadow 0.15s; }
 .icon-btn:hover { color: var(--ink); border-color: var(--border-hover); box-shadow: var(--shadow-xs); }
 
 /* ── Tints (icon wells) ──────────────────────────────────────────────────── */
@@ -109,7 +110,7 @@
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: none; }
 }
-.yv-reveal { opacity: 0; }
+.yv-reveal { opacity: 1; }
 .yv-reveal.in { animation: yv-reveal-in 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
 
 @keyframes yv-live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
@@ -121,7 +122,7 @@
   flex-direction: column;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   overflow: hidden;
   transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.25s,
     border-color 0.25s;
@@ -133,18 +134,18 @@
 .pc-cover { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
 .pc-cover .pc-shot { position: absolute; inset: 0; height: 100%; width: 100%; object-fit: cover; transition: transform 0.3s ease; }
 .project-card:hover .pc-cover .pc-shot { transform: scale(1.02); }
-.pc-initial { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 64px; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45); }
-.pc-tools { position: absolute; left: 12px; bottom: 12px; z-index: 2; display: flex; gap: 6px; }
+.pc-initial { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display); font-weight: 600; font-size: 72px; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45); }
+.pc-tools { position: absolute; left: 12px; bottom: 12px; z-index: 2; display: flex; gap: 8px; }
 .pc-tools .chip { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(6px); border-color: rgba(255, 255, 255, 0.6); color: var(--ink); }
-.pc-flag { position: absolute; top: 12px; left: 12px; z-index: 2; display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; border-radius: 999px; background: var(--gold-500); color: var(--ink); box-shadow: var(--shadow-sm); }
+.pc-flag { position: absolute; top: 12px; left: 12px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; letter-spacing: 0.04em; padding: 4px 12px; border-radius: 999px; background: var(--gold-500); color: var(--ink); box-shadow: var(--shadow-sm); }
 .pc-flag.is-live { background: var(--sage-deep); color: #fff; }
 .pc-flag .dot { width: 7px; height: 7px; border-radius: 999px; background: #fff; box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3); }
 
-.pc-body { padding: 18px; display: flex; flex-direction: column; flex: 1; }
-.pc-title { font-family: var(--font-display); font-size: 20px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
+.pc-body { padding: 24px; display: flex; flex-direction: column; flex: 1; }
+.pc-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
 .pc-title:hover { color: var(--teal-800); }
-.pc-desc { color: var(--muted); font-size: 14px; line-height: 1.5; margin-top: 9px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.pc-foot { display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--muted); margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); }
+.pc-desc { color: var(--muted); font-size: 14px; line-height: 1.5; margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pc-foot { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); }
 .pc-foot strong { color: var(--ink); font-weight: 600; }
 
 /* ── Upvote ──────────────────────────────────────────────────────────────── */
@@ -153,9 +154,9 @@
   position: relative; isolation: isolate;
   display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
   width: 52px; height: 52px;
-  border-radius: 16px; border: 1.5px solid var(--border);
+  border-radius: var(--radius-input); border: 1.5px solid var(--border);
   background: var(--surface); color: var(--ink);
-  font-family: var(--font-display); font-weight: 700; font-size: 15px; line-height: 1;
+  font-family: var(--font-display); font-weight: 600; font-size: 16px; line-height: 1;
   overflow: visible; cursor: pointer;
   transition: background 0s linear 0.25s, border-color 0.12s, transform 0.1s;
 }
@@ -166,7 +167,7 @@
 
 /* Fill: matches inner radius, rises bottom→top in 250ms. */
 .upvote-fill {
-  position: absolute; inset: 0; border-radius: 14.5px; background: var(--accent); z-index: -1;
+  position: absolute; inset: 0; border-radius: calc(var(--radius-input) - 1.5px); background: var(--accent); z-index: -1;
   transform: scaleY(0); transform-origin: bottom;
   transition: transform 0.25s cubic-bezier(0.3, 0.8, 0.3, 1);
 }
@@ -193,7 +194,7 @@
 @media (prefers-reduced-motion: reduce) { .yv-share-progress { display: none; } }
 
 @media (max-width: 860px) {
-  :root { --space-section: 72px; }
+  :root { --space-section: 64px; }
 }
 @media (max-width: 640px) {
   :root { --space-section: 48px; }
@@ -205,78 +206,31 @@
   .yv-live-dot { animation: none; }
 }
 
-/*
-  Ambient hero drift — soft blurred color blobs that move slowly behind the hero.
-  Respect reduced-motion: hold them still.
-*/
-@keyframes yv-drift-a {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(6%, -4%, 0) scale(1.08); }
-}
-@keyframes yv-drift-b {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
-  50% { transform: translate3d(-5%, 5%, 0) scale(1); }
-}
-@keyframes yv-drift-c {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(4%, 6%, 0) scale(1.1); }
-}
 @keyframes yv-rise {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.yv-blob {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(44px);
-  opacity: 0.45;
-  will-change: transform;
-  pointer-events: none;
-}
-.yv-blob-a { animation: yv-drift-a 16s ease-in-out infinite; }
-.yv-blob-b { animation: yv-drift-b 18s ease-in-out infinite; }
-.yv-blob-c { animation: yv-drift-c 14s ease-in-out infinite; }
+
 
 .yv-rise { animation: yv-rise 0.5s ease-out both; }
 
-/*
-  Signature CTA — teal rests, sweeps to amber gold on hover, text warms to deep gold.
-  Add `.btn-sweep` to a primary action button INSTEAD of a `bg-*` class (it paints its
-  own background-image). Reserved for the "do it" moments: submit / post / upvote.
-*/
+/* Solid petrol actions retain readable white text throughout interaction. */
 .btn-sweep {
-  background-image: linear-gradient(
-    100deg,
-    var(--color-teal-600) 0%,
-    var(--color-teal-600) 45%,
-    var(--color-teal-400) 60%,
-    var(--color-amber-500) 100%
-  );
-  background-size: 220% 100%;
-  background-position: 0% 0;
-  color: #fff;
-  transition:
-    background-position 0.5s var(--ease-brand),
-    color 0.35s var(--ease-brand);
+  background: var(--color-petrol);
+  color: var(--color-surface);
+  font-weight: 500;
+  transition: background-color var(--dur-hover) var(--ease-brand), color var(--dur-hover) var(--ease-brand);
 }
-.btn-sweep:hover {
-  background-position: 100% 0;
-  color: var(--color-amber-900);
-}
-
+.btn-sweep:hover { background: var(--color-mist); color: var(--color-petrol); }
 .yv-glance-tile {
-  display: block; color: #fff;
-  background: linear-gradient(140deg, var(--teal-600), var(--teal-800));
-  transition: background 0.2s ease, color 0.2s ease;
+  display: block; color: var(--color-surface); background: var(--color-petrol);
+  transition: background-color var(--dur-hover), color var(--dur-hover);
 }
-.yv-glance-tile:hover {
-  background: linear-gradient(140deg, var(--gold-300), var(--gold-500));
-  color: var(--gold-900);
-}
+.yv-glance-tile:hover { background: var(--color-citron); color: var(--color-petrol); }
 
 @media (prefers-reduced-motion: reduce) {
-  .yv-blob-a, .yv-blob-b, .yv-blob-c, .yv-rise {
+  .yv-rise {
     animation: none;
   }
   .btn-sweep {
@@ -292,16 +246,16 @@
 
 /* Rank medals + ring (builders, top project/gig) */
 .yv-ring-gold { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--gold-500); }
-.yv-medal { position: absolute; right: -3px; bottom: -3px; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 999px; border: 2px solid #fff; color: #fff; font-size: 11px; font-weight: 800; line-height: 1; }
-.yv-medal-1 { background: var(--gold-500); color: var(--ink); } .yv-medal-2 { background: #9aa3ab; color: var(--ink); } .yv-medal-3 { background: #c08457; color: var(--ink); }
-.yv-medal-chip { display: inline-flex; align-items: center; gap: 5px; background: var(--gold-500); color: var(--ink); font-size: 10.5px; font-weight: 800; padding: 4px 9px; border-radius: 999px; }
+.yv-medal { position: absolute; right: -3px; bottom: -3px; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 999px; border: 2px solid #fff; color: #fff; font-size: 14px; font-weight: 600; line-height: 1; }
+.yv-medal-1 { background: var(--gold-500); color: var(--ink); } .yv-medal-2 { background: var(--color-mist); color: var(--ink); } .yv-medal-3 { background: var(--color-canvas); color: var(--ink); }
+.yv-medal-chip { display: inline-flex; align-items: center; gap: 5px; background: var(--gold-500); color: var(--ink); font-size: 14px; font-weight: 600; padding: 4px 8px; border-radius: 999px; }
 
 /* ── Browse-by marquee — one slow auto-scrolling row of tag chips ── */
 .yv-marquee { position: relative; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
-.yv-marquee-track { display: flex; gap: 9px; width: max-content; animation: yv-marquee-scroll 80s linear infinite; }
+.yv-marquee-track { display: flex; gap: 8px; width: max-content; animation: yv-marquee-scroll 80s linear infinite; }
 .yv-marquee:hover .yv-marquee-track { animation-play-state: paused; }
 @keyframes yv-marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.yv-tag { white-space: nowrap; border: 1px solid var(--border); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 7px 14px; font-size: 13.5px; transition: border-color .15s, background .15s, color .15s; }
+.yv-tag { white-space: nowrap; border: 1px solid var(--border); background: var(--surface); color: var(--ink); border-radius: var(--radius-chip); padding: 8px 16px; font-size: 14px; transition: border-color .15s, background .15s, color .15s; }
 .yv-tag:hover { border-color: var(--accent); background: var(--teal-50); color: var(--teal-800); }
 @media (prefers-reduced-motion: reduce) { .yv-marquee-track { animation: none; flex-wrap: wrap; } }
 

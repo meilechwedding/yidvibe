@@ -13,9 +13,9 @@ export function EventCard({ event }: { event: EventRow }) {
   const [expanded, setExpanded] = useState(false);
   const time = formatTime(event.starts_at);
   return (
-    <li className="flex items-start gap-4 rounded-2xl border border-border bg-surface p-4 transition-all hover:border-border-hover hover:shadow-[var(--shadow-sm)]">
+    <li className="flex items-start gap-4 rounded-card border border-border bg-surface p-4 transition-all hover:border-border-hover hover:shadow-[var(--shadow-sm)]">
       <div className="min-w-0 flex-1">
-        <h3 className="font-display text-lg font-bold text-ink" dir="auto">
+        <h3 className="font-display text-lg font-semibold text-ink" dir="auto">
           {event.title}
         </h3>
         {(time || event.location) && (

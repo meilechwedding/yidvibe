@@ -85,9 +85,9 @@ export function RotatingRow({ children }: { children: React.ReactNode[] }) {
           style={{ transform: `translateX(-${page * 100}%)` }}
         >
           {pages.map((group, pi) => (
-            <div key={pi} inert={pi !== page} aria-hidden={pi !== page} className="w-full shrink-0 px-0.5">
+            <div key={pi} inert={pi !== page} aria-hidden={pi !== page} className="w-full shrink-0 px-1">
               <div
-                className="grid gap-5"
+                className="grid gap-6"
                 style={{
                   gridTemplateColumns: `repeat(${perPage}, minmax(0, 1fr))`,
                 }}

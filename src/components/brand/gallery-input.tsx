@@ -85,7 +85,7 @@ export function GalleryInput({
               disabled={uploading}
               onClick={() => remove(u)}
               aria-label="Remove image"
-              className="absolute right-1 top-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-ink/70 text-white"
+              className="absolute right-1 top-1 inline-flex h-5 w-5 items-center justify-center rounded-input bg-ink/70 text-white"
             >
               <X size={12} />
             </button>
@@ -119,7 +119,7 @@ export function GalleryInput({
         className="hidden"
         onChange={handleFiles}
       />
-      <p className="mt-1.5 text-xs text-muted-foreground">
+      <p className="mt-2 text-xs text-muted-foreground">
         {urls.length}/{max} screenshots
       </p>
     </div>

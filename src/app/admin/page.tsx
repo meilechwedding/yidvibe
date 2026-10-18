@@ -25,10 +25,10 @@ function StatTile({
   return (
     <div className="rounded-card border border-border bg-surface p-4">
       <Icon size={16} className="text-muted-foreground" />
-      <div className="mt-2 font-display text-2xl font-bold leading-none text-ink">
+      <div className="mt-2 font-display text-2xl font-semibold leading-none text-ink">
         {value}
       </div>
-      <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+      <div className="mt-1 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground">
         {label}
       </div>
     </div>
@@ -84,7 +84,7 @@ export default async function AdminDashboard() {
   return (
     <div>
       <h1 className="font-display text-2xl text-ink">Overview</h1>
-      <p className="mt-1.5 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm text-muted-foreground">
         Community at a glance, plus the moderation queues that need a look.
       </p>
 
@@ -94,11 +94,11 @@ export default async function AdminDashboard() {
         ))}
       </div>
 
-      <h2 className="mt-10 font-display text-lg text-ink">Moderation queues</h2>
+      <h2 className="mt-12 font-display text-lg text-ink">Moderation queues</h2>
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Link
           href="/admin/reports"
-          className="rounded-card border border-border bg-surface p-5 transition-colors hover:border-border-hover"
+          className="rounded-card border border-border bg-surface p-6 transition-colors hover:border-border-hover"
         >
           <div className="flex items-center gap-2 text-ink">
             <Flag size={18} className="text-clay-mid" />
@@ -111,7 +111,7 @@ export default async function AdminDashboard() {
 
         <Link
           href="/admin/competitions"
-          className="rounded-card border border-border bg-surface p-5 transition-colors hover:border-border-hover"
+          className="rounded-card border border-border bg-surface p-6 transition-colors hover:border-border-hover"
         >
           <div className="flex items-center gap-2 text-ink">
             <Trophy size={18} className="text-gold-mid" />
@@ -125,7 +125,7 @@ export default async function AdminDashboard() {
 
         <Link
           href="/admin/events"
-          className="rounded-card border border-border bg-surface p-5 transition-colors hover:border-border-hover"
+          className="rounded-card border border-border bg-surface p-6 transition-colors hover:border-border-hover"
         >
           <div className="flex items-center gap-2 text-ink">
             <Calendar size={18} className="text-sage-mid" />
@@ -139,7 +139,7 @@ export default async function AdminDashboard() {
 
         <Link
           href="/admin/directory"
-          className="rounded-card border border-border bg-surface p-5 transition-colors hover:border-border-hover"
+          className="rounded-card border border-border bg-surface p-6 transition-colors hover:border-border-hover"
         >
           <div className="flex items-center gap-2 text-ink">
             <Compass size={18} className="text-teal-600" />
@@ -153,7 +153,7 @@ export default async function AdminDashboard() {
 
         <Link
           href="/admin/feedback"
-          className="rounded-card border border-border bg-surface p-5 transition-colors hover:border-border-hover"
+          className="rounded-card border border-border bg-surface p-6 transition-colors hover:border-border-hover"
         >
           <div className="flex items-center gap-2 text-ink">
             <MessageSquare size={18} className="text-blue-mid" />
@@ -166,7 +166,7 @@ export default async function AdminDashboard() {
 
         <Link
           href="/admin/tags"
-          className="rounded-card border border-border bg-surface p-5 transition-colors hover:border-border-hover"
+          className="rounded-card border border-border bg-surface p-6 transition-colors hover:border-border-hover"
         >
           <div className="flex items-center gap-2 text-ink">
             <Tag size={18} className="text-teal-600" />

@@ -149,18 +149,18 @@ export function SelfListingForm({
 
       {/* Go-public toggle — last control before submit. */}
       <input type="hidden" name="go_public" value={goPublic ? "on" : ""} />
-      <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-border bg-secondary/40 p-4">
+      <label className="flex cursor-pointer items-start gap-3 rounded-card border border-border bg-secondary/40 p-4">
         <input
           type="checkbox"
           checked={goPublic}
           onChange={(e) => setGoPublic(e.target.checked)}
-          className="mt-0.5 h-4 w-4 shrink-0 accent-teal-600"
+          className="mt-1 h-4 w-4 shrink-0 accent-teal-600"
         />
         <span className="min-w-0">
           <span className="block text-sm font-medium text-ink">
             Make my profile public too
           </span>
-          <span className="mt-0.5 block text-xs text-muted-foreground">
+          <span className="mt-1 block text-xs text-muted-foreground">
             So people who find you in the directory can open your full profile.
             You can turn this off anytime in settings.
           </span>
@@ -170,7 +170,7 @@ export function SelfListingForm({
       <button
         type="submit"
         disabled={pending}
-        className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-transform active:scale-[0.99] disabled:opacity-70"
+        className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-input px-4 text-sm font-medium transition-transform active:scale-[0.99] disabled:opacity-70"
       >
         {pending ? "Adding…" : "Add me to the Directory"}
       </button>

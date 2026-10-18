@@ -26,7 +26,7 @@ export default async function AdminEventsPage() {
   return (
     <div>
       <h1 className="font-display text-2xl text-ink">Event requests</h1>
-      <p className="mt-1.5 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm text-muted-foreground">
         {pending.length} awaiting review.
       </p>
 
@@ -44,7 +44,7 @@ export default async function AdminEventsPage() {
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="font-display font-bold text-ink">{r.title}</p>
+                    <p className="font-display font-semibold text-ink">{r.title}</p>
                     <p className="text-sm text-muted-foreground">
                       {r.contact} · {formatRelativeTime(r.created_at)}
                     </p>

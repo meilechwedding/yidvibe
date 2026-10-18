@@ -25,7 +25,7 @@ export function PostedShareCard({
   if (!open) return null;
 
   return (
-    <div className="relative mb-5 flex flex-col gap-3 overflow-hidden rounded-2xl border border-sage-mid/40 bg-sage-tint/60 p-4 pr-10 sm:flex-row sm:items-center sm:justify-between">
+    <div className="relative mb-6 flex flex-col gap-3 overflow-hidden rounded-card border border-sage-mid/40 bg-sage-tint/60 p-4 pr-12 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-3">
         <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/70">
           <Sparkle size={20} color="var(--sage-deep)" />

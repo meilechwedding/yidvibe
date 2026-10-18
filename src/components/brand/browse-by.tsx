@@ -7,7 +7,7 @@ export function BrowseBy({ tags }: { tags: string[] }) {
   const loop = [...tags, ...tags];
   return (
     <div>
-      <div className="mb-3 text-center text-[11px] font-bold uppercase tracking-[0.12em] text-teal-800">
+      <div className="mb-3 text-center text-sm font-semibold uppercase tracking-[0.12em] text-teal-800">
         {COMMON_COPY.actions.browseBy}
       </div>
       <div className="yv-marquee">

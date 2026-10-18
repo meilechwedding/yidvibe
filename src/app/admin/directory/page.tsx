@@ -29,7 +29,7 @@ export default async function AdminDirectoryPage() {
   return (
     <div>
       <h1 className="font-display text-2xl text-ink">Directory review</h1>
-      <p className="mt-1.5 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm text-muted-foreground">
         {pending.length} awaiting approval.
       </p>
 
@@ -49,7 +49,7 @@ export default async function AdminDirectoryPage() {
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="font-display font-bold text-ink">{l.name}</p>
+                      <p className="font-display font-semibold text-ink">{l.name}</p>
                       <Pill accent="sage">{l.category}</Pill>
                     </div>
                     <p className="text-xs text-muted-foreground">

@@ -18,10 +18,10 @@ export default async function DashboardPosts() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
+          <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
             My posts
           </h2>
-          <p className="mt-0.5 text-sm text-muted-foreground">
+          <p className="mt-1 text-sm text-muted-foreground">
             {projects.length === 0
               ? "Projects you submit appear here."
               : `${projects.length} project${projects.length === 1 ? "" : "s"}`}
@@ -46,21 +46,21 @@ export default async function DashboardPosts() {
             {projects.map((p) => (
               <li
                 key={p.id}
-                className="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-teal-50/40 sm:px-5"
+                className="flex items-center gap-3 px-4 py-4 transition-colors hover:bg-teal-50/40 sm:px-6"
               >
                 <div className="min-w-0 flex-1">
                   <Link
                     href={`/showcase/${p.id}`}
-                    className="block truncate text-[15px] font-semibold text-ink hover:text-teal-800"
+                    className="block truncate text-sm font-semibold text-ink hover:text-teal-800"
                   >
                     {p.name}
                   </Link>
-                  <p className="mt-0.5 inline-flex items-center gap-1 text-xs text-muted-foreground">
+                  <p className="mt-1 inline-flex items-center gap-1 text-xs text-muted-foreground">
                     <ArrowUp size={12} className="text-teal-600" />
                     {p.upvote_count} upvote{p.upvote_count === 1 ? "" : "s"}
                   </p>
                 </div>
-                <div className="flex shrink-0 items-center gap-1.5">
+                <div className="flex shrink-0 items-center gap-2">
                   <ShareButton
                     path={`/showcase/${p.id}`}
                     title={p.name}

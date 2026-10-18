@@ -67,8 +67,8 @@ export function CoverAvatarInput({
       <input type="hidden" name="cover_url" value={cover} />
       <input type="hidden" name="avatar_url" value={avatar} />
 
-      <div className="relative pb-10">
-        <div className="overflow-hidden rounded-2xl border border-border">
+      <div className="relative pb-12">
+        <div className="overflow-hidden rounded-card border border-border">
           <div className="h-32 w-full bg-teal-50">
             {coverPreview && (
               // eslint-disable-next-line @next/next/no-img-element
@@ -80,7 +80,7 @@ export function CoverAvatarInput({
           type="button"
           onClick={() => coverFile.current?.click()}
           disabled={busy !== null}
-          className="absolute right-3 top-3 inline-flex h-8 items-center gap-1.5 rounded-[10px] border border-border bg-surface/95 px-3 text-xs font-medium text-ink shadow-[var(--shadow-xs)] backdrop-blur transition-colors hover:bg-secondary disabled:opacity-60"
+          className="absolute right-3 top-3 inline-flex h-8 items-center gap-2 rounded-input border border-border bg-surface/95 px-3 text-xs font-medium text-ink shadow-[var(--shadow-xs)] backdrop-blur transition-colors hover:bg-secondary disabled:opacity-60"
         >
           {busy === "cover" ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} />}
           {cover ? profileFormCopy.actionChangeCover : profileFormCopy.actionAddCover}
@@ -122,19 +122,19 @@ export function CoverAvatarInput({
 
       <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-muted-foreground">{profileFormCopy.coverUrlLabel}</span>
+          <span className="mb-2 block text-xs font-medium text-muted-foreground">{profileFormCopy.coverUrlLabel}</span>
           <input
             type="url" inputMode="url" value={cover} disabled={busy !== null} onChange={(e) => { setCover(e.target.value); onValueChange?.(); }}
             placeholder={profileFormCopy.imageUrlPlaceholder}
-            className="h-9 w-full rounded-[10px] border border-border bg-surface px-3 text-sm text-ink outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
+            className="h-9 w-full rounded-input border border-border bg-surface px-3 text-sm text-ink outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-muted-foreground">{profileFormCopy.photoUrlLabel}</span>
+          <span className="mb-2 block text-xs font-medium text-muted-foreground">{profileFormCopy.photoUrlLabel}</span>
           <input
             type="url" inputMode="url" value={avatar} disabled={busy !== null} onChange={(e) => { setAvatar(e.target.value); onValueChange?.(); }}
             placeholder={profileFormCopy.imageUrlPlaceholder}
-            className="h-9 w-full rounded-[10px] border border-border bg-surface px-3 text-sm text-ink outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
+            className="h-9 w-full rounded-input border border-border bg-surface px-3 text-sm text-ink outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
           />
         </label>
       </div>

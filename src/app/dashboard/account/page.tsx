@@ -38,10 +38,10 @@ function ManageLink({
   return (
     <Link
       href={href}
-      className="group flex items-center gap-3.5 rounded-xl px-3 py-3 transition-colors hover:bg-teal-50/60"
+      className="group flex items-center gap-4 rounded-input px-3 py-3 transition-colors hover:bg-teal-50/60"
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     >
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-teal-50 text-teal-700 transition-colors group-hover:bg-teal-100">
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-input bg-teal-50 text-teal-700 transition-colors group-hover:bg-teal-100">
         <Icon size={18} />
       </span>
       <div className="min-w-0 flex-1">
@@ -77,10 +77,10 @@ export default async function DashboardAccount() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
+        <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
           Account
         </h2>
-        <p className="mt-0.5 text-sm text-muted-foreground">
+        <p className="mt-1 text-sm text-muted-foreground">
           Your identity, settings, and how people reach you.
         </p>
       </div>
@@ -96,12 +96,12 @@ export default async function DashboardAccount() {
           />
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="font-display text-xl font-bold text-ink">
+              <h3 className="font-display text-xl font-semibold text-ink">
                 {profile.name}
               </h3>
               {profile.is_verified ? (
                 <span
-                  className="inline-flex items-center gap-1 rounded-full bg-gold-50 px-2 py-0.5 text-xs font-semibold text-gold-700"
+                  className="inline-flex items-center gap-1 rounded-input bg-gold-50 px-2 py-1 text-xs font-medium text-gold-700"
                   title="Verified"
                 >
                   <Sparkle size={13} color="var(--gold-500)" /> Verified
@@ -126,7 +126,7 @@ export default async function DashboardAccount() {
           </p>
         )}
 
-        <div className="mt-5 grid grid-cols-3 gap-4 border-t border-border pt-5">
+        <div className="mt-6 grid grid-cols-3 gap-4 border-t border-border pt-6">
           <Stat
             value={profile.is_public ? "Public" : "Private"}
             label="Profile"
@@ -142,7 +142,7 @@ export default async function DashboardAccount() {
       {/* Manage */}
       <Panel className="p-2 sm:p-3">
         <PanelLabel className="px-3 pb-1 pt-2">Manage</PanelLabel>
-        <div className="space-y-0.5">
+        <div className="space-y-1">
           <ManageLink
             href="/dashboard/profile"
             icon={Pencil}
@@ -175,9 +175,9 @@ export default async function DashboardAccount() {
       {admin && (
         <Link
           href="/admin"
-          className="group flex items-center gap-3.5 rounded-card border border-gold-200 bg-gold-50/60 p-4 transition-colors hover:bg-gold-50"
+          className="group flex items-center gap-4 rounded-card border border-gold-200 bg-gold-50/60 p-4 transition-colors hover:bg-gold-50"
         >
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gold-100 text-gold-700">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-input bg-gold-100 text-gold-700">
             <ShieldCheck size={18} />
           </span>
           <div className="min-w-0 flex-1">

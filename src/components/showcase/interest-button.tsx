@@ -28,7 +28,7 @@ export function InterestButton({ projectId }: { projectId: string }) {
           toast.success("The builder has been notified you're interested.");
         })
       }
-      className="inline-flex h-9 items-center gap-1.5 rounded-[10px] border border-border bg-surface px-4 text-sm font-medium text-ink transition-colors hover:bg-secondary disabled:opacity-70"
+      className="inline-flex h-9 items-center gap-2 rounded-input border border-border bg-surface px-4 text-sm font-medium text-ink transition-colors hover:bg-secondary disabled:opacity-70"
     >
       {done ? (
         <>

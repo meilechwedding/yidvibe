@@ -36,13 +36,13 @@ export function EventCalendar({
   const monthIndex = month.getMonth();
 
   return (
-    <div className="rounded-2xl border border-border bg-surface p-4 shadow-[var(--shadow-sm)] sm:p-5">
+    <div className="rounded-card border border-border bg-surface p-4 shadow-[var(--shadow-sm)] sm:p-6">
       {/* Month header + nav */}
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-display text-lg font-bold text-ink">
+        <h2 className="font-display text-lg font-semibold text-ink">
           {formatMonthYear(month)}
         </h2>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => onMonthChange(addMonths(month, -1))}
@@ -54,7 +54,7 @@ export function EventCalendar({
           <button
             type="button"
             onClick={() => onMonthChange(new Date(today.getFullYear(), today.getMonth(), 1))}
-            className="rounded-full border border-border bg-canvas px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-border-hover hover:text-ink"
+            className="rounded-full border border-border bg-canvas px-3 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:border-border-hover hover:text-ink"
           >
             Today
           </button>
@@ -74,7 +74,7 @@ export function EventCalendar({
         {WEEKDAY_LABELS.map((w) => (
           <div
             key={w}
-            className="py-1 text-center text-[11px] font-semibold uppercase tracking-wide text-muted-foreground"
+            className="py-1 text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground"
           >
             {w}
           </div>
@@ -101,7 +101,7 @@ export function EventCalendar({
                 hasEvents ? `, ${count} event${count > 1 ? "s" : ""}` : ""
               }`}
               className={cn(
-                "relative flex aspect-square flex-col items-center justify-center rounded-xl text-sm transition-colors",
+                "relative flex aspect-square flex-col items-center justify-center rounded-input text-sm transition-colors",
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-teal-600",
                 !inMonth && "text-muted-foreground/40",
                 inMonth && !isSelected && "text-ink hover:bg-teal-50",
@@ -114,7 +114,7 @@ export function EventCalendar({
               {hasEvents && (
                 <span
                   className={cn(
-                    "mt-0.5 inline-flex h-1.5 w-1.5 rounded-full",
+                    "mt-1 inline-flex h-1.5 w-1.5 rounded-input",
                     isSelected ? "bg-white" : "bg-teal-600",
                   )}
                   aria-hidden

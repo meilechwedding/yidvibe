@@ -1,10 +1,8 @@
 @import "./palette.css";
 
-/*
-  YidVibe theme — single source of truth in BRAND.md.
-  Cool slate + soft-white base, deep dusty-teal signature, warm accent shelf.
-  Muted and grown-up: never neon, never candy-bright. Light mode only.
-*/
+/* YidVibe Brand System v8. Palette values live in palette.json.
+   Legacy accent names are compatibility aliases, not separate brand palettes.
+   Mineral is decorative; petrol supplies readable text and action fills. */
 
 @theme {
   --color-gold-tint: var(--color-amber-50);
@@ -42,25 +40,47 @@
   --color-input: var(--color-border);
   --color-ring: var(--color-teal-600);
 
-  /* ---- Typography (vars injected by next/font in layout) ---- */
-  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-display: var(--font-comfortaa), "Nunito Sans", system-ui, sans-serif;
+  /* ---- Typography (full webfont supplied by next/font, not the PDF subset) ---- */
+  --text-xs: 14px;
+  --text-xs--line-height: 1.45;
+  --text-sm: 14px;
+  --text-sm--line-height: 1.5;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 20px;
+  --text-2xl: 28px;
+  --text-3xl: 36px;
+  --text-4xl: 48px;
+  --text-5xl: 48px;
+  --text-6xl: 72px;
+  --text-7xl: 72px;
+  --spacing-brand-1: 4px;
+  --spacing-brand-2: 8px;
+  --spacing-brand-3: 12px;
+  --spacing-brand-4: 16px;
+  --spacing-brand-6: 24px;
+  --spacing-brand-8: 32px;
+  --spacing-brand-12: 48px;
+  --spacing-brand-16: 64px;
+  --spacing-brand-24: 96px;
+  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
-  /* ---- Radii (redesign: 16px cards, full-pill buttons) ---- */
+  /* ---- v8: 10px controls, 20px cards; circles only for avatars/status ---- */
   --radius: 0.625rem; /* 10px — inputs + shadcn primitives */
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: 10px;
+  --radius-md: 10px;
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-card: 16px;
+  --radius-xl: 20px;
+  --radius-card: 20px;
   --radius-input: 10px;
   --radius-pill: 9999px;
-  --radius-chip: 8px;
+  --radius-chip: 10px;
 
   /* ---- Elevation (brand kit) ---- */
-  --shadow-hover: 0 4px 14px rgba(22, 32, 43, 0.06);
-  --shadow-float: 0 8px 24px rgba(22, 32, 43, 0.1);
+  --shadow-hover: 0 4px 8px rgba(16, 61, 57, 0.06);
+  --shadow-float: 0 8px 24px rgba(16, 61, 57, 0.1);
 
   /* ---- Motion (brand kit) ---- */
   --ease-brand: cubic-bezier(0.4, 0, 0.2, 1);
@@ -94,9 +114,9 @@
 
   --shadow-xs: 0 1px 1px rgba(16, 32, 43, 0.02);
   --shadow-sm: 0 1px 3px rgba(16, 32, 43, 0.03);
-  --shadow-md: 0 3px 10px rgba(16, 32, 43, 0.035);
+  --shadow-md: 0 3px 8px rgba(16, 32, 43, 0.035);
   --shadow-lg: 0 8px 24px rgba(16, 32, 43, 0.05);
 
   /* airy section rhythm — calms on small screens (see media query below) */
-  --space-section: 112px;
+  --space-section: 96px;
 }

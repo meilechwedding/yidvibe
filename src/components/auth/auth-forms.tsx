@@ -74,26 +74,26 @@ export function AuthForms({
   const signUpRef = useScrollToFirstError(signUpState.fieldErrors);
 
   return (
-    <div className="w-full rounded-3xl border border-border bg-surface p-7 shadow-[var(--shadow-md)]">
+    <div className="w-full rounded-card border border-border bg-surface p-8 shadow-[var(--shadow-md)]">
       <div className="mb-4 flex justify-center">
         <LogoMark size={40} />
       </div>
-      <h1 className="text-center font-display text-2xl font-bold leading-tight text-ink">
+      <h1 className="text-center font-display text-2xl font-semibold leading-tight text-ink">
         {authFormCopy[mode].title}
       </h1>
-      <p className="mt-1.5 text-center text-sm text-muted-foreground">
+      <p className="mt-2 text-center text-sm text-muted-foreground">
         {authFormCopy[mode].description}
       </p>
 
       <form action={signInWithGoogle} className="mt-6">
         <input type="hidden" name="next" value={next} />
-        <button type="submit" className="btn btn-ghost btn-block h-11 gap-2.5">
+        <button type="submit" className="btn btn-ghost btn-block h-11 gap-3">
           <GoogleIcon />
           {authFormCopy.google}
         </button>
       </form>
 
-      <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
+      <div className="my-6 flex items-center gap-3 text-xs text-muted-foreground">
         <span className="h-px flex-1 bg-border" />
         {authFormCopy.emailDivider}
         <span className="h-px flex-1 bg-border" />
@@ -141,7 +141,7 @@ export function AuthForms({
           <button
             type="submit"
             disabled={signingIn}
-            className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-transform active:scale-[0.99] disabled:opacity-70"
+            className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-input px-4 text-sm font-medium transition-transform active:scale-[0.99] disabled:opacity-70"
           >
             {signingIn ? authFormCopy.signin.pending : authFormCopy.signin.submit}
           </button>
@@ -223,7 +223,7 @@ export function AuthForms({
           <button
             type="submit"
             disabled={signingUp}
-            className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-transform active:scale-[0.99] disabled:opacity-70"
+            className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-input px-4 text-sm font-medium transition-transform active:scale-[0.99] disabled:opacity-70"
           >
             {signingUp ? authFormCopy.signup.pending : authFormCopy.signup.submit}
           </button>

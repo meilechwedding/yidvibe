@@ -22,8 +22,8 @@ function Row({
   const Pill = kind === "tool" ? ToolPill : TagPill;
 
   return (
-    <div className="flex flex-wrap items-center gap-1.5">
-      <span className="mr-1 w-12 shrink-0 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="mr-1 w-12 shrink-0 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground">
         {label}
       </span>
       {shown.map((v) => (
@@ -35,7 +35,7 @@ function Row({
         <button
           type="button"
           onClick={() => setExpanded(true)}
-          className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:text-ink"
+          className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-ink"
         >
           +{extra} more
         </button>
@@ -55,7 +55,7 @@ export function ToolsSkills({
 }) {
   if (tools.length === 0 && skills.length === 0) return null;
   return (
-    <div className="mt-5 flex flex-col gap-2.5">
+    <div className="mt-6 flex flex-col gap-3">
       <Row
         label="Tools"
         items={tools}

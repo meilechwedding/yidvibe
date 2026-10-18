@@ -20,7 +20,7 @@ export type SortDef = {
 };
 
 const controlClass =
-  "h-11 rounded-xl border border-border bg-canvas px-3 text-sm font-medium text-ink outline-none transition-colors hover:border-border-hover focus:border-teal-600 focus:bg-surface";
+  "h-11 rounded-input border border-border bg-canvas px-3 text-sm font-medium text-ink outline-none transition-colors hover:border-border-hover focus:border-teal-600 focus:bg-surface";
 
 /**
  * Search + filters for list pages. Filters sit inline on desktop and collapse
@@ -115,7 +115,7 @@ export function FilterBar({
         <label
           key={t.name}
           className={cn(
-            "inline-flex h-11 cursor-pointer items-center gap-2 whitespace-nowrap rounded-xl border border-border bg-canvas px-3.5 text-sm text-ink",
+            "inline-flex h-11 cursor-pointer items-center gap-2 whitespace-nowrap rounded-input border border-border bg-canvas px-4 text-sm text-ink",
             inSheet && "w-full justify-between",
           )}
         >
@@ -132,7 +132,7 @@ export function FilterBar({
       {sort && (
         <div
           className={cn(
-            "inline-flex rounded-xl border border-border bg-canvas p-1",
+            "inline-flex rounded-input border border-border bg-canvas p-1",
             inSheet && "w-full",
           )}
         >
@@ -143,7 +143,7 @@ export function FilterBar({
               aria-pressed={values[sort.name] === o.value}
               onClick={() => go({ [sort.name]: o.value })}
               className={cn(
-                "rounded-lg px-3.5 py-1.5 text-sm font-medium transition-colors",
+                "rounded-lg px-4 py-2 text-sm font-medium transition-colors",
                 inSheet && "flex-1",
                 values[sort.name] === o.value
                   ? "bg-teal-600 text-white"
@@ -159,8 +159,8 @@ export function FilterBar({
   );
 
   return (
-    <div className="mt-7">
-      <div className="flex items-center gap-2.5 rounded-2xl border border-border bg-surface p-3 shadow-[var(--shadow-sm)]">
+    <div className="mt-8">
+      <div className="flex items-center gap-3 rounded-card border border-border bg-surface p-3 shadow-[var(--shadow-sm)]">
         <form
           className="relative flex-1"
           onSubmit={(e) => {
@@ -178,12 +178,12 @@ export function FilterBar({
             dir="auto"
             placeholder={placeholder}
             aria-label={placeholder}
-            className="h-11 w-full rounded-xl border border-transparent bg-canvas pl-10 pr-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:bg-surface"
+            className="h-11 w-full rounded-input border border-transparent bg-canvas pl-12 pr-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:bg-surface"
           />
         </form>
 
         {hasFilterControls && (
-          <div className="hidden items-center gap-2.5 lg:flex">
+          <div className="hidden items-center gap-3 lg:flex">
             {renderControls(false)}
           </div>
         )}
@@ -193,11 +193,11 @@ export function FilterBar({
             ref={filterTrigger}
             type="button"
             onClick={() => setOpen(true)}
-            className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl border border-border bg-canvas px-3.5 text-sm font-medium text-ink hover:border-border-hover lg:hidden"
+            className="inline-flex h-11 shrink-0 items-center gap-2 rounded-input border border-border bg-canvas px-4 text-sm font-medium text-ink hover:border-border-hover lg:hidden"
           >
             <SlidersHorizontal size={15} /> Filters
             {activeCount > 0 && (
-              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-teal-600 px-1 text-[11px] font-semibold text-white">
+              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-teal-600 px-1 text-sm font-semibold text-white">
                 {activeCount}
               </span>
             )}
@@ -239,7 +239,7 @@ export function FilterBar({
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 z-50 bg-black/30 lg:hidden" />
-          <Dialog.Content aria-describedby={undefined} onCloseAutoFocus={(event) => { event.preventDefault(); filterTrigger.current?.focus(); }} className="fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] overflow-y-auto rounded-t-3xl border-t border-border bg-surface p-5 pb-8 shadow-float lg:hidden">
+          <Dialog.Content aria-describedby={undefined} onCloseAutoFocus={(event) => { event.preventDefault(); filterTrigger.current?.focus(); }} className="fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] overflow-y-auto rounded-t-card border-t border-border bg-surface p-6 pb-8 shadow-float lg:hidden">
             <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border" />
             <div className="mb-4 flex items-center justify-between">
               <Dialog.Title className="font-display text-lg font-semibold text-ink">
@@ -255,7 +255,7 @@ export function FilterBar({
               </button>
             </div>
             <div className="flex flex-col gap-3">{renderControls(true)}</div>
-            <div className="mt-5 flex gap-2.5">
+            <div className="mt-6 flex gap-3">
               <button type="button" onClick={clearAll} className="btn btn-ghost flex-1">
                 Clear all
               </button>
@@ -282,7 +282,7 @@ function Chip({
   onClear: () => void;
 }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-3 py-1 text-sm text-teal-800">
+    <span className="inline-flex items-center gap-2 rounded-input bg-teal-50 px-3 py-1 text-sm text-teal-800">
       {children}
       <button
         type="button"

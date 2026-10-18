@@ -8,9 +8,9 @@ import { PostAsControl, type PickableUser } from "./post-as-control";
 import { cn } from "@/lib/utils";
 
 const inputClass =
-  "h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
+  "h-11 w-full rounded-input border border-border bg-surface px-4 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
 const textareaClass =
-  "w-full resize-y rounded-xl border border-border bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
+  "w-full resize-y rounded-input border border-border bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
 
 type ContentType = "gig" | "competition" | "event";
 
@@ -39,9 +39,9 @@ function Field({
 }) {
   return (
     <div>
-      <label className="mb-1.5 block text-sm font-medium text-ink">
+      <label className="mb-2 block text-sm font-medium text-ink">
         {label}
-        {required && <span className="ml-0.5 text-clay-mid">*</span>}
+        {required && <span className="ml-1 text-clay-mid">*</span>}
         {hint && (
           <span className="ml-2 text-xs font-normal text-muted-foreground">
             {hint}
@@ -125,7 +125,7 @@ export function AdminPostForm({ users }: { users: PickableUser[] }) {
                     type="button"
                     onClick={() => setGigType(g.value)}
                     className={cn(
-                      "rounded-card border px-4 py-2.5 text-sm font-medium transition-colors",
+                      "rounded-card border px-4 py-3 text-sm font-medium transition-colors",
                       active
                         ? "border-orange-mid bg-orange-tint text-orange-deep"
                         : "border-border bg-surface text-ink hover:border-border-hover",
@@ -204,7 +204,7 @@ export function AdminPostForm({ users }: { users: PickableUser[] }) {
         <button
           type="submit"
           disabled={pending}
-          className="btn btn-primary h-12 w-full text-[15px] disabled:opacity-70"
+          className="btn btn-primary h-12 w-full text-sm disabled:opacity-70"
         >
           {pending ? "Posting…" : "Publish"}
         </button>

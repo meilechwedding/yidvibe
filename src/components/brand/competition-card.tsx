@@ -24,10 +24,10 @@ export function CompetitionCard({
   return (
     <Link
       href={`/competitions/${competition.slug}`}
-      className="group flex flex-col rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 motion-reduce:transition-none motion-reduce:hover:translate-y-0 border border-border bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]"
+      className="group flex flex-col rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 motion-reduce:transition-none motion-reduce:hover:translate-y-0 border border-border bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]"
     >
       <div className="flex items-center justify-between gap-2">
-        <span className="inline-flex items-center gap-1.5 font-display text-xl font-bold text-clay-deep">
+        <span className="inline-flex items-center gap-2 font-display text-xl font-medium text-clay-deep">
           <Trophy size={18} />
           {"$" + competition.prize_amount.toLocaleString()}
         </span>
@@ -37,10 +37,10 @@ export function CompetitionCard({
           <Pill accent="clay">{competition.status !== "open" ? "Closed" : dl.text}</Pill>
         )}
       </div>
-      <h3 className="mt-3 line-clamp-2 font-display text-lg font-bold text-ink" dir="auto">
+      <h3 className="mt-3 line-clamp-2 font-display text-lg font-semibold text-ink" dir="auto">
         {competition.title}
       </h3>
-      <p className="mt-1.5 line-clamp-2 text-sm text-muted-foreground" dir="auto">
+      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground" dir="auto">
         {competition.description}
       </p>
       <div className="mt-4 flex items-center gap-2 border-t border-border pt-3 text-xs text-muted-foreground">

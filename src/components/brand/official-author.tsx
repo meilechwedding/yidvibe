@@ -20,7 +20,7 @@ export function OfficialAuthor({
     <span className={cn("inline-flex items-center gap-2", className)}>
       <span
         className={cn(
-          "inline-flex shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-700",
+          "inline-flex shrink-0 items-center justify-center rounded-input bg-teal-50 text-teal-700",
           dot,
         )}
       >

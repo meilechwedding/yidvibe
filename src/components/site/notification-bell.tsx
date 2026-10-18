@@ -28,11 +28,11 @@ export function NotificationBell({
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         aria-label={unread > 0 ? `Notifications (${unread} unread)` : "Notifications"}
-        className="relative inline-flex h-9 w-9 items-center justify-center rounded-full text-ink outline-none transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring"
+        className="relative inline-flex h-9 w-9 items-center justify-center rounded-input text-ink outline-none transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring"
       >
         <Bell size={18} />
         {unread > 0 && (
-          <span className="absolute right-0.5 top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-clay-mid px-1 text-[10px] font-semibold leading-none text-white">
+          <span className="absolute right-0.5 top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-input bg-clay-mid px-1 text-sm font-medium leading-none text-white">
             {unread > 9 ? "9+" : unread}
           </span>
         )}
@@ -41,9 +41,9 @@ export function NotificationBell({
         <DropdownMenu.Content
           align="end"
           sideOffset={8}
-          className="z-50 w-80 max-w-[92vw] rounded-xl border border-border bg-surface p-1.5 shadow-float"
+          className="z-50 w-80 max-w-[92vw] rounded-input border border-border bg-surface p-2 shadow-float"
         >
-          <div className="flex items-center justify-between px-2.5 py-2">
+          <div className="flex items-center justify-between px-3 py-2">
             <span className="text-sm font-medium text-ink">Notifications</span>
             {unread > 0 && (
               <form action={markAllNotificationsRead}>
@@ -59,7 +59,7 @@ export function NotificationBell({
           <DropdownMenu.Separator className="my-1 h-px bg-border" />
 
           {items.length === 0 ? (
-            <p className="px-2.5 py-7 text-center text-sm text-muted-foreground">
+            <p className="px-3 py-8 text-center text-sm text-muted-foreground">
               You&apos;re all caught up.
             </p>
           ) : (
@@ -69,7 +69,7 @@ export function NotificationBell({
                   <Link
                     href={n.href}
                     className={cn(
-                      "flex gap-2.5 rounded-lg px-2.5 py-2 outline-none hover:bg-secondary focus:bg-secondary",
+                      "flex gap-3 rounded-lg px-3 py-2 outline-none hover:bg-secondary focus:bg-secondary",
                       !n.read && "bg-teal-50/60",
                     )}
                   >
@@ -97,7 +97,7 @@ export function NotificationBell({
           <DropdownMenu.Item asChild>
             <Link
               href="/notifications"
-              className="block rounded-lg px-2.5 py-2 text-center text-sm font-medium text-ink outline-none hover:bg-secondary focus:bg-secondary"
+              className="block rounded-lg px-3 py-2 text-center text-sm font-medium text-ink outline-none hover:bg-secondary focus:bg-secondary"
             >
               See all
             </Link>

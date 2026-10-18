@@ -20,7 +20,7 @@ export function BuilderCard({
   return (
     <Link
       href={`/u/${builder.handle}`}
-      className="group flex flex-col rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 motion-reduce:transition-none motion-reduce:hover:translate-y-0 border border-border bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]"
+      className="group flex flex-col rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 motion-reduce:transition-none motion-reduce:hover:translate-y-0 border border-border bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-border-hover hover:shadow-[var(--shadow-md)]"
     >
       <div className="flex items-center gap-3">
         {rank ? (
@@ -44,7 +44,7 @@ export function BuilderCard({
         )}
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <p className="truncate font-display font-bold text-ink">
+            <p className="truncate font-display font-semibold text-ink">
               {name}
             </p>
             {builder.is_verified && (
@@ -73,7 +73,7 @@ export function BuilderCard({
       )}
 
       {builder.tools.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-1.5">
+        <div className="mt-3 flex flex-wrap gap-2">
           {builder.tools.slice(0, 4).map((t) => (
             <ToolPill key={t}>{t}</ToolPill>
           ))}

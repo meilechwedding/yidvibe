@@ -8,11 +8,11 @@ export default async function AdminUnlockPage() {
   if (await isAdminUnlocked(ctx.userId)) redirect("/admin");
 
   return (
-    <div className="mx-auto max-w-sm py-10">
-      <div className="rounded-card border border-border bg-surface p-7 text-center">
+    <div className="mx-auto max-w-sm py-12">
+      <div className="rounded-card border border-border bg-surface p-8 text-center">
         <ShieldCheck size={28} className="mx-auto text-teal-600" />
         <h1 className="mt-3 font-display text-xl text-ink">Admin re-authentication</h1>
-        <p className="mt-1.5 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm text-muted-foreground">
           Enter the admin passcode to unlock the moderation tools for this session.
         </p>
         {!passcodeConfigured() && (

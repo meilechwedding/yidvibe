@@ -66,7 +66,7 @@ function FlagRow({ flag }: { flag: Flag }) {
     });
 
   return (
-    <div className="flex items-center justify-between gap-4 px-4 py-3.5">
+    <div className="flex items-center justify-between gap-4 px-4 py-4">
       <div className="min-w-0">
         <p className="text-sm font-semibold text-ink">{flag.label}</p>
         <p className="text-xs text-muted-foreground">{flag.description}</p>

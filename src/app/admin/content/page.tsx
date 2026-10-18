@@ -135,7 +135,7 @@ export default async function AdminContentPage({
         </Link>
       </div>
 
-      <div className="mt-5 flex flex-wrap gap-1.5">
+      <div className="mt-6 flex flex-wrap gap-2">
         {TABS.map((t) => {
           const active = t.key === type;
           return (
@@ -143,7 +143,7 @@ export default async function AdminContentPage({
               key={t.key}
               href={`/admin/content?type=${t.key}`}
               className={cn(
-                "rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors",
+                "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                 active
                   ? "bg-teal-600 text-white"
                   : "border border-border text-muted-foreground hover:bg-secondary",
