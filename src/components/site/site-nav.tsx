@@ -11,8 +11,8 @@ import { Container } from "@/components/brand/layout";
 import { Logo } from "./logo";
 import { NavShell } from "./nav-shell";
 import { UserMenu } from "./user-menu";
-import { Sidebar } from "./sidebar";
-import { MobileBottomNav } from "./mobile-bottom-nav";
+import { NavLinks } from "./nav-links";
+import { PostMenu } from "./post-menu";
 import { NotificationBell, type BellItem } from "./notification-bell";
 
 export async function SiteNav() {
@@ -33,7 +33,6 @@ export async function SiteNav() {
   // otherwise they'd land on a 404. Reads are request-cached, so this is cheap.
   const postFlags: Record<string, boolean> = {
     "module.gigs": await isFeatureEnabled("module.gigs"),
-    "module.competitions": await isFeatureEnabled("module.competitions"),
   };
   const showGig = postFlags["module.gigs"];
 
@@ -56,25 +55,14 @@ export async function SiteNav() {
     });
   }
 
-  const sidebarProfile = profile
-    ? { handle: profile.handle, name: profile.name, avatar_url: profile.avatar_url }
-    : null;
-
   return (
     <>
-      <Sidebar
-        profile={sidebarProfile}
-        bellItems={bellItems}
-        unread={unread}
-        isAdmin={!!admin}
-        navLinks={navLinks}
-        showGig={showGig}
-      />
-      <NavShell className="lg:hidden">
-        <Container className="flex h-16 items-center gap-4">
-          <Logo />
-          <div className="ml-auto flex items-center gap-2 sm:gap-2 lg:gap-3">
-            {profile && <NotificationBell items={bellItems} unread={unread} />}
+      <NavShell>
+        <Container className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2 py-3">
+          <Logo className="mr-auto shrink-0 lg:mr-0" />
+          <div className="order-1 flex shrink-0 items-center gap-1 lg:order-2 sm:gap-2">
+            <PostMenu enabledFlags={postFlags} />
+            {profile && <span className="hidden sm:block"><NotificationBell items={bellItems} unread={unread} /></span>}
             {profile ? (
               <UserMenu
                 profile={{
@@ -86,15 +74,15 @@ export async function SiteNav() {
                 showGig={showGig}
               />
             ) : (
-              <Link href="/login" className="btn btn-ghost btn-sm">
+              <Link href="/login" className="btn btn-ghost btn-sm min-h-11">
                 Sign in
               </Link>
             )}
           </div>
+          <NavLinks links={navLinks} className="order-last w-full lg:order-1 lg:ml-4 lg:mr-auto lg:w-auto" />
         </Container>
       </NavShell>
 
-      <MobileBottomNav navLinks={navLinks} enabledFlags={postFlags} isAuthed={!!profile} />
     </>
   );
 }

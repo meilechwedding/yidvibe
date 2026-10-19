@@ -1,11 +1,5 @@
-import { requireFlag } from "@/lib/flags";
+import { redirect } from "next/navigation";
 
-// Phase 1: Competitions is hidden behind the "module.competitions" flag.
-export default async function CompetitionsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  await requireFlag("module.competitions");
-  return <>{children}</>;
+export default function CompetitionsLayout(_props: { children: React.ReactNode }) {
+  redirect("/showcase");
 }

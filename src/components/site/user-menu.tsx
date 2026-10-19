@@ -19,7 +19,7 @@ export function UserMenu({
 }) {
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger aria-label="Account menu" className="rounded-input outline-none focus-visible:ring-2 focus-visible:ring-ring">
+      <DropdownMenu.Trigger aria-label="Account menu" className="grid min-h-11 min-w-11 place-items-center rounded-input outline-none focus-visible:ring-2 focus-visible:ring-ring">
         <AvatarCircle name={profile.name} src={profile.avatar_url} size={36} />
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>

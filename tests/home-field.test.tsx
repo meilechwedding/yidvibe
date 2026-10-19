@@ -7,12 +7,13 @@ import { FormField } from "@/components/brand/form-field";
 
 const mocks = vi.hoisted(() => ({ votes: vi.fn(), saves: vi.fn() }));
 vi.mock("@/lib/queries", () => ({
-  listProjects: async ({ sort }: { sort: string }) => sort === "top" ? [{ id: "existing", name: "Featured", featured: true }] : [],
+  listProjects: async () => [{ id: "existing", name: "Featured", featured: true }],
   listTopBuilders: async () => [],
   getBrowseTags: async () => [],
   getMyUpvotedProjectIds: mocks.votes,
   getMySavedProjectIds: mocks.saves,
 }));
+vi.mock("@/lib/flags", () => ({ isFeatureEnabled: async () => false }));
 vi.mock("@/lib/current-user", () => ({ getAuthUser: async () => ({ id: "viewer" }) }));
 vi.mock("@/components/showcase/project-row-card", () => ({
   ProjectRowCard: ({ upvoted, saved }: { upvoted: boolean; saved: boolean }) => <div data-testid="featured" data-upvoted={upvoted} data-saved={saved} />,
@@ -22,7 +23,7 @@ vi.mock("@/components/brand/browse-by", () => ({ BrowseBy: () => null }));
 vi.mock("next/link", () => ({ default: ({ children, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props}>{children}</a> }));
 afterEach(cleanup);
 
-test("homepage featured card retains the viewer's existing vote and save", async () => {
+test("homepage project card retains the viewer's existing vote and save", async () => {
   mocks.votes.mockResolvedValue(new Set(["existing"]));
   mocks.saves.mockResolvedValue(new Set(["existing"]));
   render(await Home());

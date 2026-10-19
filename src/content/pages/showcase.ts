@@ -1,9 +1,8 @@
 export const SHOWCASE_COPY = {
-  "metadata": {
-    "title": "Showcase",
-    "description": "Every app, tool, and MVP frum builders are shipping with AI. Browse it, upvote it, reach the maker."
+  metadata: {
+    title: "Explore",
+    description: "Discover apps and tools made by frum builders. Search by project, tool, or category.",
   },
-  "eyebrow": "Explore",
-  "title": "Showcase",
-  "subtitle": "Every app, tool, and MVP frum builders are shipping with AI. Browse it, upvote it, reach the maker."
+  title: "Explore",
+  subtitle: "Apps and tools made by the community.",
 } as const;

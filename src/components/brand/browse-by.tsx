@@ -1,30 +1,15 @@
 import Link from "next/link";
-import { COMMON_COPY } from "@/content/common";
 
-/** Centered "Browse by" label + one slow auto-scrolling row of all tags. */
+/** A short, stationary set of category shortcuts; Explore retains every filter. */
 export function BrowseBy({ tags }: { tags: string[] }) {
-  if (tags.length === 0) return null;
-  const loop = [...tags, ...tags];
+  if (!tags.length) return null;
   return (
-    <div>
-      <div className="mb-3 text-center text-sm font-semibold uppercase tracking-[0.12em] text-teal-800">
-        {COMMON_COPY.actions.browseBy}
-      </div>
-      <div className="yv-marquee">
-        <div className="yv-marquee-track">
-          {loop.map((t, i) => (
-            <Link
-              key={`${t}-${i}`}
-              href={`/showcase?tag=${encodeURIComponent(t)}`}
-              aria-hidden={i >= tags.length ? true : undefined}
-              tabIndex={i >= tags.length ? -1 : undefined}
-              className="yv-tag"
-            >
-              {t}
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
+    <nav aria-label="Browse by category" className="flex flex-wrap gap-2">
+      {tags.slice(0, 8).map(tag => (
+        <Link key={tag} href={`/showcase?tag=${encodeURIComponent(tag)}`} className="inline-flex min-h-11 items-center rounded-input bg-mist px-3 text-sm font-medium text-teal-800 transition-colors hover:bg-teal-100">
+          {tag}
+        </Link>
+      ))}
+    </nav>
   );
 }

@@ -1,5 +1,5 @@
 export const NAVIGATION_COPY = {
-  showcase: "Showcase",
+  showcase: "Explore",
   builders: "Builders",
   directory: "Directory",
   gigs: "Gigs",

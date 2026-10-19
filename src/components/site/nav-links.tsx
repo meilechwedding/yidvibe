@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
-export function NavLinks() {
+export function NavLinks({ links = NAV_LINKS, className }: { links?: { href: string; label: string }[]; className?: string }) {
   const pathname = usePathname();
   return (
-    <nav className="flex items-center justify-center gap-1">
-      {NAV_LINKS.map((l) => {
+    <nav aria-label="Primary" className={cn("flex min-w-0 items-center gap-1 overflow-x-auto", className)}>
+      {links.map((l) => {
         const active =
           pathname === l.href || pathname.startsWith(l.href + "/");
         return (
@@ -18,7 +18,7 @@ export function NavLinks() {
             href={l.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "rounded-input px-3 py-2 text-sm font-medium transition-colors",
+              "flex min-h-11 shrink-0 items-center rounded-input px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
               active
                 ? "bg-teal-50 text-teal-800"
                 : "text-muted-foreground hover:text-ink",

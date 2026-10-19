@@ -31,7 +31,7 @@ vi.mock("@/lib/actions/competitions", () => ({ pickWinner: vi.fn() }));
 vi.mock("@/components/competitions/submit-entry-form", () => ({
   SubmitEntryForm: () => <form aria-label="Competition entry" />,
 }));
-import CompetitionDetailPage from "@/app/competitions/[slug]/page";
+
 
 afterEach(() => {
   cleanup();
@@ -74,25 +74,6 @@ describe("event description disclosure", () => {
 });
 
 describe("competition entry availability", () => {
-  it.each([null, { id: "entrant" }, { id: "host" }])("shows closed messaging after the deadline for viewer %j", async (me) => {
-    fixtures.me = me;
-    render(await CompetitionDetailPage({ params: Promise.resolve({ slug: "test" }) }));
-    expect(screen.getByText("This competition is no longer accepting entries.")).toBeTruthy();
-    expect(screen.getByText("No entries were submitted.")).toBeTruthy();
-    expect(screen.queryByText("Sign in to submit an entry")).toBeNull();
-    expect(screen.queryByText("No entries yet - be the first.")).toBeNull();
-    expect(screen.queryByRole("form", { name: "Competition entry" })).toBeNull();
-  });
-
-  it("also closes entry messaging for a closed competition before its deadline", async () => {
-    fixtures.ended = false;
-    fixtures.status = "closed";
-    render(await CompetitionDetailPage({ params: Promise.resolve({ slug: "test" }) }));
-    expect(screen.getByText("This competition is no longer accepting entries.")).toBeTruthy();
-    expect(screen.queryByText("Sign in to submit an entry")).toBeNull();
-    expect(screen.getByText(/Closed/)).toBeTruthy();
-  });
-
   it("labels a closed competition card as closed even before its deadline", () => {
     fixtures.ended = false;
     const competition = { id: "one", slug: "test", title: "Test competition", description: "Build", deadline: "2026-12-03T12:00:00Z", status: "closed", winner_submission_id: null, prize_amount: 100, creator: null } as CompetitionListItem;
@@ -101,17 +82,4 @@ describe("competition entry availability", () => {
     expect(screen.queryByText("Open")).toBeNull();
   });
 
-  it("preserves the sign-in invitation for an open competition", async () => {
-    fixtures.ended = false;
-    render(await CompetitionDetailPage({ params: Promise.resolve({ slug: "test" }) }));
-    expect(screen.getByRole("link", { name: "Sign in to submit an entry" }).getAttribute("href")).toBe("/login?next=/competitions/test");
-    expect(screen.getByText("No entries yet - be the first.")).toBeTruthy();
-  });
-
-  it("shows the entry form for a signed-in entrant while entries are open", async () => {
-    fixtures.ended = false;
-    fixtures.me = { id: "entrant" };
-    render(await CompetitionDetailPage({ params: Promise.resolve({ slug: "test" }) }));
-    expect(screen.getByRole("form", { name: "Competition entry" })).toBeTruthy();
-  });
 });

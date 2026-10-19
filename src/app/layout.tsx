@@ -54,7 +54,7 @@ export default function RootLayout({
       lang="en"
       className={spaceGrotesk.variable}
     >
-      <body className="flex min-h-dvh flex-col overflow-x-clip bg-canvas pb-16 text-ink lg:pb-0 lg:pl-64">
+      <body className="flex min-h-dvh flex-col overflow-x-clip bg-canvas text-ink">
         <SiteNav />
         <ContextBar />
         <main className="flex-1">{children}</main>

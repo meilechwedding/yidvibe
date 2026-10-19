@@ -1,5 +1,5 @@
 import { IMAGE_THEME } from "@/lib/design/image-theme";
-import { SOCIAL_FONTS } from "@/lib/design/social-fonts";
+import { getSocialFonts } from "@/lib/design/social-fonts";
 import { BRAND_STAR_PATH as STAR_PATH } from "@/lib/design/logo";
 import { ImageResponse } from "next/og";
 import { SITE_NAME, SITE_TAGLINE, SITE_DESCRIPTION } from "@/config/site";
@@ -68,6 +68,6 @@ export default function OpengraphImage() {
         </div>
       </div>
     ),
-    { ...size, fonts: SOCIAL_FONTS },
+    { ...size, fonts: getSocialFonts() },
   );
 }

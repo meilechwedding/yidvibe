@@ -13,8 +13,6 @@ const NO_BACK = new Set([
   "/builders",
   "/directory",
   "/gigs",
-  "/competitions",
-  "/events",
   "/docs",
   "/dashboard",
   "/notifications",
@@ -28,8 +26,6 @@ const SECTION_ROOTS = new Set([
   "/builders",
   "/directory",
   "/gigs",
-  "/competitions",
-  "/events",
   "/docs",
 ]);
 
@@ -69,7 +65,7 @@ export function ContextBar() {
   if (!show) return null;
 
   return (
-    <div className="border-b border-border/60 bg-canvas/80 backdrop-blur lg:sticky lg:top-0 lg:z-30">
+    <div className="border-b border-border/60 bg-canvas/80 backdrop-blur">
       <Container className="flex h-12 items-center">
         <BackLink fallbackHref={fallback} />
       </Container>

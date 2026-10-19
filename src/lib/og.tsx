@@ -1,6 +1,6 @@
 import { SITE_NAME } from "@/config/site";
 import { IMAGE_THEME } from "@/lib/design/image-theme";
-import { SOCIAL_FONTS } from "@/lib/design/social-fonts";
+import { getSocialFonts } from "@/lib/design/social-fonts";
 import { ImageResponse } from "next/og";
 
 export const OG_SIZE = { width: 1200, height: 630 };
@@ -94,6 +94,6 @@ export function ogImage({
         </div>
       </div>
     ),
-    { ...OG_SIZE, fonts: SOCIAL_FONTS },
+    { ...OG_SIZE, fonts: getSocialFonts() },
   );
 }

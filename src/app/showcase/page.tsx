@@ -1,7 +1,6 @@
 import { BROWSE_COPY } from "@/content/pages/browse";
 import { SHOWCASE_COPY } from "@/content/pages/showcase";
-import Link from "next/link";
-import { Plus, Rocket } from "lucide-react";
+import { Rocket } from "lucide-react";
 import {
   listProjects,
   countProjects,
@@ -60,14 +59,8 @@ export default async function ShowcasePage({
     <Container className="py-12 md:py-16">
       <PageHeader
         accent="teal"
-        eyebrow={SHOWCASE_COPY.eyebrow}
         title={SHOWCASE_COPY.title}
         subtitle={SHOWCASE_COPY.subtitle}
-        action={
-          <Link href="/showcase/submit" className="btn btn-primary shrink-0">
-            <Plus size={17} /> Post your project
-          </Link>
-        }
       />
 
       <FilterBar
