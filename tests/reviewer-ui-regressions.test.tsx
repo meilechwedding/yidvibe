@@ -1,0 +1,117 @@
+// @vitest-environment jsdom
+import React from "react";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+
+const mocks = vi.hoisted(() => ({
+  admin: vi.fn(), competition: vi.fn(), entries: vi.fn(), notifications: vi.fn(),
+  feedback: vi.fn(), markRead: vi.fn(),
+}));
+vi.mock("@/lib/admin", () => ({ requireAdminUnlocked: mocks.admin }));
+vi.mock("@/lib/competitions", () => ({ getCompetitionBySlug: mocks.competition, getSubmissions: mocks.entries }));
+vi.mock("@/lib/supabase/server", () => ({ createClient: vi.fn() }));
+vi.mock("@/lib/notifications", async importOriginal => ({
+  ...await importOriginal<typeof import("@/lib/notifications")>(),
+  getNotifications: mocks.notifications,
+}));
+vi.mock("@/lib/current-user", () => ({ getAuthUser: async () => ({ id: "viewer" }) }));
+vi.mock("@/lib/actions/feedback", () => ({ createFeedback: mocks.feedback }));
+vi.mock("@/lib/actions/notifications", () => ({ markAllNotificationsRead: mocks.markRead }));
+vi.mock("@/components/site/mark-read-on-view", () => ({ MarkReadOnView: () => null }));
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/showcase",
+  notFound: () => { throw new Error("NOT_FOUND"); },
+  redirect: (url: string) => { throw new Error(`REDIRECT:${url}`); },
+}));
+
+import { describeNotification, type NotificationRow } from "@/lib/notifications";
+import { NotificationBell } from "@/components/site/notification-bell";
+import { SiteFooter } from "@/components/site/site-footer";
+import NotificationsPage from "@/app/notifications/page";
+import AdminCompetitionDetail from "@/app/admin/competitions/[slug]/page";
+
+const archived = {
+  id: "archive", type: "competition_winner", entity_id: "old-id", actor: null,
+  data: { title: "Community challenge", slug: "old-challenge" },
+  created_at: "2026-10-01T00:00:00Z", read_at: null,
+} as NotificationRow;
+const current = {
+  ...archived, id: "current", type: "comment", entity_id: "project-1",
+  data: { project_name: "My project" },
+} as NotificationRow;
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  mocks.admin.mockResolvedValue({});
+  mocks.competition.mockResolvedValue({
+    id: "old-id", slug: "old-challenge", title: "Community challenge",
+    description: "Stored description", review_status: "approved", status: "closed",
+    prize_amount: 100, winner_submission_id: "entry-1",
+  });
+  mocks.entries.mockResolvedValue([{ id: "entry-1", submitter: { name: "Builder" }, description: "Stored entry", submission_url: "https://example.com/entry" }]);
+  mocks.notifications.mockResolvedValue([archived, current]);
+});
+afterEach(cleanup);
+
+it("preserves the historical winner message without a retired destination", () => {
+  expect(describeNotification(archived)).toEqual({ text: "Archived update: You won Community challenge!" });
+});
+
+it("retains normal project and gig notification destinations", () => {
+  expect(describeNotification(current).href).toBe("/showcase/project-1");
+  expect(describeNotification({ ...current, type: "message", data: { slug: "gig", thread_id: "thread" } }).href).toBe("/gigs/gig/thread/thread");
+});
+
+it("keeps archived updates readable in the bell while current items remain links", async () => {
+  render(<NotificationBell unread={2} items={[archived, current].map(n => ({
+    id: n.id, ...describeNotification(n), createdAt: n.created_at, read: false,
+    actorName: null, actorAvatar: null,
+  }))} />);
+  fireEvent.keyDown(screen.getByRole("button", { name: /Notifications/ }), { key: "ArrowDown" });
+  const historical = await screen.findByText(/Archived update/);
+  expect(historical.closest("a")).toBeNull();
+  expect(screen.getByText("Someone commented on My project").closest("a")?.getAttribute("href")).toBe("/showcase/project-1");
+  expect(document.querySelector('a[href^="/competitions"]')).toBeNull();
+});
+
+it("shows the same archived and active behavior in the full notification list", async () => {
+  render(await NotificationsPage());
+  expect(screen.getByText(/Archived update/).closest("a")).toBeNull();
+  expect(screen.getByRole("link", { name: /Someone commented/ }).getAttribute("href")).toBe("/showcase/project-1");
+});
+
+it("provides feedback through the actual site footer and restores focus on close", async () => {
+  render(<SiteFooter />);
+  const trigger = within(screen.getByRole("contentinfo")).getByRole("button", { name: "Send feedback" });
+  fireEvent.click(trigger);
+  const dialog = screen.getByRole("dialog", { name: "Send feedback" });
+  expect(screen.getByLabelText("Feedback message")).toBeTruthy();
+  fireEvent.keyDown(dialog, { key: "Escape" });
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  await waitFor(() => expect(document.activeElement).toBe(trigger));
+  expect(mocks.feedback).not.toHaveBeenCalled();
+});
+
+it("opens retained competition records and entries behind the existing admin guard", async () => {
+  render(await AdminCompetitionDetail({ params: Promise.resolve({ slug: "old-challenge" }) }));
+  expect(mocks.admin.mock.invocationCallOrder[0]).toBeLessThan(mocks.competition.mock.invocationCallOrder[0]);
+  expect(mocks.entries).toHaveBeenCalledWith("old-id");
+  expect(screen.getByText("Stored description")).toBeTruthy();
+  expect(screen.getByText("Stored entry")).toBeTruthy();
+  expect(screen.getByText(/Builder.*Winner/)).toBeTruthy();
+  expect(screen.getByRole("link", { name: "View entry" }).getAttribute("href")).toBe("https://example.com/entry");
+  expect(screen.getByRole("link", { name: "Open review queue" }).getAttribute("href")).toBe("/admin/competitions");
+});
+
+it("does not read retained records when the existing admin guard denies access", async () => {
+  mocks.admin.mockRejectedValueOnce(new Error("ADMIN_DENIED"));
+  await expect(AdminCompetitionDetail({ params: Promise.resolve({ slug: "old-challenge" }) })).rejects.toThrow("ADMIN_DENIED");
+  expect(mocks.competition).not.toHaveBeenCalled();
+  expect(mocks.entries).not.toHaveBeenCalled();
+});
+
+it("returns not found for a missing retained competition without reading entries", async () => {
+  mocks.competition.mockResolvedValueOnce(null);
+  await expect(AdminCompetitionDetail({ params: Promise.resolve({ slug: "missing" }) })).rejects.toThrow("NOT_FOUND");
+  expect(mocks.entries).not.toHaveBeenCalled();
+});

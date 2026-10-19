@@ -47,7 +47,7 @@ export default async function AdminCompetitionsPage() {
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
                     <Link
-                      href={`/competitions/${c.slug}`}
+                      href={`/admin/competitions/${c.slug}`}
                       className="font-display font-semibold text-ink hover:underline"
                     >
                       {c.title}

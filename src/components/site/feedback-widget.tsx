@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 import { usePathname } from "next/navigation";
 import { MessageSquarePlus, ThumbsUp, ThumbsDown, Lightbulb, CheckCircle2, Heart } from "lucide-react";
 import { createFeedback, type FeedbackState } from "@/lib/actions/feedback";
@@ -20,16 +20,6 @@ export function FeedbackWidget() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // Open on demand from elsewhere (e.g. the mobile Explore sheet, which has no
-  // room for the side tab). Decoupled via a window event.
-  useEffect(() => {
-    function onOpen() {
-      setOpen(true);
-    }
-    window.addEventListener("yv:open-feedback", onOpen);
-    return () => window.removeEventListener("yv:open-feedback", onOpen);
-  }, []);
-
   // Hide on admin screens — they have their own queue.
   if (pathname.startsWith("/admin")) return null;
 
@@ -39,13 +29,13 @@ export function FeedbackWidget() {
         <button
           type="button"
           aria-label="Send feedback"
-          className="fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-2 rounded-l-xl bg-teal-600 px-2 py-3 text-xs font-medium text-white shadow-float [writing-mode:vertical-rl] hover:bg-teal-700 sm:inline-flex"
+          className="inline-flex min-h-11 items-center gap-2 rounded-input text-sm text-teal-100/90 outline-none hover:text-white focus-visible:ring-2 focus-visible:ring-white"
         >
-          <MessageSquarePlus size={15} className="rotate-90" />
+          <MessageSquarePlus size={15} />
           Feedback
         </button>
       </DialogTrigger>
-      <DialogContent aria-describedby={undefined} className="inset-x-0 bottom-0 left-0 top-auto z-[70] max-w-none translate-x-0 translate-y-0 rounded-t-card border-t border-border bg-surface p-6 pb-8 shadow-float sm:inset-x-auto sm:bottom-6 sm:left-auto sm:right-6 sm:w-[400px] sm:max-w-[92vw] sm:rounded-card sm:border">
+      <DialogContent aria-describedby={undefined} className="inset-x-0 bottom-0 left-0 top-auto z-[70] max-h-[85dvh] max-w-none overflow-y-auto translate-x-0 translate-y-0 rounded-t-card border-t border-border bg-surface p-6 pb-8 shadow-float sm:inset-x-auto sm:bottom-6 sm:left-auto sm:right-6 sm:w-[400px] sm:max-w-[92vw] sm:rounded-card sm:border">
         <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border sm:hidden" />
         <DialogTitle className="mb-3 font-display text-lg font-semibold text-ink">
           Send feedback

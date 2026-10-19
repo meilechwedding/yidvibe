@@ -16,8 +16,8 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-[70vh] bg-canvas">
-      {/* Sticky chrome: greeting + tab rail (desktop) / greeting-or-back (mobile). */}
-      <div className="sticky top-0 z-30 border-b border-border/70 bg-canvas/85 backdrop-blur supports-[backdrop-filter]:bg-canvas/70">
+      {/* Local navigation stays in normal flow below the persistent global header. */}
+      <div className="border-b border-border/70 bg-canvas/85 backdrop-blur supports-[backdrop-filter]:bg-canvas/70">
         <Container className="max-w-5xl">
           {/* Desktop: greeting + tab rail */}
           <div className="hidden flex-col gap-4 pb-4 pt-8 lg:flex">

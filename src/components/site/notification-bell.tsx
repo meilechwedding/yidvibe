@@ -10,7 +10,7 @@ import { formatRelativeTime, cn } from "@/lib/utils";
 export type BellItem = {
   id: string;
   text: string;
-  href: string;
+  href?: string;
   read: boolean;
   createdAt: string;
   actorName: string | null;
@@ -64,32 +64,28 @@ export function NotificationBell({
             </p>
           ) : (
             <div className="max-h-80 overflow-y-auto">
-              {items.map((n) => (
-                <DropdownMenu.Item asChild key={n.id}>
-                  <Link
-                    href={n.href}
-                    className={cn(
-                      "flex gap-3 rounded-lg px-3 py-2 outline-none hover:bg-secondary focus:bg-secondary",
-                      !n.read && "bg-teal-50/60",
-                    )}
-                  >
-                    <AvatarCircle
-                      name={n.actorName ?? "?"}
-                      src={n.actorAvatar}
-                      size={30}
-                    />
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm leading-snug text-ink">{n.text}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {formatRelativeTime(n.createdAt)}
-                      </p>
-                    </div>
-                    {!n.read && (
-                      <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-teal-600" />
-                    )}
-                  </Link>
-                </DropdownMenu.Item>
-              ))}
+              {items.map((n) => {
+                const className = cn(
+                  "flex gap-3 rounded-lg px-3 py-2 outline-none",
+                  n.href && "hover:bg-secondary focus:bg-secondary",
+                  !n.read && "bg-teal-50/60",
+                );
+                const content = <>
+                  <AvatarCircle name={n.actorName ?? "?"} src={n.actorAvatar} size={30} />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm leading-snug text-ink">{n.text}</p>
+                    <p className="text-xs text-muted-foreground">{formatRelativeTime(n.createdAt)}</p>
+                  </div>
+                  {!n.read && <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-teal-600" />}
+                </>;
+                return n.href ? (
+                  <DropdownMenu.Item asChild key={n.id}>
+                    <Link href={n.href} className={className}>{content}</Link>
+                  </DropdownMenu.Item>
+                ) : (
+                  <div key={n.id} className={className}>{content}</div>
+                );
+              })}
             </div>
           )}
 

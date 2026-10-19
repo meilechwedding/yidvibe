@@ -78,7 +78,7 @@ async function loadItems(type: Tab): Promise<ContentItem[]> {
       owner: ownerName(r.creator),
       meta: `$${Number(r.prize_amount).toLocaleString()} · ${r.review_status}`,
       reviewStatus: r.review_status,
-      href: `/competitions/${r.slug}`,
+      href: `/admin/competitions/${r.slug}`,
     }));
   }
 

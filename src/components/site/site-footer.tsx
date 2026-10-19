@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FeedbackWidget } from "./feedback-widget";
 import { SITE_NAME, SITE_TAGLINE, FOOTER_LINKS } from "@/lib/site";
 import { Container } from "@/components/brand/layout";
 import { LogoMark } from "@/components/brand/sparkle";
@@ -20,7 +21,7 @@ export function SiteFooter() {
             — {SITE_TAGLINE}
           </span>
         </div>
-        <nav className="flex flex-wrap gap-x-6 gap-y-3">
+        <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-6 gap-y-3">
           {FOOTER_LINKS.map((l) => (
             <Link
               key={l.href}
@@ -30,6 +31,7 @@ export function SiteFooter() {
               {l.label}
             </Link>
           ))}
+          <FeedbackWidget />
         </nav>
       </Container>
     </footer>

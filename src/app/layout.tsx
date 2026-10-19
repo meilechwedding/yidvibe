@@ -6,7 +6,6 @@ import { Toaster } from "sonner";
 import { SiteNav } from "@/components/site/site-nav";
 import { SiteFooter } from "@/components/site/site-footer";
 import { ContextBar } from "@/components/site/context-bar";
-import { FeedbackWidget } from "@/components/site/feedback-widget";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SITE_TAGLINE } from "@/config/site";
 import "./globals.css";
 
@@ -60,7 +59,6 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <SiteFooter />
         <Toaster richColors position="top-center" />
-        <FeedbackWidget />
         {/* Google Analytics (GA4) — direct gtag. G-CQZZR3R1TQ is the only
             provisioned/loadable stream (the G-XE27WHG02L stream 404s on
             gtag.js — "data collection isn't active" in GA). */}

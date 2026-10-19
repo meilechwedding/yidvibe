@@ -43,9 +43,9 @@ export default async function NotificationsPage() {
             const { text, href } = describeNotification(n);
             return (
               <li key={n.id}>
-                <Link
+                <NotificationTarget
                   href={href}
-                  className={`flex gap-3 rounded-card border border-transparent px-3 py-3 transition-colors hover:bg-secondary ${
+                  className={`flex gap-3 rounded-card border border-transparent px-3 py-3 transition-colors ${href ? "hover:bg-secondary" : ""} ${
                     n.read_at == null ? "bg-teal-50/60" : ""
                   }`}
                 >
@@ -63,7 +63,7 @@ export default async function NotificationsPage() {
                   {n.read_at == null && (
                     <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-teal-600" />
                   )}
-                </Link>
+                </NotificationTarget>
               </li>
             );
           })}
@@ -71,4 +71,8 @@ export default async function NotificationsPage() {
       )}
     </div>
   );
+}
+
+function NotificationTarget({ href, children, className }: { href?: string; children: React.ReactNode; className: string }) {
+  return href ? <Link href={href} className={className}>{children}</Link> : <div className={className}>{children}</div>;
 }

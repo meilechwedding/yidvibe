@@ -56,7 +56,7 @@ export async function getNotificationSummary(): Promise<{
 /** Map a notification to display text + a destination link. */
 export function describeNotification(n: NotificationRow): {
   text: string;
-  href: string;
+  href?: string;
 } {
   const who = n.actor?.name ?? "Someone";
   const d = (n.data ?? {}) as Record<string, string | undefined>;
@@ -84,8 +84,8 @@ export function describeNotification(n: NotificationRow): {
       return { text: `${who} messaged you about ${d.gig_title ?? "a gig"}`, href: thread };
     case "competition_winner":
       return {
-        text: `You won ${d.title ?? "a competition"}!`,
-        href: d.slug ? `/competitions/${d.slug}` : "/competitions",
+        text: `Archived update: You won ${d.title ?? "a past challenge"}!`,
+        // Preserve the historical message without linking to a retired screen.
       };
     case "content_removed":
       return { text: d.message ?? "An admin removed your content.", href: "/notifications" };
