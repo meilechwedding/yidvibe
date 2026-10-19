@@ -52,23 +52,23 @@
   --font-display: var(--font-space-grotesk), system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
-  /* ---- v8: 10px controls, 20px cards; circles only for avatars/status ---- */
-  --radius: 0.625rem; /* 10px — inputs + shadcn primitives */
-  --radius-sm: 10px;
-  --radius-md: 10px;
+  /* Approved Option C handoff: frames 32px, media 24px, controls 18px. */
+  --radius: 1.125rem; /* 18px — approved Option C controls */
+  --radius-sm: 12px;
+  --radius-md: 16px;
   --radius-lg: var(--radius);
-  --radius-xl: 20px;
-  --radius-card: 20px;
-  --radius-input: 10px;
+  --radius-xl: 24px;
+  --radius-card: 32px;
+  --radius-input: 18px;
   --radius-pill: 9999px;
-  --radius-chip: 10px;
+  --radius-chip: 999px;
 
   /* ---- Elevation (brand kit) ---- */
   --shadow-hover: 0 4px 8px rgba(16, 61, 57, 0.06);
   --shadow-float: 0 8px 24px rgba(16, 61, 57, 0.1);
 
   /* ---- Motion (brand kit) ---- */
-  --ease-brand: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Motion durations (plain custom props — used by custom CSS below). */

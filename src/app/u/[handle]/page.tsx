@@ -26,7 +26,7 @@ import {
 import { getCurrentProfile } from "@/lib/current-user";
 import { Container } from "@/components/brand/layout";
 import { AvatarCircle } from "@/components/brand/avatar-circle";
-import { ProjectRowCard } from "@/components/showcase/project-row-card";
+import { ProjectCard } from "@/components/brand/project-card";
 import { Sparkle } from "@/components/brand/sparkle";
 import { EmptyState } from "@/components/brand/empty-state";
 import { ReportMenu } from "@/components/brand/report-menu";
@@ -41,7 +41,11 @@ export async function generateMetadata({
   const { handle } = await params;
   const profile = await getProfileByHandle(handle);
   if (!profile) return { title: "Profile not found" };
-  if (!profile.is_public) return { title: "Builder profile", description: "This builder has not made their profile public yet." };
+  if (!profile.is_public)
+    return {
+      title: "Builder profile",
+      description: "This builder has not made their profile public yet.",
+    };
   const shown = displayName(profile);
   return {
     title: shown,
@@ -74,7 +78,10 @@ function LinkButton({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={cn("btn btn-sm", variant === "primary" ? "btn-primary" : "btn-ghost")}
+      className={cn(
+        "btn btn-sm",
+        variant === "primary" ? "btn-primary" : "btn-ghost",
+      )}
     >
       {icon}
       {children}
@@ -99,7 +106,9 @@ export default async function ProfilePage({
     return (
       <Container className="py-8 md:py-12">
         <div className="flex min-h-[40vh] flex-col items-center justify-center text-center">
-          <h1 className="font-display text-2xl font-semibold text-ink">Profile not public yet</h1>
+          <h1 className="font-display text-2xl font-semibold text-ink">
+            Profile not public yet
+          </h1>
           <p className="mt-3 text-sm text-muted-foreground">
             This builder hasn&apos;t made their profile public yet.
           </p>
@@ -144,167 +153,194 @@ export default async function ProfilePage({
     links.linkedin;
 
   return (
-    <Container className="max-w-3xl py-8 md:py-12">
-      {/* Profile header card */}
-      <div className="overflow-hidden rounded-card border border-border bg-surface shadow-[var(--shadow-sm)]">
-        {profile.cover_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={profile.cover_url} alt="" className="h-28 w-full object-cover sm:h-36" />
-        ) : (
-          <div className="h-28 sm:h-36" style={{ background: BANNER[accent] }} />
-        )}
-        <div className="px-6 pb-6 sm:px-8">
-          <div className="flex flex-wrap items-end gap-4">
+    <Container className="profile-page">
+      <nav aria-label="Breadcrumb" className="page-breadcrumb">
+        <Link href="/">Home</Link>
+        <span>/</span>
+        <Link href="/builders">Builders</Link>
+        <span>/</span>
+        <span>{displayName(profile)}</span>
+      </nav>
+      {!profile.is_public && isOwner && (
+        <p role="status" className="mb-6 rounded-input bg-mist p-4 text-sm">
+          Your profile is not public yet. Only you can see this preview.
+        </p>
+      )}
+      <div className="connected-panel profile-connected">
+        <section className="profile-intro">
+          {profile.cover_url && (
+            <div className="profile-cover">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={profile.cover_url} alt="" />
+            </div>
+          )}
+          <div className="profile-heading">
             <AvatarCircle
               name={displayName(profile)}
               src={profile.avatar_url}
               size={96}
-              accent={accent}
-              className="-mt-12 border-4 border-surface shadow-[0_6px_18px_rgba(0,0,0,0.14)]"
             />
-            <div className="min-w-0 flex-1 pb-1">
-              <div className="flex items-center gap-2">
-                <h1 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-                  {displayName(profile)}
-                </h1>
+            <div className="min-w-0">
+              <h1>
+                {displayName(profile)}{" "}
                 {profile.is_verified && (
                   <span title="Verified">
-                    <Sparkle size={18} color="var(--gold-500)" />
+                    <Sparkle size={22} />
                   </span>
                 )}
-                {(profile as { is_featured?: boolean }).is_featured && (
-                  <span title="Featured" className="shrink-0">
-                    <Star size={16} className="fill-current text-teal-700" />
-                  </span>
+              </h1>
+              <p className="mt-3 text-muted-foreground">
+                {profile.show_real_name !== false && (
+                  <span>@{profile.handle}</span>
                 )}
-              </div>
-              <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-                {profile.show_real_name !== false && <span>@{profile.handle}</span>}
                 {profile.location && (
-                  <span className="inline-flex items-center gap-1">
-                    <MapPin size={13} /> {profile.location}
+                  <span className="ml-3 inline-flex items-center gap-1">
+                    <MapPin size={15} />
+                    {profile.location}
                   </span>
                 )}
-                <span className="inline-flex items-center gap-2">
-                  <CalendarDays size={13} /> Joined {joined}
-                </span>
               </p>
             </div>
-            <div className="flex items-center gap-2 pb-1">
-              {isOwner ? (
-                <Link href="/dashboard/profile" className="btn btn-gold btn-sm">
-                  <Pencil size={15} /> Edit profile
-                </Link>
-              ) : (
-                isAuthed && <ReportMenu targetType="profile" targetId={profile.id} />
-              )}
-            </div>
           </div>
-
           {profile.bio && (
-            <p className="mt-4 max-w-xl whitespace-pre-line text-sm leading-relaxed text-ink/90">
+            <p className="profile-bio" dir="auto">
               {profile.bio}
             </p>
           )}
-
-          {hasContact && (
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              {links.website && (
-                <LinkButton href={links.website} variant="primary" icon={<Globe size={15} />}>
-                  Website
-                </LinkButton>
-              )}
-              {links.email && (
-                <LinkButton href={contactHref("email", links.email)} icon={<Mail size={15} />}>
-                  Email
-                </LinkButton>
-              )}
-              {links.phone && (
-                <LinkButton href={contactHref("phone", links.phone)} icon={<Phone size={15} />}>
-                  Call
-                </LinkButton>
-              )}
-              {links.whatsapp && (
-                <LinkButton href={contactHref("whatsapp", links.whatsapp)} icon={<MessageCircle size={15} />}>
-                  WhatsApp
-                </LinkButton>
-              )}
-              {links.instagram && (
-                <LinkButton href={contactHref("instagram", links.instagram)} icon={<Instagram size={15} />}>
-                  Instagram
-                </LinkButton>
-              )}
-              {links.github && (
-                <LinkButton href={links.github} icon={<Github size={15} />}>
-                  GitHub
-                </LinkButton>
-              )}
-              {links.x && (
-                <LinkButton href={links.x} icon={<Twitter size={15} />}>
-                  X
-                </LinkButton>
-              )}
-              {links.linkedin && (
-                <LinkButton href={links.linkedin} icon={<Linkedin size={15} />}>
-                  LinkedIn
-                </LinkButton>
-              )}
-            </div>
-          )}
-
           {profile.tools.length > 0 && (
-            <div className="mt-4">
-              <p className="text-sm font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-                Builds with
-              </p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {profile.tools.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-blue-tint bg-blue-tint px-3 py-1 text-xs font-medium text-blue-deep"
-                  >
-                    {t}
+            <div className="profile-skills">
+              <h2>Builds with</h2>
+              <div className="flex flex-wrap gap-2">
+                {profile.tools.map((tool) => (
+                  <span key={tool} className="chip">
+                    {tool}
                   </span>
                 ))}
               </div>
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Projects */}
-      <section className="mt-8">
-        <div className="flex items-end justify-between gap-3">
-          <h2 className="font-display text-xl font-semibold text-ink">
-            {isOwner ? "Your projects" : "Projects"}
-            {withOwner.length > 0 && (
-              <span className="ml-2 text-sm font-medium text-muted-foreground">
-                · {withOwner.length}
-              </span>
-            )}
+          <p className="mt-6 text-sm text-muted-foreground">Joined {joined}</p>
+        </section>
+        <aside className="connected-aside profile-connect">
+          <h2>
+            {isOwner ? "Your place in the community." : "Start a conversation."}
           </h2>
+          {profile.available_for_hire && (
+            <p className="mt-5">
+              <span className="chip gold">Available for hire</span>
+            </p>
+          )}
+          <p className="mt-5 text-muted-foreground">
+            {isOwner
+              ? "Keep your profile and projects up to date so people can get to know your work."
+              : hasContact
+                ? "Like what you see? Reach out through the links this builder has shared."
+                : "Explore this builder's work below. They haven't shared contact details yet."}
+          </p>
+          {hasContact && (
+            <div className="profile-contact-links">
+              {links.website && (
+                <LinkButton
+                  href={links.website}
+                  variant="primary"
+                  icon={<Globe size={17} />}
+                >
+                  Website
+                </LinkButton>
+              )}
+              {links.email && (
+                <LinkButton
+                  href={contactHref("email", links.email)}
+                  icon={<Mail size={17} />}
+                >
+                  Email
+                </LinkButton>
+              )}
+              {links.phone && (
+                <LinkButton
+                  href={contactHref("phone", links.phone)}
+                  icon={<Phone size={17} />}
+                >
+                  Call
+                </LinkButton>
+              )}
+              {links.whatsapp && (
+                <LinkButton
+                  href={contactHref("whatsapp", links.whatsapp)}
+                  icon={<MessageCircle size={17} />}
+                >
+                  WhatsApp
+                </LinkButton>
+              )}
+              {links.instagram && (
+                <LinkButton
+                  href={contactHref("instagram", links.instagram)}
+                  icon={<Instagram size={17} />}
+                >
+                  Instagram
+                </LinkButton>
+              )}
+              {links.github && (
+                <LinkButton href={links.github} icon={<Github size={17} />}>
+                  GitHub
+                </LinkButton>
+              )}
+              {links.x && (
+                <LinkButton href={links.x} icon={<Twitter size={17} />}>
+                  X
+                </LinkButton>
+              )}
+              {links.linkedin && (
+                <LinkButton href={links.linkedin} icon={<Linkedin size={17} />}>
+                  LinkedIn
+                </LinkButton>
+              )}
+            </div>
+          )}
+          <div className="mt-6">
+            {isOwner ? (
+              <Link href="/dashboard/profile" className="btn btn-primary">
+                <Pencil size={17} />
+                Edit profile
+              </Link>
+            ) : (
+              isAuthed && (
+                <ReportMenu targetType="profile" targetId={profile.id} />
+              )
+            )}
+          </div>
+        </aside>
+      </div>
+      <section className="profile-projects">
+        <div className="section-heading">
+          <h2>{isOwner ? "Your projects" : "Projects"}</h2>
+          {withOwner.length > 0 && (
+            <span className="text-muted-foreground">
+              {withOwner.length} shared
+            </span>
+          )}
         </div>
         {withOwner.length === 0 ? (
           <EmptyState
-            className="mt-4"
+            className="mt-6"
             title="No projects yet"
             description={
               isOwner
-                ? "Post something you built — it shows up here automatically."
-                : "This person hasn't posted a project yet."
+                ? "Post something you built. It will appear here."
+                : "This builder hasn't shared a project yet."
             }
             actionHref={isOwner ? "/showcase/submit" : undefined}
-            actionLabel={isOwner ? "Post your project" : undefined}
+            actionLabel={isOwner ? "Post a project" : undefined}
           />
         ) : (
-          <div className="mt-6 flex flex-col gap-3">
-            {withOwner.map((p) => (
-              <ProjectRowCard
-                key={p.id}
-                project={p}
+          <div className="project-grid mt-8">
+            {withOwner.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
                 isAuthed={isAuthed}
-                upvoted={upvoted.has(p.id)}
-                saved={saved.has(p.id)}
+                upvoted={upvoted.has(project.id)}
+                saved={saved.has(project.id)}
               />
             ))}
           </div>

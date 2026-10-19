@@ -1,4 +1,4 @@
-import { SITE_NAME } from "@/config/site";
+import { getSocialBrandLogo } from "@/lib/design/logo";
 import { IMAGE_THEME } from "@/lib/design/image-theme";
 import { getSocialFonts } from "@/lib/design/social-fonts";
 import { ImageResponse } from "next/og";
@@ -6,7 +6,7 @@ import { ImageResponse } from "next/og";
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
 
-/** Shared branded Open Graph card for project / gig / competition share links. */
+/** Shared branded Open Graph card for project share links. */
 export function ogImage({
   title,
   description,
@@ -42,17 +42,13 @@ export function ogImage({
             fontWeight: 600,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <div
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: 10,
-                background: IMAGE_THEME.gold,
-              }}
-            />
-            {SITE_NAME}
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={getSocialBrandLogo()}
+            alt="YidVibe"
+            width={300}
+            height={72}
+          />
           {kind ? (
             <div style={{ fontSize: 20, fontWeight: 500, opacity: 0.85 }}>
               {kind}
@@ -66,7 +62,7 @@ export function ogImage({
               display: "flex",
               flex: 1,
               margin: "32px 0",
-              borderRadius: 20,
+              borderRadius: 24,
               overflow: "hidden",
               border: "1px solid rgba(255,255,255,0.18)",
             }}
@@ -77,13 +73,19 @@ export function ogImage({
               alt=""
               width={1072}
               height={360}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              style={{ width: "100%", height: "100%", objectFit: "contain" }}
             />
           </div>
         ) : null}
 
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <div style={{ fontSize: 72, fontWeight: 600, lineHeight: 1.1 }}>
+          <div
+            style={{
+              fontSize: image ? 48 : 64,
+              fontWeight: 600,
+              lineHeight: 1.1,
+            }}
+          >
             {title}
           </div>
           {description ? (

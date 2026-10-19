@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Search, ArrowRight, SlidersHorizontal, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type SelectDef = {
@@ -75,7 +75,8 @@ export function FilterBar({
     );
     setValues(requested.current);
     const params = new URLSearchParams();
-    for (const [key, value] of Object.entries(next)) if (value) params.set(key, value);
+    for (const [key, value] of Object.entries(next))
+      if (value) params.set(key, value);
     const qs = params.toString();
     router.push(qs ? `${basePath}?${qs}` : basePath);
   };
@@ -89,7 +90,8 @@ export function FilterBar({
   };
 
   const activeCount =
-    selects.filter((s) => values[s.name]).length + toggles.filter((t) => values[t.name]).length;
+    selects.filter((s) => values[s.name]).length +
+    toggles.filter((t) => values[t.name]).length;
   const hasFilterControls = selects.length > 0 || toggles.length > 0 || !!sort;
 
   const renderControls = (inSheet: boolean) => (
@@ -159,56 +161,78 @@ export function FilterBar({
   );
 
   return (
-    <div className="mt-8">
-      <div className="flex items-center gap-3 rounded-card border border-border bg-surface p-3 shadow-[var(--shadow-sm)]">
-        <form
-          className="relative flex-1"
-          onSubmit={(e) => {
-            e.preventDefault();
-            go({});
-          }}
-        >
-          <Search
-            size={16}
-            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
-          />
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            dir="auto"
-            placeholder={placeholder}
-            aria-label={placeholder}
-            className="h-11 w-full rounded-input border border-transparent bg-canvas pl-12 pr-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:bg-surface"
-          />
-        </form>
-
-        {hasFilterControls && (
-          <div className="hidden items-center gap-3 lg:flex">
-            {renderControls(false)}
-          </div>
-        )}
-
-        {hasFilterControls && (
+    <div className="browse-filters">
+      <form
+        className="search-field browse-search"
+        role="search"
+        onSubmit={(event) => {
+          event.preventDefault();
+          go({});
+        }}
+      >
+        <Search size={24} aria-hidden="true" />
+        <input
+          type="search"
+          value={q}
+          onChange={(event) => setQ(event.target.value)}
+          dir="auto"
+          placeholder={placeholder}
+          aria-label={placeholder}
+        />
+        <button type="submit" aria-label="Search" className="btn btn-primary">
+          <ArrowRight size={21} aria-hidden="true" />
+        </button>
+      </form>
+      {hasFilterControls && (
+        <div className="filter-controls-row">
+          {selects.find((item) => item.name === "tag") && (
+            <div className="category-chips" aria-label="Project categories">
+              <button
+                type="button"
+                aria-pressed={!values.tag}
+                onClick={() => go({ tag: null })}
+              >
+                All
+              </button>
+              {selects
+                .find((item) => item.name === "tag")!
+                .options.slice(0, 3)
+                .map((tag) => (
+                  <button
+                    key={tag}
+                    type="button"
+                    aria-pressed={values.tag === tag}
+                    onClick={() => go({ tag })}
+                  >
+                    {tag}
+                  </button>
+                ))}
+            </div>
+          )}
+          <div className="desktop-filter-controls">{renderControls(false)}</div>
           <button
             ref={filterTrigger}
             type="button"
             onClick={() => setOpen(true)}
-            className="inline-flex h-11 shrink-0 items-center gap-2 rounded-input border border-border bg-canvas px-4 text-sm font-medium text-ink hover:border-border-hover lg:hidden"
+            className="btn btn-ghost mobile-filter-trigger"
           >
-            <SlidersHorizontal size={15} /> Filters
+            <SlidersHorizontal size={18} aria-hidden="true" /> Filters{" "}
             {activeCount > 0 && (
-              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-teal-600 px-1 text-sm font-semibold text-white">
-                {activeCount}
-              </span>
+              <span className="filter-count">{activeCount}</span>
             )}
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {(activeCount > 0 || !!values[searchName]) && (
-        <div className="mt-3 flex flex-wrap items-center gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           {values[searchName] && (
-            <Chip onClear={() => { setQ(""); go({ [searchName]: null }); }}>
+            <Chip
+              onClear={() => {
+                setQ("");
+                go({ [searchName]: null });
+              }}
+            >
               &ldquo;{values[searchName]}&rdquo;
             </Chip>
           )}
@@ -239,7 +263,14 @@ export function FilterBar({
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 z-50 bg-black/30 lg:hidden" />
-          <Dialog.Content aria-describedby={undefined} onCloseAutoFocus={(event) => { event.preventDefault(); filterTrigger.current?.focus(); }} className="fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] overflow-y-auto rounded-t-card border-t border-border bg-surface p-6 pb-8 shadow-float lg:hidden">
+          <Dialog.Content
+            aria-describedby={undefined}
+            onCloseAutoFocus={(event) => {
+              event.preventDefault();
+              filterTrigger.current?.focus();
+            }}
+            className="fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] overflow-y-auto rounded-t-card border-t border-border bg-surface p-6 pb-8 shadow-float lg:hidden"
+          >
             <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border" />
             <div className="mb-4 flex items-center justify-between">
               <Dialog.Title className="font-display text-lg font-semibold text-ink">
@@ -256,7 +287,11 @@ export function FilterBar({
             </div>
             <div className="flex flex-col gap-3">{renderControls(true)}</div>
             <div className="mt-6 flex gap-3">
-              <button type="button" onClick={clearAll} className="btn btn-ghost flex-1">
+              <button
+                type="button"
+                onClick={clearAll}
+                className="btn btn-ghost flex-1"
+              >
                 Clear all
               </button>
               <button
@@ -288,7 +323,7 @@ function Chip({
         type="button"
         onClick={onClear}
         aria-label="Remove filter"
-        className="-mr-0.5 rounded-input text-teal-700 hover:text-teal-900"
+        className="inline-flex min-h-8 min-w-8 items-center justify-center rounded-full text-teal-700 hover:text-teal-900"
       >
         <X size={13} />
       </button>

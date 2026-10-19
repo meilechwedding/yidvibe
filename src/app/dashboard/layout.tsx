@@ -15,17 +15,17 @@ export default async function DashboardLayout({
   const firstName = profile.name.split(" ")[0];
 
   return (
-    <div className="min-h-[70vh] bg-canvas">
+    <div className="member-workspace min-h-[70vh] bg-canvas">
       {/* Local navigation stays in normal flow below the persistent global header. */}
-      <div className="border-b border-border/70 bg-canvas/85 backdrop-blur supports-[backdrop-filter]:bg-canvas/70">
-        <Container className="max-w-5xl">
+      <div className="member-header">
+        <Container>
           {/* Desktop: greeting + tab rail */}
           <div className="hidden flex-col gap-4 pb-4 pt-8 lg:flex">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal-700">
+              <p className="text-sm font-medium text-teal-700">
                 Your dashboard
               </p>
-              <h1 className="mt-1 font-display text-[26px] font-semibold tracking-tight text-ink">
+              <h1 className="mt-1 font-display text-[36px] font-semibold tracking-tight text-ink">
                 Hi, {firstName}
               </h1>
             </div>
@@ -38,7 +38,7 @@ export default async function DashboardLayout({
         </Container>
       </div>
 
-      <Container className="max-w-5xl pb-12 pt-6 md:pt-8">{children}</Container>
+      <Container className="pb-12 pt-8 md:pt-10">{children}</Container>
     </div>
   );
 }

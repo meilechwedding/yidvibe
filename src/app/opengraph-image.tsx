@@ -1,17 +1,11 @@
-import { IMAGE_THEME } from "@/lib/design/image-theme";
-import { getSocialFonts } from "@/lib/design/social-fonts";
-import { BRAND_STAR_PATH as STAR_PATH } from "@/lib/design/logo";
 import { ImageResponse } from "next/og";
-import { SITE_NAME, SITE_TAGLINE, SITE_DESCRIPTION } from "@/config/site";
+import { getSocialFonts } from "@/lib/design/social-fonts";
+import { getSocialBrandLogo } from "@/lib/design/logo";
+import { IMAGE_THEME } from "@/lib/design/image-theme";
 
-// Default social share card. As a root file, this becomes the Open Graph /
-// Twitter image for every route that doesn't define its own.
-export const alt = `${SITE_NAME} — ${SITE_TAGLINE}`;
+export const alt = "YidVibe. Good work starts a conversation.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-
-// The YidVibe brand star (4-point rounded sparkle), drawn in a 0..134 box.
-
 
 export default function OpengraphImage() {
   return new ImageResponse(
@@ -27,44 +21,33 @@ export default function OpengraphImage() {
           background: IMAGE_THEME.primary,
           color: IMAGE_THEME.white,
           fontFamily: "Space Grotesk",
-          padding: "0 80px",
+          padding: "40px 80px",
           textAlign: "center",
         }}
       >
-        <svg width="132" height="132" viewBox="0 0 134 134" fill="none">
-          <path d={STAR_PATH} fill={IMAGE_THEME.gold} />
-        </svg>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={getSocialBrandLogo()} alt="" width={800} height={191} />
         <div
           style={{
             display: "flex",
-            fontSize: 72,
+            fontSize: 58,
             fontWeight: 600,
-            letterSpacing: "-0.02em",
-            marginTop: 32,
+            letterSpacing: "-.03em",
+            marginTop: 36,
+            color: IMAGE_THEME.gold,
           }}
         >
-          {SITE_NAME}
-        </div>
-        <div
-          style={{
-            display: "flex",
-            fontSize: 36,
-            color: IMAGE_THEME.tealSoft,
-            marginTop: 8,
-          }}
-        >
-          {SITE_TAGLINE}
+          Good work starts a conversation.
         </div>
         <div
           style={{
             display: "flex",
             fontSize: 28,
-            color: IMAGE_THEME.mutedText,
-            marginTop: 32,
-            maxWidth: 760,
+            marginTop: 28,
+            color: IMAGE_THEME.tealSoft,
           }}
         >
-          {SITE_DESCRIPTION}
+          Discover AI projects. Meet the people behind them.
         </div>
       </div>
     ),

@@ -219,7 +219,7 @@
 
 .yv-marquee { position: relative; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
 
-.yv-marquee-track { display: flex; gap: 8px; width: max-content; animation: yv-marquee-scroll 80s linear infinite; }
+.yv-marquee-track { display: flex; gap: 8px; width: max-content; flex-wrap: wrap; }
 
 .yv-marquee:hover .yv-marquee-track { animation-play-state: paused; }
 

@@ -1,39 +1,20 @@
 # Option C design QA
 
-final result: blocked
+Status: implementation and local checks complete; populated preview and independent visual review in progress. Production has not been updated for this redesign.
 
-This is a pending comparison record, not a completed design review.
+## Sources and artwork
 
-## Evidence status
+The approved handoff contains ten inspected desktop/mobile references and four authentic lossless PNGs extracted from Brand System v8. Their SHA256 values matched the supplied manifest. Source artwork remains unchanged; derived web images remove transparent margins only. The authentic mark is used in shared identity, app icons and social images.
 
-- Source: the user's selected Option C and ten desktop/mobile reference PNGs, supplied in `YidVibe-approved-ui-handoff.zip`.
-- Authentic artwork: four transparent PNGs extracted from the supplied Brand System v8 PDF, included in that ZIP.
-- Local source path: awaiting the user's normal download and confirmation. No local asset availability is assumed.
-- The current supported Library transfer fails on Windows metadata handling. The helper was not modified, its metadata requirements were not bypassed, and no replacement logo was generated.
-- Source dimensions known from metadata: full desktop homepage PNG is 992 × 1586. Other dimensions remain unverified until the ZIP is available.
-- Implementation screenshots: pending the full Option C implementation.
-- CSS viewport and density normalization: pending source-image inspection.
-- Full-view and focused comparisons: not performed.
-- State: the prior released UI remains live. Local work contains repository/style organization, shared project parsing and control extraction, a reduced-motion-aware route entrance, and the separately requested desktop/mobile navigation correction. This does not complete the Option C visual comparison.
+## Completed checks
 
-## Required fidelity surfaces
+- 127 frontend tests passed, including retained wizard FormData, server error focus, media/link validation and upload retry. Six boundary tests passed; four unrelated security-migration tests remain outside the authorized UI scope.
+- Typecheck, synchronized theme palette and initial production build passed. Final checks repeat after browser corrections.
+- Empty-data homepage rendered at 320, 360, 390, 768, 1024 and 1440px. No horizontal document overflow was measured. A narrow-gutter screenshot concern is being checked independently against DOM geometry.
+- Protected screen review uses a separate local component fixture with explicitly labeled test data, no account/database access and disabled publishing/uploads. It is outside the application repository and will not be deployed.
+- The fixture exposed a native browser interaction missed by unit tests: reusing Continue as Publish could submit on entering Review. Separate keyed buttons plus preventing the Continue default corrected it. Browser retest confirmed Review with zero fixture publish attempts.
+- Read-only source audit confirms no changes to `src/lib/actions`, query implementations, Supabase client/configuration, migrations, security helpers or middleware. Catalog queries, default filters and pagination are preserved. This is not a claim of complete database verification.
 
-| Surface | Status |
-| --- | --- |
-| Fonts and typography | Source pixels pending; self-hosted Space Grotesk 400/500/600 retained |
-| Spacing and layout rhythm | Source pixels pending; supplied geometry recorded for implementation |
-| Colors and tokens | Existing petrol/dark muted petrol text remains; mineral is not body text |
-| Image quality and authentic artwork | Blocked on the genuine asset ZIP |
-| Copy and real content | Existing records and server contracts retained; source comparison pending |
+## Pending release gate
 
-## Implementation checklist
-
-1. After download confirmation, locate the named ZIP in Downloads, extract it normally, verify its SHA256 manifest and inspect every reference image plus the four logos.
-2. Implement shared Option C shell and core desktop/mobile journeys using real data; Details → Media → Review must preserve uploads and final submit behavior.
-3. Apply shared design to remaining auth, dashboard, settings and admin routes; preserve their access checks and actions.
-4. Capture matching desktop/mobile states, compare each source and rendered screenshot together, and resolve P0/P1/P2 differences.
-5. Complete interaction, reduced-motion, performance, regression, type and build checks; coordinate independent review before production publication.
-
-## Comparison history
-
-No visual iteration has been claimed. The source assets have not yet been opened locally.
+Capture populated preview home/catalog/detail/profile and protected fixture states on desktop/mobile. Finish keyboard, filter, media, long-content, empty/error and reduced-motion checks. Resolve independent review findings. Verify homepage and social-image runtime responses and logs on the exact preview before production. Record final deployment IDs, test output and screenshots in the task evidence.

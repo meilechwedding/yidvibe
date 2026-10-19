@@ -3,14 +3,15 @@ import { Plus } from "lucide-react";
 import { requireAdminUnlocked } from "@/lib/admin";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
-import { ContentManager, type ContentItem } from "@/components/admin/content-manager";
+import {
+  ContentManager,
+  type ContentItem,
+} from "@/components/admin/content-manager";
 
 export const metadata = { title: "Content" };
 
 const TABS = [
   { key: "projects", label: "Projects" },
-  { key: "competitions", label: "Competitions" },
-  { key: "events", label: "Events" },
   { key: "directory", label: "Directory" },
 ] as const;
 
@@ -20,8 +21,9 @@ function isTab(v: string | undefined): v is Tab {
   return TABS.some((t) => t.key === v);
 }
 
-const ownerName = (p: { name?: string | null; handle?: string | null } | null) =>
-  p?.name || (p?.handle ? `@${p.handle}` : null);
+const ownerName = (
+  p: { name?: string | null; handle?: string | null } | null,
+) => p?.name || (p?.handle ? `@${p.handle}` : null);
 
 async function loadItems(type: Tab): Promise<ContentItem[]> {
   const supabase = await createClient();
@@ -43,43 +45,6 @@ async function loadItems(type: Tab): Promise<ContentItem[]> {
       hidden: r.hidden,
       featured: r.featured,
       editHref: `/showcase/${r.id}/edit`,
-    }));
-  }
-
-  if (type === "competitions") {
-    const { data } = await supabase
-      .from("competitions")
-      .select(
-        "id, title, slug, review_status, prize_amount, created_at, creator:profiles!competitions_creator_id_fkey(name,handle)",
-      )
-      .order("created_at", { ascending: false })
-      .limit(100);
-    return (data ?? []).map((r: any) => ({
-      id: r.id,
-      title: r.title,
-      owner: ownerName(r.creator),
-      meta: `$${Number(r.prize_amount).toLocaleString()} · ${r.review_status}`,
-      reviewStatus: r.review_status,
-      href: `/admin/competitions/${r.slug}`,
-    }));
-  }
-
-  if (type === "events") {
-    const { data } = await supabase
-      .from("events")
-      .select(
-        "id, title, location, starts_at, created_at, creator:profiles!events_creator_id_fkey(name,handle)",
-      )
-      .order("created_at", { ascending: false })
-      .limit(100);
-    return (data ?? []).map((r: any) => ({
-      id: r.id,
-      title: r.title,
-      owner: ownerName(r.creator),
-      meta:
-        [r.starts_at ? new Date(r.starts_at).toLocaleDateString() : null, r.location]
-          .filter(Boolean)
-          .join(" · ") || null,
     }));
   }
 
@@ -112,8 +77,8 @@ export default async function AdminContentPage({
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="font-display text-2xl text-ink">Content</h1>
-        <Link href="/admin/content/post" className="btn btn-primary btn-sm">
-          <Plus size={16} /> Post
+        <Link href="/showcase/submit" className="btn btn-primary btn-sm">
+          <Plus size={16} /> Post project
         </Link>
       </div>
 

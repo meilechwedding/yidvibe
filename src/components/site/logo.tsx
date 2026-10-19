@@ -1,23 +1,15 @@
 import Link from "next/link";
-import { SITE_NAME } from "@/lib/site";
-import { LogoMark } from "@/components/brand/sparkle";
+import { BrandLogo } from "@/components/brand/brand-logo";
 import { cn } from "@/lib/utils";
 
-/** Home link. Legacy artwork is preserved until the approved v8 assets are available locally. */
 export function Logo({ className }: { className?: string }) {
   return (
     <Link
       href="/"
-      aria-label={`${SITE_NAME} home`}
-      className={cn(
-        "inline-flex items-center gap-2 sm:gap-3 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        className,
-      )}
+      aria-label="YidVibe home"
+      className={cn("brand-home", className)}
     >
-      <LogoMark size={32} />
-      <span className="font-display text-xl sm:text-[1.4rem] font-semibold leading-none tracking-tight text-ink">
-        {SITE_NAME}
-      </span>
+      <BrandLogo decorative />
     </Link>
   );
 }

@@ -1,8 +1,10 @@
 import { notFound, redirect } from "next/navigation";
 import { getProjectById } from "@/lib/queries";
 import { getAuthUser } from "@/lib/current-user";
-import { Container, Eyebrow } from "@/components/brand/layout";
+import { Container } from "@/components/brand/layout";
 import { ProjectForm } from "@/components/showcase/project-form";
+import Link from "next/link";
+import { PageHeader } from "@/components/brand/page-header";
 import { updateProject } from "@/lib/actions/projects";
 
 export const metadata = { title: "Edit project" };
@@ -23,23 +25,19 @@ export default async function EditProjectPage({
   const updateAction = updateProject.bind(null, id);
 
   return (
-    <Container className="max-w-2xl py-12 md:py-16">
-      <div className="text-center">
-        <Eyebrow>Update your work</Eyebrow>
-        <h1 className="mt-3 font-display text-[clamp(2rem,5vw,2.75rem)] font-semibold tracking-tight text-ink">
-          Edit project
-        </h1>
-        <p className="mx-auto mt-3 max-w-md text-[17px] text-muted-foreground">
-          Update your project details.
-        </p>
-      </div>
-      <div className="mt-8">
-        <ProjectForm
-          action={updateAction}
-          project={project}
-          submitLabel="Save changes"
-        />
-      </div>
+    <Container className="posting-page">
+      <nav aria-label="Breadcrumb" className="page-breadcrumb">
+        <Link href={`/showcase/${id}`}>Back to project</Link>
+      </nav>
+      <PageHeader
+        title="Keep your project up to date."
+        subtitle="Edit the details, check your preview, and save your changes."
+      />
+      <ProjectForm
+        action={updateAction}
+        project={project}
+        submitLabel="Save changes"
+      />
     </Container>
   );
 }

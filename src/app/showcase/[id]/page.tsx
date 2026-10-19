@@ -26,13 +26,15 @@ import {
 import { getCurrentProfile } from "@/lib/current-user";
 import { getAdminContext, isAdminUnlocked } from "@/lib/admin";
 import { Container } from "@/components/brand/layout";
-import { SectionCrumb } from "@/components/brand/section-crumb";
-import { Sparkle } from "@/components/brand/sparkle";
 import { AvatarCircle } from "@/components/brand/avatar-circle";
-import { Panel, PanelLabel } from "@/components/brand/panel";
 import { MediaGallery } from "@/components/brand/media-gallery";
 import { CommentsCard } from "@/components/showcase/comments-card";
-import { accentFor, ACCENT_HERO, CONTACT_KEYS, contactHref, type ContactKey } from "@/lib/site";
+import {
+  accentFor,
+  CONTACT_KEYS,
+  contactHref,
+  type ContactKey,
+} from "@/lib/site";
 import { UpvoteButton } from "@/components/brand/upvote-button";
 import { SaveButton } from "@/components/brand/save-button";
 import { ShareButton } from "@/components/brand/share-button";
@@ -63,7 +65,10 @@ export async function generateMetadata({
   const { id } = await params;
   const project = await getProjectById(id);
   if (!project) return { title: "Project not found" };
-  return { title: project.name, description: project.description.slice(0, 155) };
+  return {
+    title: project.name,
+    description: project.description.slice(0, 155),
+  };
 }
 
 export default async function ProjectDetailPage({
@@ -94,51 +99,47 @@ export default async function ProjectDetailPage({
 
   // Pull the builder's chosen public contact links (community posts have none).
   const ownerProfile = owner ? await getProfileByHandle(owner.handle) : null;
-  const canViewOwnerProfile = !!ownerProfile && (ownerProfile.is_public || isOwner);
-  const links = ((canViewOwnerProfile ? ownerProfile?.links : null) ?? {}) as Record<string, string | undefined>;
-  const contacts = CONTACT_KEYS.filter((k) => links[k] && String(links[k]).trim());
+  const canViewOwnerProfile =
+    !!ownerProfile && (ownerProfile.is_public || isOwner);
+  const links = ((canViewOwnerProfile ? ownerProfile?.links : null) ??
+    {}) as Record<string, string | undefined>;
+  const contacts = CONTACT_KEYS.filter(
+    (k) => links[k] && String(links[k]).trim(),
+  );
 
-  const postedDate = new Date(project.created_at).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-
-  const badge = project.featured ? (
-    <span className="inline-flex items-center gap-2 rounded-input bg-gold-tint px-3 py-1 text-xs font-medium text-gold-deep">
-      <Sparkle size={12} color="var(--gold-500)" /> Featured
-    </span>
-  ) : project.url ? (
-    <span className="inline-flex items-center gap-2 rounded-input bg-sage-tint px-3 py-1 text-xs font-medium text-sage-deep">
-      <span className="yv-live-dot h-1.5 w-1.5 rounded-full bg-sage-deep" /> Live
-    </span>
-  ) : null;
+  const postedDate = new Date(project.created_at).toLocaleDateString(
+    undefined,
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    },
+  );
 
   return (
-    <Container className="max-w-6xl py-8">
-      <SectionCrumb section="Showcase" href="/showcase" name={project.name} accent="teal" />
-
-      <header className="flex flex-wrap items-start gap-4 border-b border-border pb-6">
-        <span
-          className="grid h-12 w-12 shrink-0 place-items-center rounded-input font-display text-lg font-semibold text-white"
-          style={{ background: ACCENT_HERO[accent] }}
-        >
-          {project.name.slice(0, 1).toUpperCase()}
-        </span>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h1
-              className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl"
-              dir="auto"
-            >
-              {project.name}
-            </h1>
-            {badge}
-          </div>
-          <p className="mt-1 text-sm text-muted-foreground">
+    <Container className="detail-page">
+      <nav aria-label="Breadcrumb" className="page-breadcrumb">
+        <Link href="/">Home</Link>
+        <span>/</span>
+        <Link href="/showcase">Projects</Link>
+        <span>/</span>
+        <span className="min-w-0 break-words">{project.name}</span>
+      </nav>
+      <header className="detail-intro">
+        <div className="min-w-0">
+          {project.tags.length > 0 && (
+            <p className="mb-4 text-sm font-medium text-muted-foreground">
+              {project.tags.join(" · ")}
+            </p>
+          )}
+          <h1 dir="auto">{project.name}</h1>
+          <p className="detail-summary" dir="auto">
+            {project.description}
+          </p>
+          <p className="mt-5 text-sm text-muted-foreground">
             {owner ? (
               <>
-                by{" "}
+                Made by{" "}
                 <Link
                   href={`/u/${owner.handle}`}
                   className="font-medium text-ink hover:underline"
@@ -149,31 +150,53 @@ export default async function ProjectDetailPage({
             ) : (
               "Community submission"
             )}
-            {" · posted "}
-            {postedDate}
           </p>
         </div>
-        <SaveButton
-          projectId={id}
-          initialSaved={saved.has(id)}
-          isAuthed={isAuthed}
-          redirectTo={`/showcase/${id}`}
-        />
+        <div className="detail-actions">
+          {project.url && (
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary"
+            >
+              Visit project <ExternalLink size={18} aria-hidden="true" />
+            </a>
+          )}
+          <ShareButton
+            path={`/showcase/${id}`}
+            title={project.name}
+            label="Share"
+          />
+          <SaveButton
+            projectId={id}
+            initialSaved={saved.has(id)}
+            isAuthed={isAuthed}
+            redirectTo={`/showcase/${id}`}
+            variant="inline"
+          />
+          <UpvoteButton
+            projectId={id}
+            initialCount={project.upvote_count}
+            initialUpvoted={upvoted.has(id)}
+            isAuthed={isAuthed}
+            redirectTo={`/showcase/${id}`}
+          />
+        </div>
       </header>
 
       {justPosted && (
-        <div className="mt-6">
+        <div className="mb-8">
           <PostedShareCard
             path={`/showcase/${id}`}
             title={project.name}
-            caption={`Check out "${project.name}" on YidVibe →`}
+            caption={`Check out ${project.name} on YidVibe`}
           />
         </div>
       )}
 
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1.7fr_1fr] lg:items-start">
-        {/* LEFT */}
-        <div className="space-y-6">
+      <div className="connected-panel detail-connected">
+        <div className="detail-media">
           <MediaGallery
             name={project.name}
             coverImage={project.image_url}
@@ -181,221 +204,167 @@ export default async function ProjectDetailPage({
             liveUrl={project.url}
             accent={accent}
           />
-
-          <Panel>
-            <PanelLabel>About</PanelLabel>
-            <p
-              className="mt-3 whitespace-pre-line text-sm leading-relaxed text-ink/90"
-              dir="auto"
-            >
-              {project.description}
-            </p>
-          </Panel>
-
-          <CommentsCard
-            projectId={id}
-            comments={comments}
-            meId={me?.id ?? null}
-            isAuthed={isAuthed}
-          />
         </div>
-
-        {/* RIGHT rail */}
-        <div className="space-y-4 lg:sticky lg:top-16">
-          <Panel>
-            <div className="flex items-stretch gap-3">
-              <UpvoteButton
-                projectId={project.id}
-                initialCount={project.upvote_count}
-                initialUpvoted={upvoted.has(project.id)}
-                isAuthed={isAuthed}
-                redirectTo={`/showcase/${id}`}
-                className="upvote-lg"
-              />
-              <div className="flex flex-1 flex-col justify-center gap-2">
-                {project.url && (
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-primary btn-sm w-full justify-center"
-                  >
-                    <ExternalLink size={15} /> Visit site
-                  </a>
-                )}
-                <ShareButton
-                  path={`/showcase/${id}`}
-                  title={project.name}
-                  label="Share"
-                  className="btn-sm w-full justify-center"
+        <section className="detail-about">
+          <h2>About {project.name}</h2>
+          <p dir="auto">{project.description}</p>
+          {project.video_url && (
+            <a
+              href={project.video_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-ghost mt-6"
+            >
+              <Play size={18} aria-hidden="true" /> Watch demo
+            </a>
+          )}
+        </section>
+        <aside className="connected-aside detail-maker">
+          <h2>Meet the maker</h2>
+          {owner ? (
+            <>
+              <div className="mt-6 flex items-center gap-4">
+                <AvatarCircle
+                  name={displayName(owner)}
+                  src={owner.avatar_url}
+                  size={64}
                 />
-                {project.video_url && (
-                  <a
-                    href={project.video_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-ghost btn-sm w-full justify-center"
-                  >
-                    <Play size={15} /> Watch demo
-                  </a>
-                )}
-                {isOwner && (
-                  <>
-                    <Link
-                      href={`/showcase/${id}/edit`}
-                      className="btn btn-ghost btn-sm w-full justify-center"
-                    >
-                      <Pencil size={15} /> Edit
-                    </Link>
-                    <DeleteProjectButton action={deleteThis} />
-                  </>
-                )}
-                {adminUnlocked && (
-                  <FeatureToggle projectId={id} featured={!!project.featured} />
-                )}
-                {isAuthed && !isOwner && (
-                  <div className="flex justify-center pt-1">
-                    <ReportMenu targetType="project" targetId={id} />
-                  </div>
-                )}
-              </div>
-            </div>
-          </Panel>
-
-          <Panel>
-            <PanelLabel>{contacts.length > 0 ? "Reach out" : "Builder"}</PanelLabel>
-            {owner ? (
-              <>
-                <div className="mt-3 flex items-center gap-3">
-                  <AvatarCircle
-                    name={displayName(owner)}
-                    src={owner.avatar_url}
-                    size={40}
-                    accent="blue"
-                  />
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate font-semibold text-ink">
-                      {displayName(owner)}
-                    </p>
-                    <p className="truncate text-sm text-muted-foreground">
-                      @{owner.handle}
-                    </p>
-                  </div>
-                  {canViewOwnerProfile && <Link
-                    href={`/u/${owner.handle}`}
-                    className="btn btn-ghost btn-sm shrink-0"
-                  >
-                    View profile <ArrowRight size={15} />
-                  </Link>}
+                <div className="min-w-0">
+                  <p className="break-words text-xl font-semibold">
+                    {displayName(owner)}
+                  </p>
+                  <p className="break-words text-sm text-muted-foreground">
+                    @{owner.handle}
+                  </p>
                 </div>
-                {!canViewOwnerProfile && (
-                  <p className="mt-3 text-sm text-muted-foreground">
-                    This builder has not made their profile public yet. Contact details are unavailable.
-                  </p>
-                )}
-                {canViewOwnerProfile && contacts.length === 0 && (
-                  <p className="mt-3 text-sm text-muted-foreground">
-                    This builder has not shared contact details.
-                  </p>
-                )}
-                {contacts.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-2 border-t border-border/60 pt-3">
-                    {contacts.map((k) => {
-                      const { label, Icon } = CONTACT_META[k];
-                      return (
-                        <a
-                          key={k}
-                          href={contactHref(k, String(links[k]))}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 rounded-input border border-border bg-surface px-3 py-2 text-xs font-medium text-ink hover:bg-secondary"
-                        >
-                          <Icon size={14} /> {label}
-                        </a>
-                      );
-                    })}
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="mt-3 space-y-3">
-                <p className="text-sm text-muted-foreground">
-                  This is a community submission — no builder attached yet.
+              </div>
+              {canViewOwnerProfile && ownerProfile?.bio && (
+                <p className="mt-5 whitespace-pre-line text-base text-muted-foreground">
+                  {ownerProfile.bio}
                 </p>
-                <ClaimButton projectId={id} />
+              )}
+              {canViewOwnerProfile ? (
+                <Link
+                  href={`/u/${owner.handle}`}
+                  className="btn btn-primary mt-6 w-full"
+                >
+                  View profile <ArrowRight size={18} />
+                </Link>
+              ) : (
+                <p className="mt-5 text-sm text-muted-foreground">
+                  This builder has not made their profile public yet. Contact
+                  details are unavailable.
+                </p>
+              )}
+              {canViewOwnerProfile && contacts.length === 0 && (
+                <p className="mt-5 text-sm text-muted-foreground">
+                  This builder has not shared contact details.
+                </p>
+              )}
+              {contacts.length > 0 && (
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {contacts.map((key) => {
+                    const { label, Icon } = CONTACT_META[key];
+                    return (
+                      <a
+                        key={key}
+                        href={contactHref(key, String(links[key]))}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-ghost btn-sm"
+                      >
+                        <Icon size={16} aria-hidden="true" />
+                        {label}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="mt-5 space-y-5">
+              <p className="text-muted-foreground">
+                This project was shared by the community. Are you the maker?
+              </p>
+              <ClaimButton projectId={id} />
+            </div>
+          )}
+          <dl className="project-facts">
+            {project.tools.length > 0 && (
+              <div>
+                <dt>Built with</dt>
+                <dd>
+                  {project.tools.map((tool) => (
+                    <Link
+                      key={tool}
+                      href={`/showcase?tool=${encodeURIComponent(tool)}`}
+                      className="chip"
+                    >
+                      {tool}
+                    </Link>
+                  ))}
+                </dd>
               </div>
             )}
-          </Panel>
-
-          <Panel>
-            <PanelLabel>Details</PanelLabel>
-            <div className="mt-2">
-              {project.tools.length > 0 && (
-                <DetailRow k="Built with">
-                  {project.tools.map((t) => (
-                    <ChipLink
-                      key={t}
-                      href={`/showcase?tool=${encodeURIComponent(t)}`}
-                      tone="bg-blue-tint text-blue-deep"
+            {project.tags.length > 0 && (
+              <div>
+                <dt>Category</dt>
+                <dd>
+                  {project.tags.map((tag) => (
+                    <Link
+                      key={tag}
+                      href={`/showcase?tag=${encodeURIComponent(tag)}`}
+                      className="chip"
                     >
-                      {t}
-                    </ChipLink>
+                      {tag}
+                    </Link>
                   ))}
-                </DetailRow>
+                </dd>
+              </div>
+            )}
+            <div>
+              <dt>Posted</dt>
+              <dd>{postedDate}</dd>
+            </div>
+            {project.featured && (
+              <div>
+                <dt>Community pick</dt>
+                <dd>Featured project</dd>
+              </div>
+            )}
+          </dl>
+          {(isOwner || adminUnlocked || isAuthed) && (
+            <div className="detail-management">
+              {isOwner && (
+                <>
+                  <Link
+                    href={`/showcase/${id}/edit`}
+                    className="btn btn-ghost btn-sm"
+                  >
+                    <Pencil size={16} />
+                    Edit project
+                  </Link>
+                  <DeleteProjectButton action={deleteThis} />
+                </>
               )}
-              {project.tags.length > 0 && (
-                <DetailRow k="Category">
-                  {project.tags.map((t) => (
-                    <ChipLink
-                      key={t}
-                      href={`/showcase?tag=${encodeURIComponent(t)}`}
-                      tone="bg-teal-50 text-teal-800"
-                    >
-                      {t}
-                    </ChipLink>
-                  ))}
-                </DetailRow>
+              {adminUnlocked && (
+                <FeatureToggle projectId={id} featured={!!project.featured} />
               )}
-              <DetailRow k="Posted">{postedDate}</DetailRow>
-              {(project.featured || project.url) && (
-                <DetailRow k="Status">
-                  {project.featured ? "Featured" : "Live"}
-                </DetailRow>
+              {isAuthed && !isOwner && (
+                <ReportMenu targetType="project" targetId={id} />
               )}
             </div>
-          </Panel>
-        </div>
+          )}
+        </aside>
+      </div>
+      <div className="detail-comments">
+        <CommentsCard
+          projectId={id}
+          comments={comments}
+          meId={me?.id ?? null}
+          isAuthed={isAuthed}
+        />
       </div>
     </Container>
-  );
-}
-
-function DetailRow({ k, children }: { k: string; children: React.ReactNode }) {
-  return (
-    <div className="flex items-start justify-between gap-3 border-b border-border/60 py-2 text-sm last:border-0">
-      <span className="shrink-0 font-medium text-muted-foreground">{k}</span>
-      <span className="flex flex-wrap justify-end gap-2 text-right text-ink">
-        {children}
-      </span>
-    </div>
-  );
-}
-
-function ChipLink({
-  href,
-  tone,
-  children,
-}: {
-  href: string;
-  tone: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      className={`rounded-full px-3 py-1 text-xs font-medium ${tone}`}
-    >
-      {children}
-    </Link>
   );
 }

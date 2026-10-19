@@ -36,15 +36,22 @@ export default async function DirectoryPage({
   const totalPages = Math.ceil(total / PER_PAGE);
 
   return (
-    <Container className="py-12 md:py-16">
+    <Container className="catalog-page">
+      <nav aria-label="Breadcrumb" className="page-breadcrumb">
+        <Link href="/">Home</Link>
+        <span>/</span>
+        <span>Directory</span>
+      </nav>
       <PageHeader
         accent="blue"
-        eyebrow={DIRECTORY_COPY.eyebrow}
         title={DIRECTORY_COPY.title}
         subtitle={DIRECTORY_COPY.subtitle}
         action={
           user ? (
-            <Link href="/directory/list-me" className="btn btn-primary shrink-0">
+            <Link
+              href="/directory/list-me"
+              className="btn btn-primary shrink-0"
+            >
               <Compass size={16} /> Add me
             </Link>
           ) : (

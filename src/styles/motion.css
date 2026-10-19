@@ -11,11 +11,11 @@
 
 @keyframes yv-live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 
-.yv-live-dot { animation: yv-live-pulse 2s ease-in-out infinite; }
+.yv-live-dot { animation: none; }
 
 @keyframes yv-spark { 0% { opacity: 0; transform: translate(0, 0) scale(0.3); } 25% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1); } }
 
-@keyframes yv-upvote-pop { 0% { transform: scale(1); } 45% { transform: scale(1.4); } 100% { transform: scale(1); } }
+@keyframes yv-upvote-pop { 0% { transform: scale(1); } 45% { transform: scale(1.04); } 100% { transform: scale(1); } }
 
 @keyframes yv-share-shrink { from { width: 100%; } to { width: 0%; } }
 

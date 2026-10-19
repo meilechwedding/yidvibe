@@ -1,51 +1,26 @@
 import Link from "next/link";
 import {
+  ArrowUpRight,
   Flag,
-  Trophy,
-  Calendar,
   Compass,
   MessageSquare,
   Tag,
   Users,
   FolderKanban,
-  type LucideIcon,
 } from "lucide-react";
 import { requireAdminUnlocked } from "@/lib/admin";
 import { createClient } from "@/lib/supabase/server";
-
-function StatTile({
-  icon: Icon,
-  value,
-  label,
-}: {
-  icon: LucideIcon;
-  value: number;
-  label: string;
-}) {
-  return (
-    <div className="rounded-card border border-border bg-surface p-4">
-      <Icon size={16} className="text-muted-foreground" />
-      <div className="mt-2 font-display text-2xl font-semibold leading-none text-ink">
-        {value}
-      </div>
-      <div className="mt-1 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-        {label}
-      </div>
-    </div>
-  );
-}
+import { PageHeader } from "@/components/brand/page-header";
 
 export default async function AdminDashboard() {
   await requireAdminUnlocked();
   const supabase = await createClient();
   const [
-    { count: usersCount },
-    { count: projectsCount },
-    { count },
-    { count: pendingComps },
-    { count: pendingEvents },
-    { count: pendingListings },
-    { count: openFeedback },
+    { count: users },
+    { count: projects },
+    { count: reports },
+    { count: listings },
+    { count: feedback },
   ] = await Promise.all([
     supabase.from("profiles").select("id", { count: "exact", head: true }),
     supabase.from("projects").select("id", { count: "exact", head: true }),
@@ -53,14 +28,6 @@ export default async function AdminDashboard() {
       .from("reports")
       .select("id", { count: "exact", head: true })
       .eq("status", "open"),
-    supabase
-      .from("competitions")
-      .select("id", { count: "exact", head: true })
-      .eq("review_status", "pending"),
-    supabase
-      .from("event_requests")
-      .select("id", { count: "exact", head: true })
-      .eq("status", "pending"),
     supabase
       .from("directory_listings")
       .select("id", { count: "exact", head: true })
@@ -70,113 +37,80 @@ export default async function AdminDashboard() {
       .select("id", { count: "exact", head: true })
       .eq("status", "open"),
   ]);
-
   const stats = [
-    { icon: Users, value: usersCount ?? 0, label: "Users" },
-    { icon: FolderKanban, value: projectsCount ?? 0, label: "Projects" },
-    { icon: Flag, value: count ?? 0, label: "Open reports" },
-    { icon: Trophy, value: pendingComps ?? 0, label: "Pending competitions" },
-    { icon: Calendar, value: pendingEvents ?? 0, label: "Pending events" },
-    { icon: Compass, value: pendingListings ?? 0, label: "Pending listings" },
-    { icon: MessageSquare, value: openFeedback ?? 0, label: "Open feedback" },
+    { label: "Members", value: users, icon: Users, href: "/admin/users" },
+    {
+      label: "Projects",
+      value: projects,
+      icon: FolderKanban,
+      href: "/admin/content",
+    },
+    {
+      label: "Open reports",
+      value: reports,
+      icon: Flag,
+      href: "/admin/reports",
+    },
   ];
-
+  const queues = [
+    {
+      label: "Reports",
+      description: `${reports ?? 0} open reports to review.`,
+      icon: Flag,
+      href: "/admin/reports",
+    },
+    {
+      label: "Directory",
+      description: `${listings ?? 0} listings awaiting review.`,
+      icon: Compass,
+      href: "/admin/directory",
+    },
+    {
+      label: "Feedback",
+      description: `${feedback ?? 0} open notes from the community.`,
+      icon: MessageSquare,
+      href: "/admin/feedback",
+    },
+    {
+      label: "Browse tags",
+      description: "Choose the discovery links on the homepage.",
+      icon: Tag,
+      href: "/admin/tags",
+    },
+  ];
   return (
-    <div>
-      <h1 className="font-display text-2xl text-ink">Overview</h1>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Community at a glance, plus the moderation queues that need a look.
-      </p>
-
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-        {stats.map((s) => (
-          <StatTile key={s.label} icon={s.icon} value={s.value} label={s.label} />
+    <>
+      <PageHeader
+        title="Community overview"
+        subtitle="Manage the work people share and the conversations around it."
+      />
+      <div className="admin-stats">
+        {stats.map(({ label, value, icon: Icon, href }) => (
+          <Link key={label} href={href}>
+            <Icon size={22} aria-hidden="true" />
+            <div>
+              <strong>{value ?? 0}</strong>
+              <span>{label}</span>
+            </div>
+            <ArrowUpRight size={18} aria-hidden="true" />
+          </Link>
         ))}
       </div>
-
-      <h2 className="mt-12 font-display text-lg text-ink">Moderation queues</h2>
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Link
-          href="/admin/reports"
-          className="rounded-card border border-border bg-surface p-6 transition-colors hover:border-border-hover"
-        >
-          <div className="flex items-center gap-2 text-ink">
-            <Flag size={18} className="text-clay-mid" />
-            <span className="font-medium">Reports</span>
-          </div>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {count ?? 0} open {count === 1 ? "report" : "reports"} to review.
-          </p>
-        </Link>
-
-        <Link
-          href="/admin/competitions"
-          className="rounded-card border border-border bg-surface p-6 transition-colors hover:border-border-hover"
-        >
-          <div className="flex items-center gap-2 text-ink">
-            <Trophy size={18} className="text-gold-mid" />
-            <span className="font-medium">Competition review</span>
-          </div>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {pendingComps ?? 0} pending{" "}
-            {pendingComps === 1 ? "competition" : "competitions"}.
-          </p>
-        </Link>
-
-        <Link
-          href="/admin/events"
-          className="rounded-card border border-border bg-surface p-6 transition-colors hover:border-border-hover"
-        >
-          <div className="flex items-center gap-2 text-ink">
-            <Calendar size={18} className="text-sage-mid" />
-            <span className="font-medium">Event requests</span>
-          </div>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {pendingEvents ?? 0} pending{" "}
-            {pendingEvents === 1 ? "request" : "requests"}.
-          </p>
-        </Link>
-
-        <Link
-          href="/admin/directory"
-          className="rounded-card border border-border bg-surface p-6 transition-colors hover:border-border-hover"
-        >
-          <div className="flex items-center gap-2 text-ink">
-            <Compass size={18} className="text-teal-600" />
-            <span className="font-medium">Directory review</span>
-          </div>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {pendingListings ?? 0} pending{" "}
-            {pendingListings === 1 ? "listing" : "listings"}.
-          </p>
-        </Link>
-
-        <Link
-          href="/admin/feedback"
-          className="rounded-card border border-border bg-surface p-6 transition-colors hover:border-border-hover"
-        >
-          <div className="flex items-center gap-2 text-ink">
-            <MessageSquare size={18} className="text-blue-mid" />
-            <span className="font-medium">Feedback</span>
-          </div>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {openFeedback ?? 0} open {openFeedback === 1 ? "note" : "notes"}.
-          </p>
-        </Link>
-
-        <Link
-          href="/admin/tags"
-          className="rounded-card border border-border bg-surface p-6 transition-colors hover:border-border-hover"
-        >
-          <div className="flex items-center gap-2 text-ink">
-            <Tag size={18} className="text-teal-600" />
-            <span className="font-medium">Browse-by tags</span>
-          </div>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Manage the tags shown in the landing-page browse marquee.
-          </p>
-        </Link>
-      </div>
-    </div>
+      <section className="mt-12">
+        <h2 className="text-2xl font-semibold">Review and manage</h2>
+        <div className="admin-queues">
+          {queues.map(({ label, description, icon: Icon, href }) => (
+            <Link key={href} href={href}>
+              <Icon size={24} aria-hidden="true" />
+              <div>
+                <h3>{label}</h3>
+                <p>{description}</p>
+              </div>
+              <ArrowUpRight size={20} aria-hidden="true" />
+            </Link>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }

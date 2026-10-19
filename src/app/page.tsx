@@ -1,75 +1,125 @@
 import Link from "next/link";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowUpRight, Compass, MessageCircle, Plus } from "lucide-react";
 import { Container, Section } from "@/components/brand/layout";
-import { BrowseBy } from "@/components/brand/browse-by";
-import { ProjectRowCard } from "@/components/showcase/project-row-card";
-import { BuilderCard } from "@/components/brand/builder-card";
-import { listProjects, listTopBuilders, getBrowseTags, getMyUpvotedProjectIds, getMySavedProjectIds } from "@/lib/queries";
-import { getAuthUser } from "@/lib/current-user";
+import { SearchField } from "@/components/brand/search-field";
+import { FeaturedProject } from "@/components/brand/featured-project";
+import { BuilderRow } from "@/components/brand/builder-row";
+import { listProjects, listTopBuilders, getBrowseTags } from "@/lib/queries";
 import { isFeatureEnabled } from "@/lib/flags";
 
 export default async function Home() {
-  const [recent, builders, tags, user, upvoted, saved, showBuilders] = await Promise.all([
+  const [recent, builders, tags, showBuilders] = await Promise.all([
     listProjects({ sort: "new", limit: 6 }),
-    listTopBuilders(4),
+    listTopBuilders(3),
     getBrowseTags(),
-    getAuthUser(),
-    getMyUpvotedProjectIds(),
-    getMySavedProjectIds(),
     isFeatureEnabled("module.people"),
   ]);
-
+  const project = recent.find((item) => item.featured) ?? recent[0];
   return (
     <>
-      <section>
-        <Container className="py-12 md:py-16">
-          <p className="text-sm font-medium text-teal-800">The home for frum builders</p>
-          <h1 className="mt-4 max-w-[20ch] font-display text-[clamp(2.25rem,5vw,4.5rem)] font-semibold leading-[1.08] tracking-tight text-ink">
-            See what the community is building.
+      <section className="home-hero">
+        <Container>
+          <p className="hero-kicker">The home for frum builders</p>
+          <h1>
+            Good work starts
+            <br />
+            <span>a conversation.</span>
           </h1>
-          <p className="mt-6 max-w-[52ch] text-base leading-relaxed text-muted-foreground">
-            Discover useful apps, meet their makers, and share what you make with AI.
+          <p className="hero-description">
+            Discover AI projects. Meet the people behind them.
           </p>
-          <form action="/showcase" method="get" className="mt-8 flex w-full max-w-xl items-center gap-2 rounded-input border border-border bg-surface p-2 pl-4">
-            <Search size={18} aria-hidden="true" className="shrink-0 text-muted-foreground" />
-            <input name="q" dir="auto" placeholder="Search projects or tools" aria-label="Search projects or tools" className="min-w-0 flex-1 bg-transparent py-2 text-sm text-ink outline-none placeholder:text-muted-foreground" />
-            <button type="submit" className="btn btn-primary btn-sm min-h-11">Search</button>
-          </form>
-          <div className="mt-6"><BrowseBy tags={tags} /></div>
+          <SearchField className="hero-search" />
+          <nav aria-label="Discover projects" className="hero-categories">
+            {(tags.length
+              ? tags.slice(0, 3)
+              : ["AI tools", "Design", "Productivity"]
+            ).map((tag) => (
+              <Link key={tag} href={`/showcase?tag=${encodeURIComponent(tag)}`}>
+                {tag}
+              </Link>
+            ))}
+          </nav>
         </Container>
       </section>
-
-      <Section className="pt-0">
-        <Container>
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <h2 className="font-display text-[clamp(1.75rem,3vw,2.25rem)] font-semibold tracking-tight text-ink">Latest projects</h2>
-            <Link href="/showcase" className="link-arrow min-h-11">Explore all <ArrowRight size={16} /></Link>
-          </div>
-          {recent.length ? (
-            <div className="mt-6 flex flex-col gap-3">
-              {recent.map(project => <ProjectRowCard key={project.id} project={project} isAuthed={!!user} upvoted={upvoted.has(project.id)} saved={saved.has(project.id)} />)}
-            </div>
+      <Container>
+        <section
+          className={`connected-panel home-feature${showBuilders ? "" : " is-single"}`}
+          aria-label="From the community"
+        >
+          {project ? (
+            <FeaturedProject project={project} />
           ) : (
-            <div className="mt-6 rounded-card border border-border bg-surface p-8">
-              <h3 className="font-display text-xl font-semibold text-ink">No projects yet</h3>
-              <p className="mt-2 text-sm text-muted-foreground">Have something to share? Add the first project.</p>
-              <Link href="/showcase/submit" className="link-arrow mt-4 min-h-11">Post a project <ArrowRight size={16} /></Link>
+            <div className="featured-project feature-empty">
+              <h2>Every project starts somewhere.</h2>
+              <p>Share something you built and start the first conversation.</p>
+              <Link href="/showcase/submit" className="btn btn-primary">
+                Post a project <Plus size={18} />
+              </Link>
             </div>
           )}
+          {showBuilders && (
+            <aside className="connected-aside home-builders">
+              <h2>Find your people.</h2>
+              <p className="text-muted-foreground">
+                Good ideas go further together.
+              </p>
+              <div className="builder-rows">
+                {builders.length ? (
+                  builders.map((builder) => (
+                    <BuilderRow key={builder.id} builder={builder} />
+                  ))
+                ) : (
+                  <p className="py-8 text-muted-foreground">
+                    Meet the community as builders share their work.
+                  </p>
+                )}
+              </div>
+              <Link href="/builders" className="btn btn-primary w-full">
+                Find a builder <ArrowUpRight size={19} aria-hidden="true" />
+              </Link>
+            </aside>
+          )}
+        </section>
+      </Container>
+      <Section className="home-how">
+        <Container>
+          <h2>From an idea to something useful.</h2>
+          <div className="how-columns">
+            <div>
+              <Compass size={26} aria-hidden="true" />
+              <h3>Discover good work</h3>
+              <p>
+                Explore what people are building and find a fresh perspective.
+              </p>
+            </div>
+            <div>
+              <MessageCircle size={26} aria-hidden="true" />
+              <h3>Meet the people</h3>
+              <p>
+                Get to know the maker behind a project that catches your eye.
+              </p>
+            </div>
+            <div>
+              <Plus size={26} aria-hidden="true" />
+              <h3>Share what you make</h3>
+              <p>Bring your work to the community and see where it goes.</p>
+            </div>
+          </div>
         </Container>
       </Section>
-
-      {showBuilders && builders.length > 0 && (
-        <Section className="pt-12 md:pt-16">
-          <Container>
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <h2 className="font-display text-[clamp(1.75rem,3vw,2.25rem)] font-semibold tracking-tight text-ink">Meet the builders</h2>
-              <Link href="/builders" className="link-arrow min-h-11">All builders <ArrowRight size={16} /></Link>
+      <Section className="pt-12 md:pt-16">
+        <Container>
+          <div className="share-work">
+            <div>
+              <h2>Working on something good?</h2>
+              <p>Share your project. Find your people.</p>
             </div>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{builders.map(builder => <BuilderCard key={builder.id} builder={builder} />)}</div>
-          </Container>
-        </Section>
-      )}
+            <Link href="/showcase/submit" className="btn btn-gold">
+              Share your work <ArrowUpRight size={20} aria-hidden="true" />
+            </Link>
+          </div>
+        </Container>
+      </Section>
     </>
   );
 }

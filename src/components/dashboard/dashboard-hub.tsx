@@ -34,8 +34,8 @@ function HubRow({
       >
         <Icon size={17} />
       </span>
-      <span className="flex-1 text-sm font-semibold text-ink">{label}</span>
-      <ChevronRight size={17} className="shrink-0 text-muted-foreground/50" />
+      <span className="flex-1 text-base font-medium text-ink">{label}</span>
+      <ChevronRight size={17} className="shrink-0 text-muted-foreground" />
     </Link>
   );
 }
@@ -66,8 +66,10 @@ export function DashboardHub({
             key={s.label}
             className="rounded-card border border-border bg-surface px-3 py-3 text-center shadow-[var(--shadow-xs)]"
           >
-            <p className="font-display text-xl font-semibold text-ink">{s.value}</p>
-            <p className="mt-1 text-sm font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+            <p className="font-display text-xl font-semibold text-ink">
+              {s.value}
+            </p>
+            <p className="mt-1 text-sm font-medium text-muted-foreground">
               {s.label}
             </p>
           </div>

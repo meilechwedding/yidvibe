@@ -14,7 +14,7 @@ export function Panel({
   return (
     <div
       className={cn(
-        "rounded-card border border-border bg-surface p-4 shadow-[var(--shadow-sm)] sm:p-6",
+        "workspace-panel rounded-card border border-border bg-surface p-6 sm:p-8",
         className,
       )}
     >
@@ -23,7 +23,7 @@ export function Panel({
   );
 }
 
-/** Small uppercase section label that heads a panel. */
+/** Section label that heads a panel. */
 export function PanelLabel({
   children,
   className,
@@ -32,12 +32,7 @@ export function PanelLabel({
   className?: string;
 }) {
   return (
-    <p
-      className={cn(
-        "text-sm font-semibold uppercase tracking-[0.1em] text-muted-foreground",
-        className,
-      )}
-    >
+    <p className={cn("text-base font-medium text-ink", className)}>
       {children}
     </p>
   );

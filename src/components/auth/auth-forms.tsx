@@ -13,7 +13,7 @@ import {
 } from "@/lib/actions/auth";
 import { cn } from "@/lib/utils";
 import { useScrollToFirstError } from "@/hooks/use-scroll-to-error";
-import { LogoMark } from "@/components/brand/sparkle";
+import { BrandLogo } from "@/components/brand/brand-logo";
 
 function GoogleIcon() {
   return (
@@ -41,13 +41,19 @@ function GoogleIcon() {
 function Note({ state }: { state: AuthFormState }) {
   if (state.notice)
     return (
-      <p role="status" className="mt-4 rounded-lg bg-teal-50 px-3 py-2 text-sm text-teal-800">
+      <p
+        role="status"
+        className="mt-4 rounded-lg bg-teal-50 px-3 py-2 text-sm text-teal-800"
+      >
         {state.notice}
       </p>
     );
   if (state.error)
     return (
-      <p role="alert" className="mt-4 rounded-lg bg-clay-tint px-3 py-2 text-sm text-clay-deep">
+      <p
+        role="alert"
+        className="mt-4 rounded-lg bg-clay-tint px-3 py-2 text-sm text-clay-deep"
+      >
         {state.error}
       </p>
     );
@@ -74,9 +80,9 @@ export function AuthForms({
   const signUpRef = useScrollToFirstError(signUpState.fieldErrors);
 
   return (
-    <div className="w-full rounded-card border border-border bg-surface p-8 shadow-[var(--shadow-md)]">
-      <div className="mb-4 flex justify-center">
-        <LogoMark size={40} />
+    <div className="auth-panel w-full rounded-card border border-border bg-surface p-8">
+      <div className="mb-8 flex justify-center">
+        <BrandLogo />
       </div>
       <h1 className="text-center font-display text-2xl font-semibold leading-tight text-ink">
         {authFormCopy[mode].title}
@@ -100,13 +106,30 @@ export function AuthForms({
       </div>
 
       {mode === "signin" ? (
-        <form key="signin" ref={signInRef} action={signInAction} noValidate className="space-y-3">
+        <form
+          key="signin"
+          ref={signInRef}
+          action={signInAction}
+          noValidate
+          className="space-y-5"
+        >
           <input type="hidden" name="next" value={next} />
           <div>
+            <label
+              htmlFor="signin-email"
+              className="mb-2 block text-sm font-medium"
+            >
+              Email
+            </label>
             <input
+              id="signin-email"
               name="email"
               aria-invalid={!!signInState.fieldErrors?.email}
-              aria-describedby={signInState.fieldErrors?.email ? "signin-email-error" : undefined}
+              aria-describedby={
+                signInState.fieldErrors?.email
+                  ? "signin-email-error"
+                  : undefined
+              }
               aria-label="Email"
               type="email"
               autoComplete="email"
@@ -115,16 +138,30 @@ export function AuthForms({
               placeholder="Email"
             />
             {signInState.fieldErrors?.email && (
-              <p id="signin-email-error" className="mt-1 text-xs text-clay-deep">
+              <p
+                id="signin-email-error"
+                className="mt-1 text-xs text-clay-deep"
+              >
                 {signInState.fieldErrors.email}
               </p>
             )}
           </div>
           <div>
+            <label
+              htmlFor="signin-password"
+              className="mb-2 block text-sm font-medium"
+            >
+              Password
+            </label>
             <input
+              id="signin-password"
               name="password"
               aria-invalid={!!signInState.fieldErrors?.password}
-              aria-describedby={signInState.fieldErrors?.password ? "signin-password-error" : undefined}
+              aria-describedby={
+                signInState.fieldErrors?.password
+                  ? "signin-password-error"
+                  : undefined
+              }
               aria-label="Password"
               type="password"
               autoComplete="current-password"
@@ -133,7 +170,10 @@ export function AuthForms({
               placeholder="Password"
             />
             {signInState.fieldErrors?.password && (
-              <p id="signin-password-error" className="mt-1 text-xs text-clay-deep">
+              <p
+                id="signin-password-error"
+                className="mt-1 text-xs text-clay-deep"
+              >
                 {signInState.fieldErrors.password}
               </p>
             )}
@@ -143,19 +183,36 @@ export function AuthForms({
             disabled={signingIn}
             className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-input px-4 text-sm font-medium transition-transform active:scale-[0.99] disabled:opacity-70"
           >
-            {signingIn ? authFormCopy.signin.pending : authFormCopy.signin.submit}
+            {signingIn
+              ? authFormCopy.signin.pending
+              : authFormCopy.signin.submit}
           </button>
           <Note state={signInState} />
         </form>
       ) : (
-        <form key="signup" ref={signUpRef} action={signUpAction} noValidate className="space-y-3">
+        <form
+          key="signup"
+          ref={signUpRef}
+          action={signUpAction}
+          noValidate
+          className="space-y-5"
+        >
           <input type="hidden" name="next" value={next} />
           <div>
+            <label
+              htmlFor="signup-name"
+              className="mb-2 block text-sm font-medium"
+            >
+              Your name
+            </label>
             <input
+              id="signup-name"
               name="name"
               autoComplete="name"
               aria-invalid={!!signUpState.fieldErrors?.name}
-              aria-describedby={signUpState.fieldErrors?.name ? "signup-name-error" : undefined}
+              aria-describedby={
+                signUpState.fieldErrors?.name ? "signup-name-error" : undefined
+              }
               aria-label="Your name"
               required
               className={FORM_INPUT_CLASS}
@@ -168,27 +225,52 @@ export function AuthForms({
             )}
           </div>
           <div>
+            <label
+              htmlFor="signup-username"
+              className="mb-2 block text-sm font-medium"
+            >
+              Username
+            </label>
             <input
+              id="signup-username"
               name="username"
               autoComplete="username"
               aria-invalid={!!signUpState.fieldErrors?.username}
-              aria-describedby={signUpState.fieldErrors?.username ? "signup-username-error" : undefined}
+              aria-describedby={
+                signUpState.fieldErrors?.username
+                  ? "signup-username-error"
+                  : undefined
+              }
               aria-label="Username"
               required
               className={cn(FORM_INPUT_CLASS, "font-mono")}
               placeholder="username"
             />
             {signUpState.fieldErrors?.username && (
-              <p id="signup-username-error" className="mt-1 text-xs text-clay-deep">
+              <p
+                id="signup-username-error"
+                className="mt-1 text-xs text-clay-deep"
+              >
                 {signUpState.fieldErrors.username}
               </p>
             )}
           </div>
           <div>
+            <label
+              htmlFor="signup-email"
+              className="mb-2 block text-sm font-medium"
+            >
+              Email
+            </label>
             <input
+              id="signup-email"
               name="email"
               aria-invalid={!!signUpState.fieldErrors?.email}
-              aria-describedby={signUpState.fieldErrors?.email ? "signup-email-error" : undefined}
+              aria-describedby={
+                signUpState.fieldErrors?.email
+                  ? "signup-email-error"
+                  : undefined
+              }
               aria-label="Email"
               type="email"
               autoComplete="email"
@@ -197,16 +279,30 @@ export function AuthForms({
               placeholder="Email"
             />
             {signUpState.fieldErrors?.email && (
-              <p id="signup-email-error" className="mt-1 text-xs text-clay-deep">
+              <p
+                id="signup-email-error"
+                className="mt-1 text-xs text-clay-deep"
+              >
                 {signUpState.fieldErrors.email}
               </p>
             )}
           </div>
           <div>
+            <label
+              htmlFor="signup-password"
+              className="mb-2 block text-sm font-medium"
+            >
+              Password
+            </label>
             <input
+              id="signup-password"
               name="password"
               aria-invalid={!!signUpState.fieldErrors?.password}
-              aria-describedby={signUpState.fieldErrors?.password ? "signup-password-error" : undefined}
+              aria-describedby={
+                signUpState.fieldErrors?.password
+                  ? "signup-password-error"
+                  : undefined
+              }
               aria-label="Password"
               type="password"
               autoComplete="new-password"
@@ -215,7 +311,10 @@ export function AuthForms({
               placeholder="Password (8+ characters)"
             />
             {signUpState.fieldErrors?.password && (
-              <p id="signup-password-error" className="mt-1 text-xs text-clay-deep">
+              <p
+                id="signup-password-error"
+                className="mt-1 text-xs text-clay-deep"
+              >
                 {signUpState.fieldErrors.password}
               </p>
             )}
@@ -225,7 +324,9 @@ export function AuthForms({
             disabled={signingUp}
             className="btn-sweep inline-flex h-12 w-full items-center justify-center rounded-input px-4 text-sm font-medium transition-transform active:scale-[0.99] disabled:opacity-70"
           >
-            {signingUp ? authFormCopy.signup.pending : authFormCopy.signup.submit}
+            {signingUp
+              ? authFormCopy.signup.pending
+              : authFormCopy.signup.submit}
           </button>
           <Note state={signUpState} />
         </form>

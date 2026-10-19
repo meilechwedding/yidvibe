@@ -1,12 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, Medal } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { AvatarCircle } from "./avatar-circle";
-import { TagPill } from "./pill";
+import { ProjectCover } from "./project-cover";
 import { UpvoteButton } from "./upvote-button";
 import { SaveButton } from "./save-button";
-import { Sparkle } from "./sparkle";
-import { accentFor, ACCENT_COVER } from "@/lib/design/accents";
-import { cn } from "@/lib/utils";
 import { displayName } from "@/lib/display";
 import type { ProjectWithOwner } from "@/lib/queries";
 
@@ -15,7 +12,6 @@ export function ProjectCard({
   isAuthed,
   upvoted,
   saved = false,
-  highlight = false,
   showBuilder = true,
   topRank = false,
 }: {
@@ -27,120 +23,71 @@ export function ProjectCard({
   showBuilder?: boolean;
   topRank?: boolean;
 }) {
-  const owner = project.owner;
   const href = `/showcase/${project.id}`;
-  const featured = !!project.featured;
-  const cover = ACCENT_COVER[accentFor(project.name)];
-  const initial = project.name.slice(0, 1).toUpperCase();
-  // A featured/live flag already lives at top-left; stack the medal under it.
-  const hasFlag = featured || !!project.url;
-
   return (
-    <div
-      className={cn(
-        "project-card group relative h-full",
-        featured ? "is-featured" : highlight && "is-top",
-      )}
-    >
-      <SaveButton
-        projectId={project.id}
-        initialSaved={saved}
-        isAuthed={isAuthed}
-        redirectTo={href}
-        className="absolute right-3 top-3 z-10"
-      />
-
-      <Link href={href} className="block">
-        <div className="pc-cover" style={{ background: cover.bg }}>
-          {project.image_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={project.image_url} alt={project.name} className="pc-shot" />
-          ) : (
-            <span className="pc-initial" style={{ color: cover.fg }}>
-              {initial}
-            </span>
-          )}
-
-          {featured ? (
-            <span className="pc-flag">
-              <Sparkle size={12} color="var(--ink)" /> Featured
-            </span>
-          ) : project.url ? (
-            <span className="pc-flag is-live">
-              <span className="dot yv-live-dot" /> Live
-            </span>
-          ) : null}
-
-          {topRank && (
-            <span
-              className="pc-flag yv-medal-chip"
-              style={hasFlag ? { top: 44, left: 12 } : { top: 12, left: 12 }}
-            >
-              <Medal size={12} /> #1 most upvoted
-            </span>
-          )}
-
-          {project.tools.length > 0 && (
-            <div className="pc-tools">
-              {project.tools.slice(0, 2).map((t) => (
-                <span key={t} className="chip">
-                  {t}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
+    <article className="project-card">
+      <Link href={href} aria-label={`View ${project.name}`}>
+        <ProjectCover name={project.name} src={project.image_url} />
       </Link>
-
       <div className="pc-body">
-        <div className="flex items-start justify-between gap-3">
-          <Link href={href} className="pc-title leading-snug">
-            {project.name}
-          </Link>
-          <UpvoteButton
-            projectId={project.id}
-            initialCount={project.upvote_count}
-            initialUpvoted={upvoted}
-            isAuthed={isAuthed}
-            redirectTo={href}
-          />
+        <div className="pc-meta">
+          <span>
+            {project.tags[0] || project.tools[0] || "Community project"}
+          </span>
+          {project.featured && <span className="chip gold">Featured</span>}
+          {topRank && <span className="chip">Most upvoted</span>}
         </div>
-
+        <h2 className="pc-title">
+          <Link href={href}>{project.name}</Link>
+        </h2>
         <p className="pc-desc">{project.description}</p>
-
-        {project.tags.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-2">
-            {project.tags.slice(0, 3).map((t) => (
-              <TagPill key={t} href={`/showcase?tag=${encodeURIComponent(t)}`}>
-                {t}
-              </TagPill>
-            ))}
-          </div>
-        )}
-
-        {showBuilder &&
-          (owner ? (
-            <Link href={`/u/${owner.handle}`} className="pc-foot">
-              <AvatarCircle
-                name={displayName(owner)}
-                src={owner.avatar_url}
-                size={24}
-              />
-              <span className="truncate">
-                by <strong>{displayName(owner)}</strong>
+        <div className="pc-foot">
+          {showBuilder &&
+            (project.owner ? (
+              <Link
+                href={`/u/${project.owner.handle}`}
+                className="maker-credit min-w-0 flex-1"
+              >
+                <AvatarCircle
+                  name={displayName(project.owner)}
+                  src={project.owner.avatar_url}
+                  size={44}
+                />
+                <span className="min-w-0 break-words">
+                  <strong>{displayName(project.owner)}</strong>
+                  <small>Project maker</small>
+                </span>
+              </Link>
+            ) : (
+              <span className="flex-1 text-sm text-muted-foreground">
+                Community submission
               </span>
-              <ArrowRight
-                size={15}
-                className="ml-auto shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5"
-              />
+            ))}
+          <div className="pc-actions">
+            <SaveButton
+              projectId={project.id}
+              initialSaved={saved}
+              isAuthed={isAuthed}
+              redirectTo={href}
+              variant="inline"
+            />
+            <UpvoteButton
+              projectId={project.id}
+              initialCount={project.upvote_count}
+              initialUpvoted={upvoted}
+              isAuthed={isAuthed}
+              redirectTo={href}
+            />
+            <Link
+              href={href}
+              aria-label={`Open ${project.name}`}
+              className="round-arrow"
+            >
+              <ArrowUpRight size={20} aria-hidden="true" />
             </Link>
-          ) : (
-            <div className="pc-foot">
-              <AvatarCircle name="?" src={null} size={24} />
-              <span className="truncate">Community submission</span>
-            </div>
-          ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </article>
   );
 }

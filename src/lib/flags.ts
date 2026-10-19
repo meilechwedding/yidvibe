@@ -23,12 +23,30 @@ export type FlagDef = {
 };
 
 export const FLAG_DEFS: FlagDef[] = [
-  { key: "module.competitions", label: "Competitions", description: "Build competitions.", category: "module" },
-  { key: "module.directory", label: "Business Directory", description: "Get-listed business directory.", category: "module" },
-  { key: "module.events", label: "Events", description: "Community events calendar.", category: "module" },
-  { key: "module.messaging", label: "Private messaging", description: "Inbox + DMs between users.", category: "module" },
-  { key: "module.people", label: "People directory", description: "Browsable directory of public profiles.", category: "module" },
-  { key: "feature.homepage_stats", label: "Homepage stats", description: "Projects / builders counter on the landing.", category: "feature" },
+  {
+    key: "module.directory",
+    label: "Business Directory",
+    description: "Get-listed business directory.",
+    category: "module",
+  },
+  {
+    key: "module.messaging",
+    label: "Private messaging",
+    description: "Inbox + DMs between users.",
+    category: "module",
+  },
+  {
+    key: "module.people",
+    label: "People directory",
+    description: "Browsable directory of public profiles.",
+    category: "module",
+  },
+  {
+    key: "feature.homepage_stats",
+    label: "Homepage stats",
+    description: "Projects / builders counter on the landing.",
+    category: "feature",
+  },
 ];
 
 type FlagRow = { key: string; enabled: boolean };
@@ -37,11 +55,15 @@ type FlagRow = { key: string; enabled: boolean };
 const getFlagMap = cache(async (): Promise<Record<string, boolean>> => {
   try {
     const supabase = await createClient();
-    const { data, error } = await (supabase as unknown as {
-      from: (t: string) => {
-        select: (c: string) => Promise<{ data: FlagRow[] | null; error: unknown }>;
-      };
-    })
+    const { data, error } = await (
+      supabase as unknown as {
+        from: (t: string) => {
+          select: (
+            c: string,
+          ) => Promise<{ data: FlagRow[] | null; error: unknown }>;
+        };
+      }
+    )
       .from("feature_flags")
       .select("key, enabled");
     if (error || !data) return {};
@@ -60,7 +82,9 @@ export async function isFeatureEnabled(key: string): Promise<boolean> {
 }
 
 /** All flags with current state, for the admin Launch Control screen. */
-export async function getAllFlags(): Promise<Array<FlagDef & { enabled: boolean }>> {
+export async function getAllFlags(): Promise<
+  Array<FlagDef & { enabled: boolean }>
+> {
   const map = await getFlagMap();
   return FLAG_DEFS.map((d) => ({ ...d, enabled: map[d.key] ?? false }));
 }

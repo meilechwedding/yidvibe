@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BROWSE_COPY } from "@/content/pages/browse";
 import { BUILDERS_COPY } from "@/content/pages/builders";
 import { listBuilders, countBuilders, getBuilderFacets } from "@/lib/queries";
@@ -45,10 +46,22 @@ export default async function BuildersPage({
   const totalPages = Math.ceil(total / PER_PAGE);
 
   return (
-    <Container className="py-12 md:py-16">
+    <Container className="catalog-page">
+      <nav aria-label="Breadcrumb" className="page-breadcrumb">
+        <Link href="/">Home</Link>
+        <span>/</span>
+        <span>Builders</span>
+      </nav>
       <PageHeader
         accent="blue"
-        eyebrow={BUILDERS_COPY.eyebrow}
+        action={
+          <nav aria-label="Explore type" className="browse-tabs">
+            <Link href="/showcase">Projects</Link>
+            <Link href="/builders" aria-current="page">
+              Builders
+            </Link>
+          </nav>
+        }
         title={BUILDERS_COPY.title}
         subtitle={BUILDERS_COPY.subtitle}
       />
@@ -58,11 +71,25 @@ export default async function BuildersPage({
         searchValue={q}
         placeholder="Search builders…"
         selects={[
-          { name: "tool", allLabel: BROWSE_COPY.allTools, value: tool, options: facets.tools },
-          { name: "skill", allLabel: "All skills", value: skill, options: facets.skills },
+          {
+            name: "tool",
+            allLabel: BROWSE_COPY.allTools,
+            value: tool,
+            options: facets.tools,
+          },
+          {
+            name: "skill",
+            allLabel: "All skills",
+            value: skill,
+            options: facets.skills,
+          },
         ]}
         toggles={[
-          { name: "available", label: "Available for hire", value: availableOnly },
+          {
+            name: "available",
+            label: "Available for hire",
+            value: availableOnly,
+          },
         ]}
       />
 
@@ -76,21 +103,15 @@ export default async function BuildersPage({
               : "Be the first to set up a builder profile and show what you build."
           }
           actionHref={filtering ? "/builders" : "/dashboard/profile"}
-          actionLabel={filtering ? BROWSE_COPY.clearFilters : "Create your profile"}
+          actionLabel={
+            filtering ? BROWSE_COPY.clearFilters : "Create your profile"
+          }
         />
       ) : (
         <>
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {builders.map((b, i) => (
-              <BuilderCard
-                key={b.id}
-                builder={b}
-                rank={
-                  !filtering && page === 1 && i < 3
-                    ? ((i + 1) as 1 | 2 | 3)
-                    : undefined
-                }
-              />
+            {builders.map((b) => (
+              <BuilderCard key={b.id} builder={b} />
             ))}
           </div>
           <Pagination

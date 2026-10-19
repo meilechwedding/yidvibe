@@ -22,7 +22,7 @@ export function GalleryInput({
   defaultValue?: string[];
   max?: number;
   onUploadingChange?: (uploading: boolean) => void;
-  onValueChange?: () => void;
+  onValueChange?: (urls: string[]) => void;
 }) {
   const [urls, setUrls] = useState<string[]>(defaultValue);
   const [uploading, setUploading] = useState(false);
@@ -39,17 +39,21 @@ export function GalleryInput({
     setUploading(true);
     onUploadingChange?.(true);
     try {
+      let next = [...urls];
       for (const file of files.slice(0, room)) {
         const { url, error } = await uploadImage(file, "project-media");
         if (error || !url) {
           toast.error(error ?? "Upload failed.");
           continue;
         }
-        onValueChange?.();
-        setUrls((cur) => (cur.length < max ? [...cur, url] : cur));
+        next = [...next, url].slice(0, max);
+        setUrls(next);
+        onValueChange?.(next);
       }
       if (files.length > room) {
-        toast.message(`Added ${room} — limit is ${max} images.`);
+        toast.message(
+          `Only the first ${room} selected ${room === 1 ? "image was" : "images were"} attempted. Limit: ${max} images.`,
+        );
       }
     } catch {
       toast.error("Upload failed. Please try again.");
@@ -61,8 +65,9 @@ export function GalleryInput({
   }
 
   const remove = (u: string) => {
-    setUrls((cur) => cur.filter((x) => x !== u));
-    onValueChange?.();
+    const next = urls.filter((x) => x !== u);
+    setUrls(next);
+    onValueChange?.(next);
   };
   const full = urls.length >= max;
 
@@ -76,16 +81,16 @@ export function GalleryInput({
         {urls.map((u) => (
           <div
             key={u}
-            className="relative aspect-[4/3] w-24 overflow-hidden rounded-chip border border-border bg-teal-50"
+            className="relative aspect-[4/3] w-28 overflow-hidden rounded-xl border border-border bg-teal-50"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={u} alt="" className="h-full w-full object-cover" />
+            <img src={u} alt="" className="h-full w-full object-contain" />
             <button
               type="button"
               disabled={uploading}
               onClick={() => remove(u)}
               aria-label="Remove image"
-              className="absolute right-1 top-1 inline-flex h-5 w-5 items-center justify-center rounded-input bg-ink/70 text-white"
+              className="absolute right-1 top-1 inline-flex h-11 w-11 items-center justify-center rounded-input bg-ink/70 text-white"
             >
               <X size={12} />
             </button>
@@ -98,7 +103,7 @@ export function GalleryInput({
             onClick={() => fileRef.current?.click()}
             disabled={uploading}
             className={cn(
-              "flex aspect-[4/3] w-24 flex-col items-center justify-center gap-1 rounded-chip border border-dashed border-border bg-surface text-xs text-muted-foreground transition-colors hover:border-border-hover hover:text-ink disabled:opacity-60",
+              "flex aspect-[4/3] w-28 flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-border bg-surface text-xs text-muted-foreground transition-colors hover:border-border-hover hover:text-ink disabled:opacity-60",
             )}
           >
             {uploading ? (

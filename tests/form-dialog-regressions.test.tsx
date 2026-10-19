@@ -1,24 +1,67 @@
 // @vitest-environment jsdom
 import React from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import { ProjectForm } from "@/components/showcase/project-form";
 import { ProfileForm } from "@/components/profile/profile-form";
 import { FeedbackWidget } from "@/components/site/feedback-widget";
 
-const mocks = vi.hoisted(() => ({ upload: vi.fn(), feedback: vi.fn(), profile: vi.fn() }));
+const mocks = vi.hoisted(() => ({
+  upload: vi.fn(),
+  feedback: vi.fn(),
+  profile: vi.fn(),
+}));
 vi.mock("@/lib/image/upload", () => ({ uploadImage: mocks.upload }));
 vi.mock("@/lib/actions/feedback", () => ({ createFeedback: mocks.feedback }));
 vi.mock("@/lib/actions/profile", () => ({ updateProfile: mocks.profile }));
-vi.mock("next/navigation", () => ({ usePathname: () => "/showcase", useRouter: () => ({ back: vi.fn(), push: vi.fn() }) }));
-vi.mock("next/link", () => ({ default: ({ children, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props}>{children}</a> }));
-vi.mock("@/components/brand/cancel-button", () => ({ CancelButton: ({ dirty }: { dirty: boolean }) => <button type="button">{dirty ? "Discard draft" : "Cancel"}</button> }));
-afterEach(() => { cleanup(); vi.clearAllMocks(); });
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/showcase",
+  useRouter: () => ({ back: vi.fn(), push: vi.fn() }),
+}));
+vi.mock("next/link", () => ({
+  default: ({
+    children,
+    ...props
+  }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
+    <a {...props}>{children}</a>
+  ),
+}));
+vi.mock("@/components/brand/cancel-button", () => ({
+  CancelButton: ({ dirty }: { dirty: boolean }) => (
+    <button type="button">{dirty ? "Discard draft" : "Cancel"}</button>
+  ),
+}));
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
+
+function openProjectMedia() {
+  fireEvent.change(screen.getByLabelText(/^Project name/), {
+    target: { value: "A real project" },
+  });
+  fireEvent.change(screen.getByLabelText(/^Description/), {
+    target: { value: "A useful tool for the community." },
+  });
+  fireEvent.change(screen.getByLabelText(/Project link/), {
+    target: { value: "https://example.com" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+}
 
 describe("form and dialog regressions", () => {
   it("marks a project chip-only edit dirty", () => {
     render(<ProjectForm action={async () => ({})} />);
-    const chip = document.querySelector<HTMLButtonElement>('button[aria-pressed="false"]')!;
+    const chip = document.querySelector<HTMLButtonElement>(
+      'button[aria-pressed="false"]',
+    )!;
     fireEvent.click(chip);
     expect(screen.getByText("Discard draft")).toBeTruthy();
     expect(chip.getAttribute("aria-pressed")).toBe("true");
@@ -26,41 +69,112 @@ describe("form and dialog regressions", () => {
 
   it("blocks both project submit and implicit submit during an upload, then includes the final URL", async () => {
     let finish!: (value: { url: string }) => void;
-    mocks.upload.mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+    mocks.upload.mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+    );
     const { container } = render(<ProjectForm action={async () => ({})} />);
-    fireEvent.change(container.querySelector('input[type="file"]')!, { target: { files: [new File(["image"], "cover.png", { type: "image/png" })] } });
-    expect((container.querySelector('button[type="submit"]') as HTMLButtonElement).disabled).toBe(true);
+    openProjectMedia();
+    fireEvent.change(container.querySelector('input[type="file"]')!, {
+      target: {
+        files: [new File(["image"], "cover.png", { type: "image/png" })],
+      },
+    });
+    expect(
+      (
+        container.querySelector(
+          ".form-step-actions .btn-primary",
+        ) as HTMLButtonElement
+      ).disabled,
+    ).toBe(true);
     expect(fireEvent.submit(container.querySelector("form")!)).toBe(false);
-    await act(async () => { finish({ url: "https://example.com/cover.png" }); });
-    expect((container.querySelector('button[type="submit"]') as HTMLButtonElement).disabled).toBe(false);
-    expect((container.querySelector('input[name="image_url"]') as HTMLInputElement).value).toBe("https://example.com/cover.png");
+    await act(async () => {
+      finish({ url: "https://example.com/cover.png" });
+    });
+    expect(
+      (
+        container.querySelector(
+          ".form-step-actions .btn-primary",
+        ) as HTMLButtonElement
+      ).disabled,
+    ).toBe(false);
+    expect(
+      (container.querySelector('input[name="image_url"]') as HTMLInputElement)
+        .value,
+    ).toBe("https://example.com/cover.png");
   });
 
   it("keeps project submission blocked until both cover and gallery uploads settle", async () => {
     const finishes: Array<(value: { url: string }) => void> = [];
-    mocks.upload.mockImplementation(() => new Promise(resolve => finishes.push(resolve)));
+    mocks.upload.mockImplementation(
+      () => new Promise((resolve) => finishes.push(resolve)),
+    );
     const { container } = render(<ProjectForm action={async () => ({})} />);
+    openProjectMedia();
     const files = container.querySelectorAll('input[type="file"]');
     for (const input of files) {
-      fireEvent.change(input, { target: { files: [new File(["image"], "image.png")] } });
+      fireEvent.change(input, {
+        target: { files: [new File(["image"], "image.png")] },
+      });
     }
-    await act(async () => { finishes[0]({ url: "https://example.com/cover.png" }); });
-    expect((container.querySelector('button[type="submit"]') as HTMLButtonElement).disabled).toBe(true);
+    await act(async () => {
+      finishes[0]({ url: "https://example.com/cover.png" });
+    });
+    expect(
+      (
+        container.querySelector(
+          ".form-step-actions .btn-primary",
+        ) as HTMLButtonElement
+      ).disabled,
+    ).toBe(true);
     expect(fireEvent.submit(container.querySelector("form")!)).toBe(false);
-    await act(async () => { finishes[1]({ url: "https://example.com/gallery.png" }); });
-    expect((container.querySelector('button[type="submit"]') as HTMLButtonElement).disabled).toBe(false);
-    expect((container.querySelector('input[name="images"]') as HTMLInputElement).value).toBe("https://example.com/gallery.png");
+    await act(async () => {
+      finishes[1]({ url: "https://example.com/gallery.png" });
+    });
+    expect(
+      (
+        container.querySelector(
+          ".form-step-actions .btn-primary",
+        ) as HTMLButtonElement
+      ).disabled,
+    ).toBe(false);
+    expect(
+      (container.querySelector('input[name="images"]') as HTMLInputElement)
+        .value,
+    ).toBe("https://example.com/gallery.png");
   });
 
   it("blocks profile saves and concurrent avatar uploads while a cover upload is pending", async () => {
     let finish!: (value: { url: string }) => void;
-    mocks.upload.mockImplementation(() => new Promise(resolve => { finish = resolve; }));
-    const { container } = render(<ProfileForm profile={{ name: "Builder", handle: "builder", tools: [], skills: [] } as never} />);
-    fireEvent.change(container.querySelector('input[type="file"]')!, { target: { files: [new File(["image"], "cover.png")] } });
-    expect((screen.getByLabelText("Change photo") as HTMLButtonElement).disabled).toBe(true);
+    mocks.upload.mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+    );
+    const { container } = render(
+      <ProfileForm
+        profile={
+          { name: "Builder", handle: "builder", tools: [], skills: [] } as never
+        }
+      />,
+    );
+    fireEvent.change(container.querySelector('input[type="file"]')!, {
+      target: { files: [new File(["image"], "cover.png")] },
+    });
+    expect(
+      (screen.getByLabelText("Change photo") as HTMLButtonElement).disabled,
+    ).toBe(true);
     expect(fireEvent.submit(container.querySelector("form")!)).toBe(false);
-    await act(async () => { finish({ url: "https://example.com/cover.png" }); });
-    expect((container.querySelector('button[type="submit"]') as HTMLButtonElement).disabled).toBe(false);
+    await act(async () => {
+      finish({ url: "https://example.com/cover.png" });
+    });
+    expect(
+      (container.querySelector('button[type="submit"]') as HTMLButtonElement)
+        .disabled,
+    ).toBe(false);
     expect(screen.getByText("Discard draft")).toBeTruthy();
   });
 
@@ -78,8 +192,12 @@ describe("form and dialog regressions", () => {
     mocks.feedback.mockResolvedValue({ ok: true });
     render(<FeedbackWidget />);
     fireEvent.click(screen.getByRole("button", { name: "Send feedback" }));
-    fireEvent.change(screen.getByLabelText("Feedback message"), { target: { value: "Local mocked feedback" } });
-    fireEvent.submit(screen.getByLabelText("Feedback message").closest("form")!);
+    fireEvent.change(screen.getByLabelText("Feedback message"), {
+      target: { value: "Local mocked feedback" },
+    });
+    fireEvent.submit(
+      screen.getByLabelText("Feedback message").closest("form")!,
+    );
     await screen.findByText(/we read every note/);
     fireEvent.click(screen.getByRole("button", { name: "Close" }));
     fireEvent.click(screen.getByRole("button", { name: "Send feedback" }));

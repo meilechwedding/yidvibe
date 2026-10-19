@@ -11,7 +11,9 @@ import {
 import { getAuthUser } from "@/lib/current-user";
 import { Container } from "@/components/brand/layout";
 import { PageHeader } from "@/components/brand/page-header";
-import { ProjectRowCard } from "@/components/showcase/project-row-card";
+import Link from "next/link";
+import { ProjectCard } from "@/components/brand/project-card";
+import { isFeatureEnabled } from "@/lib/flags";
 import { EmptyState } from "@/components/brand/empty-state";
 import { FilterBar } from "@/components/brand/filter-bar";
 import { Pagination } from "@/components/brand/pagination";
@@ -53,14 +55,30 @@ export default async function ShowcasePage({
     getAuthUser(),
   ]);
   const isAuthed = !!user;
+  const showBuilders = await isFeatureEnabled("module.people");
   const totalPages = Math.ceil(total / PER_PAGE);
 
   return (
-    <Container className="py-12 md:py-16">
+    <Container className="catalog-page">
+      <nav aria-label="Breadcrumb" className="page-breadcrumb">
+        <Link href="/">Home</Link>
+        <span>/</span>
+        <span>Explore</span>
+      </nav>
       <PageHeader
         accent="teal"
-        title={SHOWCASE_COPY.title}
-        subtitle={SHOWCASE_COPY.subtitle}
+        title="Explore projects"
+        subtitle="Find an idea, a useful tool, or your next collaborator."
+        action={
+          showBuilders ? (
+            <nav aria-label="Explore type" className="browse-tabs">
+              <Link href="/showcase" aria-current="page">
+                Projects
+              </Link>
+              <Link href="/builders">Builders</Link>
+            </nav>
+          ) : undefined
+        }
       />
 
       <FilterBar
@@ -68,8 +86,18 @@ export default async function ShowcasePage({
         searchValue={q}
         placeholder="Search projects or tools…"
         selects={[
-          { name: "tool", allLabel: BROWSE_COPY.allTools, value: tool, options: facets.tools },
-          { name: "tag", allLabel: BROWSE_COPY.allCategories, value: tag, options: facets.tags },
+          {
+            name: "tool",
+            allLabel: BROWSE_COPY.allTools,
+            value: tool,
+            options: facets.tools,
+          },
+          {
+            name: "tag",
+            allLabel: BROWSE_COPY.allCategories,
+            value: tag,
+            options: facets.tags,
+          },
         ]}
         sort={{
           name: "sort",
@@ -87,18 +115,18 @@ export default async function ShowcasePage({
           icon={<Rocket size={22} />}
           title={filtering ? "No projects found" : "No projects yet"}
           description={
-            filtering
-              ? BROWSE_COPY.noResults
-              : "Be the first to post."
+            filtering ? BROWSE_COPY.noResults : "Be the first to post."
           }
           actionHref={filtering ? "/showcase" : "/showcase/submit"}
-          actionLabel={filtering ? BROWSE_COPY.clearFilters : "Post your project"}
+          actionLabel={
+            filtering ? BROWSE_COPY.clearFilters : "Post your project"
+          }
         />
       ) : (
         <>
-          <div className="mt-8 flex flex-col gap-3">
+          <div className="project-grid mt-8">
             {projects.map((p) => (
-              <ProjectRowCard
+              <ProjectCard
                 key={p.id}
                 project={p}
                 isAuthed={isAuthed}

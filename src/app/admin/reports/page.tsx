@@ -49,7 +49,9 @@ export default async function AdminReportsPage() {
                   {r.reason}
                 </span>
                 <span className="text-muted-foreground">
-                  {r.target_type === "gig" ? "Archived posting" : r.target_type}
+                  {["gig", "event", "competition"].includes(r.target_type)
+                    ? "Archived content"
+                    : r.target_type}
                 </span>
                 {r.target_type === "project" ? (
                   <Link
@@ -77,7 +79,10 @@ export default async function AdminReportsPage() {
               </p>
 
               <div className="mt-3">
-                <AdminReportActions reportId={r.id} targetType={r.target_type} />
+                <AdminReportActions
+                  reportId={r.id}
+                  targetType={r.target_type}
+                />
               </div>
             </li>
           ))}

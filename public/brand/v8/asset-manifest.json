@@ -1,0 +1,57 @@
+[
+  {
+    "file": "assets/yidvibe-horizontal-flat.png",
+    "width": 3200,
+    "height": 764,
+    "mode": "RGBA",
+    "bytes": 73415,
+    "sha256": "4981dba46c8d723551607fa29b48f524f8460315e36d1b90d883a2a67ef237f1",
+    "alpha_bounds": [
+      109,
+      111,
+      2792,
+      644
+    ],
+    "provenance": "Unmodified lossless extraction from supplied YidVibe Brand Guide v8 PDF"
+  },
+  {
+    "file": "assets/yidvibe-horizontal-gradient.png",
+    "width": 3200,
+    "height": 764,
+    "mode": "RGBA",
+    "bytes": 80607,
+    "sha256": "439fa3433bb0b5d212dd0fb73af0c3c60773655572cb4a101efd029a595b147f",
+    "alpha_bounds": [
+      109,
+      111,
+      2792,
+      644
+    ],
+    "provenance": "Unmodified lossless extraction from supplied YidVibe Brand Guide v8 PDF"
+  },
+  {
+    "file": "assets/yidvibe-horizontal-reversed-on-petrol.png",
+    "width": 3200,
+    "height": 764,
+    "mode": "RGB",
+    "bytes": 75245,
+    "sha256": "daddf508ce287f491336b8320f357ee09eb6e4486b6a3a3bf1666be35c09cc56",
+    "alpha_bounds": null,
+    "provenance": "Unmodified lossless extraction from supplied YidVibe Brand Guide v8 PDF"
+  },
+  {
+    "file": "assets/yidvibe-symbol-gradient.png",
+    "width": 2000,
+    "height": 1925,
+    "mode": "RGBA",
+    "bytes": 63438,
+    "sha256": "6229143d9f5b434c663fc91d5f128df911dd714c5564deea75c1a9d039033c4b",
+    "alpha_bounds": [
+      250,
+      255,
+      1750,
+      1645
+    ],
+    "provenance": "Unmodified lossless extraction from supplied YidVibe Brand Guide v8 PDF"
+  }
+]

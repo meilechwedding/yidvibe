@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { Upload, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 import { uploadImage } from "@/lib/image/upload";
@@ -19,15 +19,18 @@ export function ImageInput({
   fallbackInitial,
   onUploadingChange,
   onValueChange,
+  error,
 }: {
   name: string;
+  error?: string;
   bucket: "avatars" | "project-media";
   defaultValue?: string | null;
   shape?: "circle" | "rect";
   fallbackInitial?: string;
   onUploadingChange?: (uploading: boolean) => void;
-  onValueChange?: () => void;
+  onValueChange?: (url: string) => void;
 }) {
+  const errorId = useId();
   const [url, setUrl] = useState(defaultValue ?? "");
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -45,7 +48,7 @@ export function ImageInput({
         return;
       }
       setUrl(uploaded);
-      onValueChange?.();
+      onValueChange?.(uploaded);
     } catch {
       toast.error("Upload failed. Please try again.");
     } finally {
@@ -60,38 +63,49 @@ export function ImageInput({
   return (
     <div>
       <input type="hidden" name={name} value={url} />
-      <div className="flex items-center gap-4">
+      <div className="image-input-layout">
         <div
           className={cn(
             "relative flex shrink-0 items-center justify-center overflow-hidden bg-teal-50 text-teal-600",
-            isCircle ? "h-16 w-16 rounded-full" : "aspect-[16/9] w-40 rounded-card",
+            isCircle
+              ? "h-16 w-16 rounded-full"
+              : "image-input-preview aspect-[16/9] rounded-xl",
           )}
         >
           {previewUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={previewUrl} alt="" className="h-full w-full object-cover" />
+            <img
+              src={previewUrl}
+              alt=""
+              className="h-full w-full object-contain"
+            />
           ) : (
-            <span className="font-display text-xl">{fallbackInitial ?? "+"}</span>
+            <span className="font-display text-xl">
+              {fallbackInitial ?? "+"}
+            </span>
           )}
           {url && (
             <button
               type="button"
               disabled={uploading}
-              onClick={() => { setUrl(""); onValueChange?.(); }}
+              onClick={() => {
+                setUrl("");
+                onValueChange?.("");
+              }}
               aria-label="Remove image"
-              className="absolute right-1 top-1 inline-flex h-5 w-5 items-center justify-center rounded-input bg-ink/70 text-white"
+              className="absolute right-1 top-1 inline-flex h-11 w-11 items-center justify-center rounded-input bg-ink/70 text-white"
             >
               <X size={12} />
             </button>
           )}
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="min-w-0 flex flex-1 flex-col gap-3">
           <button
             type="button"
             onClick={() => fileRef.current?.click()}
             disabled={uploading}
-            className="inline-flex h-9 items-center gap-2 rounded-input border border-border bg-surface px-3 text-sm font-medium text-ink transition-colors hover:bg-secondary disabled:opacity-60"
+            className="inline-flex h-12 items-center gap-2 rounded-input border border-border bg-surface px-3 text-sm font-medium text-ink transition-colors hover:bg-secondary disabled:opacity-60"
           >
             {uploading ? (
               <Loader2 size={15} className="animate-spin" />
@@ -109,16 +123,26 @@ export function ImageInput({
           />
           <input
             aria-label="Image URL"
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? errorId : undefined}
             type="url"
             inputMode="url"
             value={url}
             disabled={uploading}
-            onChange={(e) => { setUrl(e.target.value); onValueChange?.(); }}
+            onChange={(e) => {
+              setUrl(e.target.value);
+              onValueChange?.(e.target.value);
+            }}
             placeholder="…or paste an image URL"
-            className="h-9 w-64 max-w-full rounded-input border border-border bg-surface px-3 text-sm text-ink outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
+            className="h-12 w-full min-w-0 rounded-input border border-border bg-surface px-3 text-sm text-ink outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
           />
         </div>
       </div>
+      {error && (
+        <p id={errorId} className="mt-2 text-sm text-clay-deep">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

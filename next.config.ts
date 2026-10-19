@@ -5,8 +5,14 @@ const nextConfig: NextConfig = {
   typedRoutes: false,
   // Server-rendered share images read the local static font faces at runtime.
   outputFileTracingIncludes: {
-    "/opengraph-image": ["./public/fonts/*.ttf"],
-    "/showcase/*/opengraph-image": ["./public/fonts/*.ttf"],
+    "/opengraph-image": [
+      "./public/fonts/*.ttf",
+      "./public/brand/v8/source/*.png",
+    ],
+    "/showcase/*/opengraph-image": [
+      "./public/fonts/*.ttf",
+      "./public/brand/v8/source/*.png",
+    ],
     "/gigs/*/opengraph-image": ["./public/fonts/*.ttf"],
     "/competitions/*/opengraph-image": ["./public/fonts/*.ttf"],
   },

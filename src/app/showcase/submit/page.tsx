@@ -1,34 +1,29 @@
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { redirect } from "next/navigation";
 import { getAuthUser } from "@/lib/current-user";
-import { Container, Eyebrow } from "@/components/brand/layout";
+import { Container } from "@/components/brand/layout";
+import { PageHeader } from "@/components/brand/page-header";
 import { ProjectForm } from "@/components/showcase/project-form";
 import { createProject } from "@/lib/actions/projects";
-import { FormHelpLink } from "@/components/brand/form-help-link";
-import { redirect } from "next/navigation";
 
 export const metadata = { title: "Post your project" };
-
 export default async function SubmitProjectPage() {
   const user = await getAuthUser();
   if (!user) redirect("/login?next=/showcase/submit");
-
   return (
-    <Container className="max-w-2xl py-12 md:py-16">
-      <div className="text-center">
-        <Eyebrow>Share your work</Eyebrow>
-        <h1 className="mt-3 font-display text-[clamp(2rem,5vw,2.75rem)] font-semibold tracking-tight text-ink">
-          Post your project
-        </h1>
-        <p className="mx-auto mt-3 max-w-md text-[17px] text-muted-foreground">
-          Show the community what you built — or a great AI tool you found. Free
-          and takes about a minute.
-        </p>
-        <div className="mt-3">
-          <FormHelpLink>New here? See how posting a project works →</FormHelpLink>
-        </div>
-      </div>
-      <div className="mt-8">
-        <ProjectForm action={createProject} isLoggedIn />
-      </div>
+    <Container className="posting-page">
+      <nav aria-label="Breadcrumb" className="page-breadcrumb">
+        <Link href="/showcase">
+          <ArrowLeft size={18} className="mr-2" />
+          Back to projects
+        </Link>
+      </nav>
+      <PageHeader
+        title="Share what you're building."
+        subtitle="A good project is the start of a conversation."
+      />
+      <ProjectForm action={createProject} isLoggedIn />
     </Container>
   );
 }

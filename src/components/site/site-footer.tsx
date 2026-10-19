@@ -1,38 +1,39 @@
 import Link from "next/link";
+import { isFeatureEnabled } from "@/lib/flags";
 import { FeedbackWidget } from "./feedback-widget";
-import { SITE_NAME, SITE_TAGLINE, FOOTER_LINKS } from "@/lib/site";
 import { Container } from "@/components/brand/layout";
-import { LogoMark } from "@/components/brand/sparkle";
+import { Logo } from "./logo";
 
-/**
- * Dark teal footer — a clear, premium "the page ends here" band that reads
- * distinctly from the near-white page body.
- */
-export function SiteFooter() {
+export async function SiteFooter() {
+  const showBuilders = await isFeatureEnabled("module.people");
   return (
-    <footer className="mt-[var(--space-section)] bg-teal-900 text-teal-100">
-      <Container className="flex flex-col gap-6 py-12 md:flex-row md:items-center md:justify-between">
-        <div className="flex items-center gap-3 text-sm">
-          <LogoMark size={32} />
-          <span className="font-display text-lg font-semibold text-white">
-            {SITE_NAME}
-          </span>
-          <span className="hidden text-teal-100/85 sm:inline">
-            — {SITE_TAGLINE}
-          </span>
+    <footer className="site-footer">
+      <Container>
+        <div className="footer-main">
+          <div>
+            <Logo />
+            <p className="mt-5 max-w-xs text-sm text-muted-foreground">
+              Good work starts a conversation.
+            </p>
+          </div>
+          <nav aria-label="Footer" className="footer-links">
+            <div>
+              <p className="font-medium text-ink">Discover</p>
+              <Link href="/showcase">Projects</Link>
+              {showBuilders && <Link href="/builders">Builders</Link>}
+              <Link href="/showcase/submit">Post a project</Link>
+            </div>
+            <div>
+              <p className="font-medium text-ink">YidVibe</p>
+              <Link href="/docs">How it works</Link>
+              <FeedbackWidget />
+            </div>
+          </nav>
         </div>
-        <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-6 gap-y-3">
-          {FOOTER_LINKS.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="text-sm text-teal-100/90 transition-colors hover:text-white"
-            >
-              {l.label}
-            </Link>
-          ))}
-          <FeedbackWidget />
-        </nav>
+        <div className="footer-bottom">
+          <span>© {new Date().getFullYear()} YidVibe</span>
+          <span>Made for people who make things.</span>
+        </div>
       </Container>
     </footer>
   );

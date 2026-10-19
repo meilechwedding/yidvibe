@@ -1,23 +1,18 @@
-# YidVibe Brand System v8
+# YidVibe Brand System v8 — Option C
 
-Source: the user-supplied ten-page Brand System v8, October 2026, Library file `libfile_5fa3b87724fc8191ab3b75656fe849fd`. The parent task inspected all ten pages and supplied the implementation requirements. This desktop checkout has not visually inspected the PDF because local Library installation failed on Windows metadata handling.
+The supplied ten-page Brand System v8 PDF and approved Connected canvas handoff were located in Downloads, inspected, and verified on 19 October 2026. The four original PNG extracts match the handoff manifest; unchanged source artwork and provenance are in `public/brand/v8/source` and `public/brand/v8/README.md`. Web variants only crop transparent margins; the mark has not been redrawn.
 
 ## Interface
 
-- Petrol `#103D39` leads the interface. Citron `#E5E86A` marks selected moments. Mineral `#43987E` is for decorative fills and rules, not normal text. Mist `#E3EDE7`, canvas `#F3F5EE` and white form the surfaces.
-- Yellow gradient endpoints are `#ECEE98` and `#DFE35E`. Gradients belong inside the approved symbol and selected broad accents. Text and primary actions stay solid and readable.
-- Space Grotesk, 600 for headings, 500 for labels/buttons, 400 for body. Type steps: 14, 16, 20, 28, 36, 48 and 72px. Responsive headings interpolate between those steps.
-- Whitespace steps: 4, 8, 12, 16, 24, 32, 48, 64 and 96px. Controls use a 10px radius; cards use 20px. Avatars, switches and status dots keep their functional circular shapes.
-- Error/destructive states retain a separate red semantic palette. Third-party Google artwork keeps its official colors. User images are not recolored.
+- Petrol `#103D39`, citron `#E5E86A`, mineral `#43987E`, mist `#E3EDE7`, canvas `#F3F5EE`, white. Body copy uses petrol or accessible muted petrol `#4B6764`; mineral is decorative.
+- Self-hosted Space Grotesk 400/500/600, from the complete upstream font, not a PDF subset. Font provenance and license remain in `public/fonts`.
+- The later approved Option C geometry supersedes the original PDF's 10/20px radii: 18px controls, 24px media/search, 32px major frames, pill chips. Content uses 80px desktop, 32px tablet, 20px mobile gutters, reduced to 16px below 360px.
+- Centered petrol homepage hero; one real featured/recent project connected to the existing flag-aware builder panel; spacious two-column catalog; connected project/profile pages. Responsive layouts retain the same data and actions.
+- Desktop has a filled Post project beside account controls; mobile retains the existing primary bottom navigation. Gigs, Events and Competitions have no visible navigation or creation choices. Existing stored records are preserved.
+- The project wizard retains every schema field and mounted upload value through Details, Media and Review. Publishing remains an explicit separate action. No draft persistence or extra visibility control is promised.
 
-`src/styles/palette.json` owns numeric colors and direct compatibility aliases. Run `npm run theme:sync` after changing it; commit generated `palette.css`. Alias targets must name a canonical color, so changing petrol once updates existing teal consumers too. Serialized image/manifest colors read those same canonical values. `theme.css` owns semantic aliases, type/radius/spacing tokens. Existing teal, gold, blue, orange and sage keys map into v8 to preserve component contracts. Clay keys support existing destructive/error states. Feature accent helpers use the green family for ordinary presentation.
+`palette.json` and generated `palette.css` own canonical colors. `theme.css` owns semantic typography, radius and spacing tokens. Shared composition rules live in `connected.css`. Reduced-motion styles disable nonessential transforms and entrance animation.
 
-Space Grotesk is self-hosted from the [typeface author's repository](https://github.com/floriankarsten/space-grotesk), with the complete upstream variable WOFF2 and its SIL Open Font License in `public/fonts`. It is not the embedded PDF subset. Static 400/500/600 faces supply the social-image renderer; the 600 face comes from the official Google Fonts API. See `public/fonts/README.md` for provenance. Code blocks may use a system monospace fallback.
+## Scope and release
 
-## Approved artwork dependency
-
-Use the authentic supplied master. Horizontal is the default at 180px or larger; symbol at 32px or larger. Clear space is at least 25% of the symbol height. Preserve proportions, the Y opening, speech tails and gradient direction. Do not trace or reconstruct the logo.
-
-The v8 PDF/logo bundle was not found in the repository or the narrowly searched local Downloads/Documents filenames. The older source ZIP contains earlier artwork. Existing logo SVGs, star artwork, favicon and social-image marks are preserved pending delivery of the authentic v8 assets. This is an implementation checkpoint, not a complete or publishable rebrand.
-
-No authentication, database, security policy or account configuration changes are part of this refresh. Production publication requires the independent review gate coordinated by the parent task.
+No authentication, database, security policy, server action or query implementation changes are part of this refresh. Existing profiles, projects, media and retired-module records must remain intact. Public catalog filter parameters and pagination remain unchanged. Independent runtime and visual review gates production publication; `design-qa.md` records the evidence and remaining checks.
