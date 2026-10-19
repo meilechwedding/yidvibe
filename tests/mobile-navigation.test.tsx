@@ -1,14 +1,14 @@
 // @vitest-environment jsdom
 import React from "react";
 import { afterEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 
 vi.mock("next/navigation", () => ({ usePathname: () => "/showcase" }));
 vi.mock("@/lib/actions/auth", () => ({ signOut: vi.fn() }));
 vi.mock("@/components/brand/avatar-circle", () => ({ AvatarCircle: () => null }));
 import { MobileBottomNav } from "@/components/site/mobile-bottom-nav";
 import { NavLinks } from "@/components/site/nav-links";
-import { PostMenu } from "@/components/site/post-menu";
+import { PostLink } from "@/components/site/post-link";
 import { UserMenu } from "@/components/site/user-menu";
 import { NAV_LINKS_ALL } from "@/config/navigation";
 
@@ -23,39 +23,39 @@ it("provides direct Explore navigation with active state and no retired modules"
   expect(screen.getByRole("link", { name: "Directory" })).toBeTruthy();
   expect(screen.queryByRole("link", { name: "Competitions" })).toBeNull();
   expect(screen.queryByRole("link", { name: "Events" })).toBeNull();
+  expect(screen.queryByRole("link", { name: "Gigs" })).toBeNull();
 });
 
-it("provides four labeled destinations and a central Post action on mobile", () => {
+it("provides three labeled destinations and direct project posting on mobile", () => {
   render(<MobileBottomNav navLinks={NAV_LINKS_ALL} />);
   const nav = screen.getByRole("navigation", { name: "Mobile primary" });
-  expect(within(nav).getAllByRole("link").map(link => link.textContent)).toEqual(["Explore", "Builders", "Directory", "Gigs"]);
-  expect(Array.from(nav.children).map(child => child.textContent)).toEqual(["Explore", "Builders", "Post", "Directory", "Gigs"]);
+  expect(within(nav).getAllByRole("link").map(link => link.textContent)).toEqual(["Explore", "Builders", "Post", "Directory"]);
+  expect(Array.from(nav.children).map(child => child.textContent)).toEqual(["Explore", "Builders", "Post", "Directory"]);
   expect(within(nav).getByRole("link", { name: "Explore" }).getAttribute("aria-current")).toBe("page");
-  expect(within(nav).getByRole("button", { name: "Post" }).className).toContain("mobile-nav-post");
+  expect(within(nav).getByRole("link", { name: "Post" }).className).toContain("mobile-nav-post");
 });
 
-it("uses only server-enabled mobile destinations and post choices", () => {
+it("keeps project posting available when optional destinations are disabled", () => {
   render(<MobileBottomNav navLinks={NAV_LINKS_ALL.filter(link => !link.flag)} />);
   const nav = screen.getByRole("navigation", { name: "Mobile primary" });
-  expect(within(nav).getAllByRole("link")).toHaveLength(1);
-  fireEvent.click(within(nav).getByRole("button", { name: "Post" }));
-  expect(within(screen.getByRole("dialog")).queryByRole("link", { name: /Gig/ })).toBeNull();
+  expect(within(nav).getAllByRole("link").map(link => link.textContent)).toEqual(["Explore", "Post"]);
+  expect(within(nav).getByRole("link", { name: "Post" }).getAttribute("href")).toBe("/showcase/submit");
 });
 
-it("makes Post visible and preserves the project and enabled gig destinations", async () => {
-  const { container } = render(<PostMenu enabledFlags={{ "module.gigs": true, "module.competitions": true }} />);
-  const trigger = screen.getByRole("button", { name: "Post" });
-  expect(trigger.className).toContain("nav-post");
-  expect(trigger.className).not.toContain("fixed");
-  fireEvent.click(trigger);
-  const dialog = screen.getByRole("dialog", { name: "What do you want to post?" });
-  expect(container.contains(dialog)).toBe(false);
-  expect(within(dialog).getByRole("link", { name: /Project/ }).getAttribute("href")).toBe("/showcase/submit");
-  expect(within(dialog).getByRole("link", { name: /Gig/ }).getAttribute("href")).toBe("/gigs/post");
-  expect(within(dialog).queryByRole("link", { name: /Competition/ })).toBeNull();
-  fireEvent.keyDown(dialog, { key: "Escape" });
-  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-  expect(document.activeElement).toBe(trigger);
+it("provides a normal project link without a posting chooser", () => {
+  render(<PostLink />);
+  const post = screen.getByRole("link", { name: "Post" });
+  expect(post.getAttribute("href")).toBe("/showcase/submit");
+  expect(post.className).toContain("nav-post");
+  expect(post.className).not.toContain("fixed");
+  expect(screen.queryByRole("dialog")).toBeNull();
+});
+
+it("removes retired posting choices from the account menu", () => {
+  render(<UserMenu profile={{ handle: "dummy", name: "Dummy User", avatar_url: null }} />);
+  fireEvent.keyDown(screen.getByRole("button", { name: "Account menu" }), { key: "ArrowDown" });
+  expect(screen.getByRole("menuitem", { name: "Post your project" }).getAttribute("href")).toBe("/showcase/submit");
+  expect(screen.queryByRole("menuitem", { name: /gig/i })).toBeNull();
 });
 
 it("names the account menu even when its avatar has no text", () => {

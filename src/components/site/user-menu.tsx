@@ -10,12 +10,9 @@ type MenuProfile = { handle: string; name: string; avatar_url: string | null };
 export function UserMenu({
   profile,
   isAdmin = false,
-  showGig = false,
 }: {
   profile: MenuProfile;
   isAdmin?: boolean;
-  /** Gigs module is launched — otherwise "Post a gig" would 404. */
-  showGig?: boolean;
 }) {
   return (
     <DropdownMenu.Root>
@@ -40,7 +37,6 @@ export function UserMenu({
           <Item href="/notifications">Notifications</Item>
           <Item href="/settings/notifications">Notification settings</Item>
           <Item href="/showcase/submit">Post your project</Item>
-          {showGig && <Item href="/gigs/post">Post a gig</Item>}
           {isAdmin && (
             <>
               <DropdownMenu.Separator className="my-1 h-px bg-border" />

@@ -61,8 +61,11 @@ export function describeNotification(n: NotificationRow): {
   const who = n.actor?.name ?? "Someone";
   const d = (n.data ?? {}) as Record<string, string | undefined>;
   const project = n.entity_id ? `/showcase/${n.entity_id}` : "/notifications";
-  const thread =
-    d.slug && d.thread_id ? `/gigs/${d.slug}/thread/${d.thread_id}` : "/gigs";
+
+  // Keep historical updates readable without titles or links from the retired module.
+  if (n.entity_type === "gig" || n.entity_type === "gig_thread") {
+    return { text: "Archived update: There is an update to a retired posting." };
+  }
 
   switch (n.type) {
     case "upvote":
@@ -79,9 +82,9 @@ export function describeNotification(n: NotificationRow): {
       };
     }
     case "gig_application":
-      return { text: `${who} applied to ${d.gig_title ?? "your gig"}`, href: thread };
+      return { text: "Archived update: A retired posting received an application." };
     case "message":
-      return { text: `${who} messaged you about ${d.gig_title ?? "a gig"}`, href: thread };
+      return { text: "Archived update: A retired conversation received a message." };
     case "competition_winner":
       return {
         text: `Archived update: You won ${d.title ?? "a past challenge"}!`,

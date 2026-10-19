@@ -12,7 +12,7 @@ import { Logo } from "./logo";
 import { NavShell } from "./nav-shell";
 import { UserMenu } from "./user-menu";
 import { NavLinks } from "./nav-links";
-import { PostMenu } from "./post-menu";
+import { PostLink } from "./post-link";
 import { MobileBottomNav } from "./mobile-bottom-nav";
 import { NotificationBell, type BellItem } from "./notification-bell";
 
@@ -28,14 +28,6 @@ export async function SiteNav() {
       navLinks.push({ href: l.href, label: l.label });
     }
   }
-
-  // Flag state for the "Post" entry points (post menu + user menu). These links
-  // target flag-gated sections, so hide them until the module is launched —
-  // otherwise they'd land on a 404. Reads are request-cached, so this is cheap.
-  const postFlags: Record<string, boolean> = {
-    "module.gigs": await isFeatureEnabled("module.gigs"),
-  };
-  const showGig = postFlags["module.gigs"];
 
   let bellItems: BellItem[] = [];
   let unread = 0;
@@ -63,7 +55,7 @@ export async function SiteNav() {
           <Logo className="site-brand" />
           <NavLinks links={navLinks} className="desktop-primary" />
           <div className="site-account-actions">
-            <span className="desktop-post"><PostMenu enabledFlags={postFlags} /></span>
+            <span className="desktop-post"><PostLink /></span>
             {profile && <span className="desktop-notifications"><NotificationBell items={bellItems} unread={unread} /></span>}
             {profile ? (
               <UserMenu
@@ -73,7 +65,6 @@ export async function SiteNav() {
                   avatar_url: profile.avatar_url,
                 }}
                 isAdmin={!!admin}
-                showGig={showGig}
               />
             ) : (
               <Link href="/login" className="btn btn-ghost btn-sm btn-header min-h-11">
@@ -83,7 +74,7 @@ export async function SiteNav() {
           </div>
         </Container>
       </NavShell>
-      <MobileBottomNav navLinks={navLinks} enabledFlags={postFlags} />
+      <MobileBottomNav navLinks={navLinks} />
     </>
   );
 }

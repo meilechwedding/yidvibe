@@ -362,24 +362,18 @@ export async function adminListClaims(): Promise<AdminClaim[]> {
 export async function getLandingStats(): Promise<{
   builders: number;
   projects: number;
-  gigs: number;
 }> {
   const supabase = await createClient();
-  const [builders, projects, gigs] = await Promise.all([
+  const [builders, projects] = await Promise.all([
     supabase
       .from("profiles")
       .select("id", { count: "exact", head: true })
       .eq("is_public", true),
     supabase.from("projects").select("id", { count: "exact", head: true }),
-    supabase
-      .from("gigs")
-      .select("id", { count: "exact", head: true })
-      .eq("status", "open"),
   ]);
   return {
     builders: builders.count ?? 0,
     projects: projects.count ?? 0,
-    gigs: gigs.count ?? 0,
   };
 }
 

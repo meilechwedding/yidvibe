@@ -4,7 +4,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { ProjectForm } from "@/components/showcase/project-form";
 import { ProfileForm } from "@/components/profile/profile-form";
-import { PostMenu } from "@/components/site/post-menu";
 import { FeedbackWidget } from "@/components/site/feedback-widget";
 
 const mocks = vi.hoisted(() => ({ upload: vi.fn(), feedback: vi.fn(), profile: vi.fn() }));
@@ -63,17 +62,6 @@ describe("form and dialog regressions", () => {
     await act(async () => { finish({ url: "https://example.com/cover.png" }); });
     expect((container.querySelector('button[type="submit"]') as HTMLButtonElement).disabled).toBe(false);
     expect(screen.getByText("Discard draft")).toBeTruthy();
-  });
-
-  it("portals the Post dialog out of its nav and closes with Escape, restoring focus", async () => {
-    const { container } = render(<nav><PostMenu variant="mobile" /></nav>);
-    const trigger = screen.getByRole("button", { name: "Post" });
-    fireEvent.click(trigger);
-    const dialog = screen.getByRole("dialog", { name: "What do you want to post?" });
-    expect(container.contains(dialog)).toBe(false);
-    fireEvent.keyDown(dialog, { key: "Escape" });
-    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-    expect(document.activeElement).toBe(trigger);
   });
 
   it("names the feedback dialog and restores trigger focus after Escape", async () => {

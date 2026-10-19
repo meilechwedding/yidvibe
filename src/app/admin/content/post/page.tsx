@@ -28,7 +28,7 @@ export default async function AdminPostContentPage() {
 
       <h1 className="mt-3 font-display text-2xl text-ink">Post content</h1>
       <p className="mt-2 text-sm text-muted-foreground">
-        Publish a gig, competition, or event — as Official YidVibe or on behalf
+        Publish a competition or event — as Official YidVibe or on behalf
         of a user.
       </p>
 

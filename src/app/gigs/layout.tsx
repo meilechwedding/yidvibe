@@ -1,11 +1,6 @@
-import { requireFlag } from "@/lib/flags";
+export const metadata = { robots: { index: false, follow: false } };
 
-// Phase 1: Gigs is hidden behind the "module.gigs" Launch Control flag.
-export default async function GigsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  await requireFlag("module.gigs");
-  return <>{children}</>;
+// Each retired page redirects before reading records; posting has its own destination.
+export default function RetiredLayout({ children }: { children: React.ReactNode }) {
+  return children;
 }

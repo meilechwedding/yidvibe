@@ -35,6 +35,10 @@ const archived = {
   data: { title: "Community challenge", slug: "old-challenge" },
   created_at: "2026-10-01T00:00:00Z", read_at: null,
 } as NotificationRow;
+const retiredPosting = {
+  ...archived, id: "retired-posting", type: "gig_application", entity_type: "gig",
+  data: { slug: "old-posting", thread_id: "old-thread", gig_title: "A gig" },
+} as NotificationRow;
 const current = {
   ...archived, id: "current", type: "comment", entity_id: "project-1",
   data: { project_name: "My project" },
@@ -49,7 +53,7 @@ beforeEach(() => {
     prize_amount: 100, winner_submission_id: "entry-1",
   });
   mocks.entries.mockResolvedValue([{ id: "entry-1", submitter: { name: "Builder" }, description: "Stored entry", submission_url: "https://example.com/entry" }]);
-  mocks.notifications.mockResolvedValue([archived, current]);
+  mocks.notifications.mockResolvedValue([archived, retiredPosting, current]);
 });
 afterEach(cleanup);
 
@@ -57,26 +61,39 @@ it("preserves the historical winner message without a retired destination", () =
   expect(describeNotification(archived)).toEqual({ text: "Archived update: You won Community challenge!" });
 });
 
-it("retains normal project and gig notification destinations", () => {
+it("retains project destinations while removing retired conversation links and titles", () => {
   expect(describeNotification(current).href).toBe("/showcase/project-1");
-  expect(describeNotification({ ...current, type: "message", data: { slug: "gig", thread_id: "thread" } }).href).toBe("/gigs/gig/thread/thread");
+  for (const type of ["message", "gig_application", "content_removed"]) {
+    const result = describeNotification({ ...current, type, entity_type: "gig", data: { slug: "old", thread_id: "thread", gig_title: "Old gig", message: "Your gig was removed" } });
+    expect(result.href).toBeUndefined();
+    expect(result.text).not.toMatch(/gig/i);
+    expect(result.text).toMatch(/Archived update/);
+  }
+});
+
+it.each(["message", "gig_application"])("retires legacy %s notifications without entity metadata", type => {
+  const result = describeNotification({ ...current, type, data: { slug: "old", thread_id: "thread", gig_title: "Old gig" } });
+  expect(result.href).toBeUndefined();
+  expect(result.text).not.toMatch(/gig/i);
 });
 
 it("keeps archived updates readable in the bell while current items remain links", async () => {
-  render(<NotificationBell unread={2} items={[archived, current].map(n => ({
+  render(<NotificationBell unread={3} items={[archived, retiredPosting, current].map(n => ({
     id: n.id, ...describeNotification(n), createdAt: n.created_at, read: false,
     actorName: null, actorAvatar: null,
   }))} />);
   fireEvent.keyDown(screen.getByRole("button", { name: /Notifications/ }), { key: "ArrowDown" });
-  const historical = await screen.findByText(/Archived update/);
+  const historical = await screen.findByText(/You won Community challenge/);
   expect(historical.closest("a")).toBeNull();
   expect(screen.getByText("Someone commented on My project").closest("a")?.getAttribute("href")).toBe("/showcase/project-1");
-  expect(document.querySelector('a[href^="/competitions"]')).toBeNull();
+  expect(document.querySelector('a[href^="/competitions"], a[href^="/gigs"]')).toBeNull();
+  expect(screen.getByText(/retired posting/).closest("a")).toBeNull();
 });
 
 it("shows the same archived and active behavior in the full notification list", async () => {
   render(await NotificationsPage());
-  expect(screen.getByText(/Archived update/).closest("a")).toBeNull();
+  for (const item of screen.getAllByText(/Archived update/)) expect(item.closest("a")).toBeNull();
+  expect(document.querySelector('a[href^="/gigs"]')).toBeNull();
   expect(screen.getByRole("link", { name: /Someone commented/ }).getAttribute("href")).toBe("/showcase/project-1");
 });
 

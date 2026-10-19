@@ -10,7 +10,6 @@ import {
   EyeOff,
   Trash2,
   Pencil,
-  ExternalLink,
   Check,
   X,
 } from "lucide-react";
@@ -18,7 +17,6 @@ import {
   setProjectFeatured,
   setProjectHidden,
   adminDeleteProject,
-  deleteGig,
   deleteCompetition,
   deleteEvent,
   setCompetitionReviewStatus,
@@ -28,7 +26,6 @@ import { cn } from "@/lib/utils";
 
 export type ContentType =
   | "projects"
-  | "gigs"
   | "competitions"
   | "events"
   | "directory";
@@ -176,13 +173,6 @@ function Row({ type, item }: { type: ContentType; item: ContentItem }) {
           </>
         )}
 
-        {/* Gigs */}
-        {type === "gigs" && item.href && (
-          <Link href={item.href} className={ghostPill}>
-            <ExternalLink size={14} /> View
-          </Link>
-        )}
-
         {/* Competitions */}
         {type === "competitions" && (
           <>
@@ -247,7 +237,7 @@ function Row({ type, item }: { type: ContentType; item: ContentItem }) {
           </>
         )}
 
-        {/* Delete (inline two-click confirm) — projects, gigs, competitions, events */}
+        {/* Delete (inline two-click confirm) — projects, competitions, events */}
         {type !== "directory" && (
           confirming ? (
             <span className="inline-flex items-center gap-2">
@@ -288,8 +278,6 @@ function deleteFor(type: ContentType, id: string): Promise<unknown> {
   switch (type) {
     case "projects":
       return adminDeleteProject(id);
-    case "gigs":
-      return deleteGig(id);
     case "competitions":
       return deleteCompetition(id);
     case "events":

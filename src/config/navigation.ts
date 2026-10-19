@@ -5,7 +5,6 @@ export const NAV_LINKS_ALL: { href: string; label: string; flag?: string }[] = [
   { href: "/showcase", label: COPY.showcase },
   { href: "/builders", label: COPY.builders, flag: "module.people" },
   { href: "/directory", label: COPY.directory, flag: "module.directory" },
-  { href: "/gigs", label: COPY.gigs, flag: "module.gigs" },
 ];
 
 export const NAV_LINKS: { href: string; label: string }[] = [

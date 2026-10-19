@@ -49,7 +49,7 @@ export default async function AdminReportsPage() {
                   {r.reason}
                 </span>
                 <span className="text-muted-foreground">
-                  {r.target_type}
+                  {r.target_type === "gig" ? "Archived posting" : r.target_type}
                 </span>
                 {r.target_type === "project" ? (
                   <Link

@@ -12,19 +12,12 @@ const inputClass =
 const textareaClass =
   "w-full resize-y rounded-input border border-border bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-teal-600 focus:ring-2 focus:ring-teal-600/15";
 
-type ContentType = "gig" | "competition" | "event";
+type ContentType = "competition" | "event";
 
 const TYPES: { value: ContentType; label: string }[] = [
-  { value: "gig", label: "Gig" },
   { value: "competition", label: "Competition" },
   { value: "event", label: "Event" },
 ];
-
-const GIG_TYPES = [
-  { value: "task", label: "Task" },
-  { value: "build", label: "Build" },
-  { value: "hourly", label: "Hourly" },
-] as const;
 
 function Field({
   label,
@@ -59,11 +52,7 @@ export function AdminPostForm({ users }: { users: PickableUser[] }) {
     {},
   );
   const router = useRouter();
-  const [type, setType] = useState<ContentType>("gig");
-  const [gigType, setGigType] = useState<(typeof GIG_TYPES)[number]["value"]>(
-    "task",
-  );
-
+  const [type, setType] = useState<ContentType>("competition");
   useEffect(() => {
     if (state.ok) {
       toast.success("Posted.");
@@ -81,7 +70,7 @@ export function AdminPostForm({ users }: { users: PickableUser[] }) {
 
       <input type="hidden" name="type" value={type} />
       <Field label="Type" required>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2">
           {TYPES.map((t) => {
             const active = type === t.value;
             return (
@@ -110,55 +99,6 @@ export function AdminPostForm({ users }: { users: PickableUser[] }) {
       <Field label="Title" required>
         <input name="title" maxLength={140} dir="auto" className={inputClass} />
       </Field>
-
-      {/* Gig fields */}
-      {type === "gig" && (
-        <>
-          <input type="hidden" name="gig_type" value={gigType} />
-          <Field label="Gig type" required>
-            <div className="grid grid-cols-3 gap-2">
-              {GIG_TYPES.map((g) => {
-                const active = gigType === g.value;
-                return (
-                  <button
-                    key={g.value}
-                    type="button"
-                    onClick={() => setGigType(g.value)}
-                    className={cn(
-                      "rounded-card border px-4 py-3 text-sm font-medium transition-colors",
-                      active
-                        ? "border-orange-mid bg-orange-tint text-orange-deep"
-                        : "border-border bg-surface text-ink hover:border-border-hover",
-                    )}
-                  >
-                    {g.label}
-                  </button>
-                );
-              })}
-            </div>
-          </Field>
-          <Field label="Description" required>
-            <textarea name="description" rows={5} dir="auto" className={textareaClass} />
-          </Field>
-          {gigType === "hourly" ? (
-            <Field label="Hourly rate ($)">
-              <input name="hourly_rate" type="number" min={0} className={cn(inputClass, "max-w-xs")} />
-            </Field>
-          ) : (
-            <div className="grid grid-cols-2 gap-4">
-              <Field label="Budget min ($)">
-                <input name="budget_min" type="number" min={0} className={inputClass} />
-              </Field>
-              <Field label="Budget max ($)">
-                <input name="budget_max" type="number" min={0} className={inputClass} />
-              </Field>
-            </div>
-          )}
-          <Field label="Tags" hint="comma separated">
-            <input name="tags" dir="auto" className={inputClass} />
-          </Field>
-        </>
-      )}
 
       {/* Competition fields */}
       {type === "competition" && (

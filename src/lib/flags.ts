@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 /**
  * Admin "Launch Control" feature flags.
  *
- * Phase 1 ships focused: the bigger site (Gigs, Competitions, Directory, Events,
+ * Phase 1 ships focused: the bigger site (Competitions, Directory, Events,
  * messaging, People directory) and a few features sit behind flags that default
  * OFF. The admin flips them on from /admin/launch to roll out piece by piece.
  *
@@ -22,9 +22,7 @@ export type FlagDef = {
   category: FlagCategory;
 };
 
-/** Canonical flag list — mirrors the seed migration and drives the admin UI. */
 export const FLAG_DEFS: FlagDef[] = [
-  { key: "module.gigs", label: "Gigs", description: "Job board for builders.", category: "module" },
   { key: "module.competitions", label: "Competitions", description: "Build competitions.", category: "module" },
   { key: "module.directory", label: "Business Directory", description: "Get-listed business directory.", category: "module" },
   { key: "module.events", label: "Events", description: "Community events calendar.", category: "module" },

@@ -9,7 +9,6 @@ export const metadata = { title: "Content" };
 
 const TABS = [
   { key: "projects", label: "Projects" },
-  { key: "gigs", label: "Gigs" },
   { key: "competitions", label: "Competitions" },
   { key: "events", label: "Events" },
   { key: "directory", label: "Directory" },
@@ -44,23 +43,6 @@ async function loadItems(type: Tab): Promise<ContentItem[]> {
       hidden: r.hidden,
       featured: r.featured,
       editHref: `/showcase/${r.id}/edit`,
-    }));
-  }
-
-  if (type === "gigs") {
-    const { data } = await supabase
-      .from("gigs")
-      .select(
-        "id, title, slug, status, created_at, poster:profiles!gigs_poster_id_fkey(name,handle)",
-      )
-      .order("created_at", { ascending: false })
-      .limit(100);
-    return (data ?? []).map((r: any) => ({
-      id: r.id,
-      title: r.title,
-      owner: ownerName(r.poster),
-      meta: r.status,
-      href: `/gigs/${r.slug}`,
     }));
   }
 

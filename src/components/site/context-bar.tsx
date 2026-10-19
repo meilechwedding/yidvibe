@@ -12,7 +12,6 @@ const NO_BACK = new Set([
   "/showcase",
   "/builders",
   "/directory",
-  "/gigs",
   "/docs",
   "/dashboard",
   "/notifications",
@@ -25,7 +24,6 @@ const SECTION_ROOTS = new Set([
   "/showcase",
   "/builders",
   "/directory",
-  "/gigs",
   "/docs",
 ]);
 

@@ -49,18 +49,11 @@ body { padding-bottom: var(--mobile-nav-height); }
 .nav-post:focus-visible, .mobile-nav-item:focus-visible, .desktop-nav-link:focus-visible {
   outline: 2px solid var(--color-ink); outline-offset: 2px;
 }
-.post-chooser { max-height: calc(100dvh - 24px); overflow-y: auto; padding-bottom: max(32px, env(safe-area-inset-bottom, 0px)); }
 .skip-link { position: fixed; left: 16px; top: 8px; z-index: 50; transform: translateY(-150%); padding: 12px 16px; background: var(--color-ink); color: var(--color-surface); border-radius: var(--radius-input); }
 .skip-link:focus { transform: translateY(0); }
 @media (hover: hover) and (pointer: fine) {
   .nav-post:hover { background: var(--color-amber-100); }
   .mobile-nav-item:hover, .desktop-nav-link:hover { background: var(--color-teal-50); color: var(--color-ink); }
-}
-/* Give the longest label room on small screens, including desktop scrollbars. */
-@media (max-width: 359px) {
-  .mobile-bottom-nav[data-items="5"] {
-    grid-template-columns: repeat(3, minmax(44px, 1fr)) minmax(64px, 1.15fr) minmax(44px, 0.85fr);
-  }
 }
 @media (min-width: 960px) {
   html { scroll-padding-top: 100px; scroll-padding-bottom: 24px; }

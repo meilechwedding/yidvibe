@@ -3,20 +3,18 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Compass, UsersRound, BookOpen, Briefcase, type LucideIcon } from "lucide-react";
+import { Compass, UsersRound, BookOpen, type LucideIcon } from "lucide-react";
 import { useMobileKeyboard } from "@/hooks/use-mobile-keyboard";
-import { PostMenu } from "./post-menu";
+import { PostLink } from "./post-link";
 
 const ICONS: Record<string, LucideIcon> = {
   "/showcase": Compass,
   "/builders": UsersRound,
   "/directory": BookOpen,
-  "/gigs": Briefcase,
 };
 
-export function MobileBottomNav({ navLinks, enabledFlags }: {
+export function MobileBottomNav({ navLinks }: {
   navLinks: { href: string; label: string }[];
-  enabledFlags?: Record<string, boolean>;
 }) {
   const pathname = usePathname();
   const keyboardOpen = useMobileKeyboard();
@@ -35,7 +33,7 @@ export function MobileBottomNav({ navLinks, enabledFlags }: {
       document.documentElement.style.removeProperty("--mobile-nav-height");
     };
   }, []);
-  const links = navLinks.slice(0, 4);
+  const links = navLinks.slice(0, 3);
   const middle = Math.ceil(links.length / 2);
   const link = ({ href, label }: typeof links[number]) => {
     const Icon = ICONS[href] ?? Compass;
@@ -51,7 +49,7 @@ export function MobileBottomNav({ navLinks, enabledFlags }: {
     <nav ref={ref} aria-label="Mobile primary" className="mobile-bottom-nav" hidden={keyboardOpen} data-items={links.length + 1}
       style={{ "--nav-count": links.length + 1 } as CSSProperties}>
       {links.slice(0, middle).map(link)}
-      <PostMenu variant="mobile" enabledFlags={enabledFlags} />
+      <PostLink variant="mobile" />
       {links.slice(middle).map(link)}
     </nav>
   );
