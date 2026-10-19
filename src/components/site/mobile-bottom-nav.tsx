@@ -48,7 +48,7 @@ export function MobileBottomNav({ navLinks, enabledFlags }: {
     );
   };
   return (
-    <nav ref={ref} aria-label="Mobile primary" className="mobile-bottom-nav" hidden={keyboardOpen}
+    <nav ref={ref} aria-label="Mobile primary" className="mobile-bottom-nav" hidden={keyboardOpen} data-items={links.length + 1}
       style={{ "--nav-count": links.length + 1 } as CSSProperties}>
       {links.slice(0, middle).map(link)}
       <PostMenu variant="mobile" enabledFlags={enabledFlags} />
