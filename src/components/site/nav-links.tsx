@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export function NavLinks({ links = NAV_LINKS, className }: { links?: { href: string; label: string }[]; className?: string }) {
   const pathname = usePathname();
   return (
-    <nav aria-label="Primary" className={cn("flex min-w-0 items-center gap-1 overflow-x-auto", className)}>
+    <nav aria-label="Primary" className={cn("flex min-w-0 items-center gap-0.5 overflow-x-auto sm:gap-1", className)}>
       {links.map((l) => {
         const active =
           pathname === l.href || pathname.startsWith(l.href + "/");
