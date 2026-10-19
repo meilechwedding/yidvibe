@@ -58,7 +58,7 @@ export async function SiteNav() {
   return (
     <>
       <NavShell>
-        <Container className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2 py-3">
+        <Container className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-2 sm:gap-x-3 py-3">
           <Logo className="mr-auto shrink-0 lg:mr-0" />
           <div className="order-1 flex shrink-0 items-center gap-1 lg:order-2 sm:gap-2">
             <PostMenu enabledFlags={postFlags} />
@@ -74,7 +74,7 @@ export async function SiteNav() {
                 showGig={showGig}
               />
             ) : (
-              <Link href="/login" className="btn btn-ghost btn-sm min-h-11">
+              <Link href="/login" className="btn btn-ghost btn-sm btn-header min-h-11">
                 Sign in
               </Link>
             )}

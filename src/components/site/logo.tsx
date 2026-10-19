@@ -10,12 +10,12 @@ export function Logo({ className }: { className?: string }) {
       href="/"
       aria-label={`${SITE_NAME} home`}
       className={cn(
-        "inline-flex items-center gap-3 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "inline-flex items-center gap-2 sm:gap-3 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className,
       )}
     >
       <LogoMark size={32} />
-      <span className="font-display text-[1.4rem] font-semibold leading-none tracking-tight text-ink">
+      <span className="font-display text-xl sm:text-[1.4rem] font-semibold leading-none tracking-tight text-ink">
         {SITE_NAME}
       </span>
     </Link>

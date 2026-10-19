@@ -35,3 +35,13 @@ The helper now lazily reads and caches fonts only when an image is rendered. Rep
 Authentic v8 logo/favicon/social mark artwork is still unavailable. A narrow Downloads PDF filename check found no matching YidVibe/v8 brand PDF. The Library transfer helper was not bypassed and no substitute logo was drawn. Existing marks remain.
 
 Production remains blocked on authentic artwork and independent runtime/visual review. No production deployment, database migration, auth/security setting change, account creation, or production test-data mutation is part of this update. Member UI behavior is tested with mocks; live authenticated flows still require the independent reviewer or an authorized test session.
+
+## Browser and deployment follow-up
+
+The `c350f41` preview (`yidvibe-fg3hhkjfz-meilechweddings-projects.vercel.app`) renders real project and builder data. Its homepage returns HTTP 200 with no error template. Live guest Post offers Project and enabled Gig; Gig leads to `/login?next=/gigs/post`. Search, no-results messaging, clearing search, category filtering, and combined category/sort URL state were exercised in Chrome. The browser error/warning log was empty and scoped Vercel error logs returned no entries during this check.
+
+Local production HTTP checks confirmed 200 without error templates for homepage and Explore; 307 redirects for all seven retired public page/image routes; the correct guest project return URL; and 200 `image/png` for the root social image.
+
+Responsive review found header actions wrapped at 320px. A final spacing correction keeps the unchanged 32px symbol, uses a smaller mobile wordmark/gap and compact horizontal button padding, and narrows mobile nav link padding. At 320px, Post and Sign in are on the same top row as the logo, both 44px tall, with no document overflow. The 12 header/navigation tests and production build passed again after this correction. Mobile filters open and Escape restores focus. Desktop and 390px layouts were also inspected.
+
+The final immutable preview and remaining independent-review gate are supplied in the task handoff. Live member sessions and production publication remain outside the verification performed here.

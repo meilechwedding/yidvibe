@@ -40,7 +40,7 @@ export function PostMenu({
       <DialogTrigger asChild>
           <button
             type="button"
-            className="btn btn-ghost btn-sm min-h-11"
+            className="btn btn-ghost btn-sm btn-header min-h-11"
           >
             Post
           </button>

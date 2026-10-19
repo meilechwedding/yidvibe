@@ -75,6 +75,7 @@
 .btn-orange { background: var(--orange-deep); color: #fff; box-shadow: 0 1px 2px rgba(143, 78, 32, 0.1); }
 .btn-orange:hover { background: var(--orange-deep); filter: brightness(0.9); }
 .btn-sm { padding: 8px 16px; font-size: 14px; }
+.btn-header { padding-inline: 12px; }
 .btn-lg { padding: 16px 24px; font-size: 16px; }
 .btn-block { width: 100%; }
 

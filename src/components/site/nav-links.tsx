@@ -18,7 +18,7 @@ export function NavLinks({ links = NAV_LINKS, className }: { links?: { href: str
             href={l.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex min-h-11 shrink-0 items-center rounded-input px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+              "flex min-h-11 shrink-0 items-center rounded-input px-2 py-2 sm:px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
               active
                 ? "bg-teal-50 text-teal-800"
                 : "text-muted-foreground hover:text-ink",
