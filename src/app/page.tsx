@@ -21,9 +21,7 @@ export default async function Home() {
         <Container>
           <p className="hero-kicker">The home for frum builders</p>
           <h1>
-            Good work starts
-            <br />
-            <span>a conversation.</span>
+            Good work starts <span>a conversation.</span>
           </h1>
           <p className="hero-description">
             Discover AI projects. Meet the people behind them.
