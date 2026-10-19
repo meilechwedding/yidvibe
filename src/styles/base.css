@@ -1,0 +1,26 @@
+/* Document defaults and typography. */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+    /* v8 body: Space Grotesk 400. */
+    font-weight: 400;
+    line-height: 1.55;
+    text-rendering: optimizeLegibility;
+  }
+  /* v8 headings use Space Grotesk 600. */
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+}

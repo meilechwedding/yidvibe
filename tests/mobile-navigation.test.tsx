@@ -25,15 +25,27 @@ it("provides direct Explore navigation with active state and no retired modules"
   expect(screen.queryByRole("link", { name: "Events" })).toBeNull();
 });
 
-it.each([false, true])("removes the duplicate bottom navigation for auth state %s", isAuthed => {
-  const { container } = render(<MobileBottomNav navLinks={NAV_LINKS_ALL} isAuthed={isAuthed} />);
-  expect(container.childElementCount).toBe(0);
+it("provides four labeled destinations and a central Post action on mobile", () => {
+  render(<MobileBottomNav navLinks={NAV_LINKS_ALL} />);
+  const nav = screen.getByRole("navigation", { name: "Mobile primary" });
+  expect(within(nav).getAllByRole("link").map(link => link.textContent)).toEqual(["Explore", "Builders", "Directory", "Gigs"]);
+  expect(Array.from(nav.children).map(child => child.textContent)).toEqual(["Explore", "Builders", "Post", "Directory", "Gigs"]);
+  expect(within(nav).getByRole("link", { name: "Explore" }).getAttribute("aria-current")).toBe("page");
+  expect(within(nav).getByRole("button", { name: "Post" }).className).toContain("mobile-nav-post");
 });
 
-it("keeps Post understated and preserves the project and enabled gig destinations", async () => {
+it("uses only server-enabled mobile destinations and post choices", () => {
+  render(<MobileBottomNav navLinks={NAV_LINKS_ALL.filter(link => !link.flag)} />);
+  const nav = screen.getByRole("navigation", { name: "Mobile primary" });
+  expect(within(nav).getAllByRole("link")).toHaveLength(1);
+  fireEvent.click(within(nav).getByRole("button", { name: "Post" }));
+  expect(within(screen.getByRole("dialog")).queryByRole("link", { name: /Gig/ })).toBeNull();
+});
+
+it("makes Post visible and preserves the project and enabled gig destinations", async () => {
   const { container } = render(<PostMenu enabledFlags={{ "module.gigs": true, "module.competitions": true }} />);
   const trigger = screen.getByRole("button", { name: "Post" });
-  expect(trigger.className).toContain("btn-ghost");
+  expect(trigger.className).toContain("nav-post");
   expect(trigger.className).not.toContain("fixed");
   fireEvent.click(trigger);
   const dialog = screen.getByRole("dialog", { name: "What do you want to post?" });

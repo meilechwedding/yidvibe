@@ -66,7 +66,7 @@ describe("form and dialog regressions", () => {
   });
 
   it("portals the Post dialog out of its nav and closes with Escape, restoring focus", async () => {
-    const { container } = render(<nav><PostMenu variant="fab" /></nav>);
+    const { container } = render(<nav><PostMenu variant="mobile" /></nav>);
     const trigger = screen.getByRole("button", { name: "Post" });
     fireEvent.click(trigger);
     const dialog = screen.getByRole("dialog", { name: "What do you want to post?" });

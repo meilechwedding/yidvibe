@@ -40,6 +40,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
   themeColor: IMAGE_THEME.primary,
 };
 
@@ -54,9 +55,10 @@ export default function RootLayout({
       className={spaceGrotesk.variable}
     >
       <body className="flex min-h-dvh flex-col overflow-x-clip bg-canvas text-ink">
+        <a href="#main-content" className="skip-link">Skip to content</a>
         <SiteNav />
         <ContextBar />
-        <main className="flex-1">{children}</main>
+        <main id="main-content" tabIndex={-1} className="flex-1">{children}</main>
         <SiteFooter />
         <Toaster richColors position="top-center" />
         {/* Google Analytics (GA4) — direct gtag. G-CQZZR3R1TQ is the only

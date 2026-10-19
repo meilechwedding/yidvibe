@@ -42,7 +42,7 @@ it.each([false, true])("keeps one Post in the header beside guest/account contro
   expect(within(header).getByRole("link", { name: "Explore" }).getAttribute("href")).toBe("/showcase");
   expect(screen.queryByRole("link", { name: "Events" })).toBeNull();
   expect(screen.queryByRole("link", { name: "Competitions" })).toBeNull();
-  fireEvent.click(screen.getByRole("button", { name: "Post", exact: true }));
+  fireEvent.click(within(screen.getByRole("banner")).getByRole("button", { name: "Post", exact: true }));
   const dialog = screen.getByRole("dialog");
   expect(within(dialog).getByRole("link", { name: /Project/ }).getAttribute("href")).toBe("/showcase/submit");
   expect(within(dialog).getByRole("link", { name: /Gig/ }).getAttribute("href")).toBe("/gigs/post");
@@ -52,7 +52,7 @@ it("hides the gig navigation and post choice while the module is disabled", asyn
   state.gigs = false;
   render(await SiteNav());
   expect(screen.queryByRole("link", { name: "Gigs" })).toBeNull();
-  fireEvent.click(screen.getByRole("button", { name: "Post", exact: true }));
+  fireEvent.click(within(screen.getByRole("banner")).getByRole("button", { name: "Post", exact: true }));
   expect(within(screen.getByRole("dialog")).queryByRole("link", { name: /Gig/ })).toBeNull();
 });
 

@@ -1,0 +1,79 @@
+/* Animation definitions and reduced-motion behavior. Content stays visible without animation. */
+
+@keyframes yv-reveal-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.yv-reveal { opacity: 1; }
+
+.yv-reveal.in { animation: yv-reveal-in 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+
+@keyframes yv-live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+.yv-live-dot { animation: yv-live-pulse 2s ease-in-out infinite; }
+
+@keyframes yv-spark { 0% { opacity: 0; transform: translate(0, 0) scale(0.3); } 25% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1); } }
+
+@keyframes yv-upvote-pop { 0% { transform: scale(1); } 45% { transform: scale(1.4); } 100% { transform: scale(1); } }
+
+@keyframes yv-share-shrink { from { width: 100%; } to { width: 0%; } }
+
+.yv-share-progress { width: 100%; animation: yv-share-shrink 20s linear forwards; }
+
+@media (prefers-reduced-motion: reduce) { .yv-share-progress { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .yv-reveal { opacity: 1; }
+  .yv-reveal.in { animation: none; }
+  .yv-live-dot { animation: none; }
+}
+
+@keyframes yv-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.yv-rise { animation: yv-rise 0.5s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .yv-rise {
+    animation: none;
+  }
+  .btn-sweep {
+    transition: none;
+  }
+  .upvote-fill { transition: none; }
+  .upvote-spark { animation: none; display: none; }
+  .upvote[aria-pressed="true"] .upvote-num { animation: none; }
+  .autofill-btn.is-working { animation: none; }
+  .autofill-spark { animation: none; display: none; }
+  html { scroll-behavior: auto; }
+}
+
+@keyframes yv-marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+@media (prefers-reduced-motion: reduce) { .yv-marquee-track { animation: none; flex-wrap: wrap; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card, .pc-shot, .btn, .link-arrow svg, .upvote, .upvote svg { transition: none; }
+  .project-card:hover, .project-card:hover .pc-shot, .btn:active, .link-arrow:hover svg, .upvote[aria-pressed="true"] svg { transform: none; }
+}
+
+/* One small entrance per route. Persistent navigation remains still. */
+@keyframes yv-route-enter {
+  from { opacity: 0.94; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.route-enter { animation: yv-route-enter 360ms var(--ease-brand) both; }
+
+/* Cover every shared primitive, including Radix open/close animations. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .route-enter { animation: none; }
+}

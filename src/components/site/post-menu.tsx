@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Rocket, Briefcase } from "lucide-react";
+import { Rocket, Briefcase, Plus } from "lucide-react";
 import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
@@ -24,12 +24,12 @@ const OPTIONS = [
   },
 ];
 
-/** A quiet header action. The old variant prop remains import-compatible. */
+/** One posting chooser, with desktop and mobile triggers. */
 export function PostMenu({
-  variant: _variant = "button",
+  variant = "button",
   enabledFlags = {},
 }: {
-  variant?: "button" | "fab";
+  variant?: "button" | "mobile";
   enabledFlags?: Record<string, boolean>;
 }) {
   const [open, setOpen] = useState(false);
@@ -40,13 +40,14 @@ export function PostMenu({
       <DialogTrigger asChild>
           <button
             type="button"
-            className="btn btn-ghost btn-sm btn-header min-h-11"
+            className={cn("nav-post", variant === "mobile" && "mobile-nav-post")}
           >
-            Post
+            <Plus size={20} strokeWidth={1.75} aria-hidden="true" />
+            <span>Post</span>
           </button>
 
       </DialogTrigger>
-      <DialogContent aria-describedby={undefined} className="inset-x-0 bottom-0 left-0 top-auto max-w-none translate-x-0 translate-y-0 rounded-t-card border-t border-border bg-surface p-6 pb-8 shadow-float sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:w-[440px] sm:max-w-[92vw] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-card sm:border">
+      <DialogContent aria-describedby={undefined} className="post-chooser inset-x-0 bottom-0 left-0 top-auto max-w-none translate-x-0 translate-y-0 rounded-t-card border-t border-border bg-surface p-6 pb-8 shadow-float sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:w-[440px] sm:max-w-[92vw] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-card sm:border">
         <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-border sm:hidden" />
         <DialogTitle className="mb-4 font-display text-lg font-semibold text-ink">
           What do you want to post?
@@ -65,7 +66,7 @@ export function PostMenu({
                   o.tint,
                 )}
               >
-                <o.Icon size={18} />
+                <o.Icon size={20} strokeWidth={1.75} aria-hidden="true" />
               </span>
               <span className="min-w-0">
                 <span className="block font-semibold text-ink">{o.label}</span>

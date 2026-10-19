@@ -28,7 +28,7 @@ export function NotificationBell({
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         aria-label={unread > 0 ? `Notifications (${unread} unread)` : "Notifications"}
-        className="relative inline-flex h-9 w-9 items-center justify-center rounded-input text-ink outline-none transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring"
+        className="relative inline-flex h-11 w-11 items-center justify-center rounded-input text-ink outline-none transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring"
       >
         <Bell size={18} />
         {unread > 0 && (

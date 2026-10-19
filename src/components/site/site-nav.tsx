@@ -13,6 +13,7 @@ import { NavShell } from "./nav-shell";
 import { UserMenu } from "./user-menu";
 import { NavLinks } from "./nav-links";
 import { PostMenu } from "./post-menu";
+import { MobileBottomNav } from "./mobile-bottom-nav";
 import { NotificationBell, type BellItem } from "./notification-bell";
 
 export async function SiteNav() {
@@ -58,11 +59,12 @@ export async function SiteNav() {
   return (
     <>
       <NavShell>
-        <Container className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-2 sm:gap-x-3 py-3">
-          <Logo className="mr-auto shrink-0 lg:mr-0" />
-          <div className="order-1 flex shrink-0 items-center gap-1 lg:order-2 sm:gap-2">
-            <PostMenu enabledFlags={postFlags} />
-            {profile && <span className="hidden sm:block"><NotificationBell items={bellItems} unread={unread} /></span>}
+        <Container className="site-header-inner">
+          <Logo className="site-brand" />
+          <NavLinks links={navLinks} className="desktop-primary" />
+          <div className="site-account-actions">
+            <span className="desktop-post"><PostMenu enabledFlags={postFlags} /></span>
+            {profile && <span className="desktop-notifications"><NotificationBell items={bellItems} unread={unread} /></span>}
             {profile ? (
               <UserMenu
                 profile={{
@@ -79,10 +81,9 @@ export async function SiteNav() {
               </Link>
             )}
           </div>
-          <NavLinks links={navLinks} className="order-last w-full lg:order-1 lg:ml-4 lg:mr-auto lg:w-auto" />
         </Container>
       </NavShell>
-
+      <MobileBottomNav navLinks={navLinks} enabledFlags={postFlags} />
     </>
   );
 }

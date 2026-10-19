@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { ACCENT_HERO, ACCENT_PILL, ACCENT_AVATAR, ACCENT_COVER, accentFor } from "@/lib/design/accents";
 
 const theme = readFileSync("src/styles/theme.css", "utf8") + readFileSync("src/styles/palette.css", "utf8");
-const css = readFileSync("src/app/globals.css", "utf8");
+const css = ["src/app/globals.css", "src/styles/base.css", "src/styles/components.css", "src/styles/motion.css"].map(path => readFileSync(path, "utf8")).join("\n");
 const tokens = Object.fromEntries([...theme.matchAll(/(--[\w-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]));
 function color(token: string): string {
   const value = tokens[token];

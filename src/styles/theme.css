@@ -73,8 +73,8 @@
 
 /* Motion durations (plain custom props — used by custom CSS below). */
 :root {
-  --dur-micro: 150ms;
-  --dur-hover: 180ms;
+  --dur-micro: 160ms;
+  --dur-hover: 200ms;
 }
 
 

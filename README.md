@@ -1,6 +1,6 @@
 # YidVibe
 
-Full-stack community marketplace for AI builders—profiles, gigs, showcases, competitions, and events.
+A community for frum AI builders to share projects, meet collaborators and find paid work.
 
 [Visit YidVibe](https://yidvibe.com/)
 
@@ -18,8 +18,7 @@ YidVibe is a multi-sided marketplace built around builder identity and shipped w
 - **Builder profiles** — maintain a public portfolio, skills, tools, and availability
 - **Directory** — search and filter community members
 - **Gigs** — post work, apply, review applicants, and use private message threads
-- **Competitions** — publish challenges, accept entries, and select a winner
-- **Events** — share community meetups and gatherings
+Events and Competitions are retired from public navigation. Their stored records and guarded administration tools are preserved.
 
 ## Architecture
 
@@ -74,11 +73,13 @@ Run these checks from a clean install before deployment. The repository's curren
 
 ## Where to make changes
 
+See the [repository map](docs/REPOSITORY_MAP.md) for layer responsibilities, dependency direction and the main product journeys.
+
 | Change | Location |
 | --- | --- |
 | Colors | `src/styles/palette.json`; `npm run theme:sync` updates generated CSS |
 | Typography, spacing, motion and semantic tokens | `src/styles/theme.css` |
-| Global component classes | `src/app/globals.css` |
+| Base styles, component classes and motion | `src/styles/base.css`, `components.css`, `motion.css` |
 | Shared UI primitives and composed product UI | `src/components/ui` and `src/components/brand` |
 | Accent maps, form-control styling and serialized image colors | `src/lib/design` |
 | Public identity and feature/navigation catalogs | `src/config` |
